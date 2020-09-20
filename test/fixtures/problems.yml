@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  rank: MyString
+  number: 1
+  name: MyString
+  url: MyString
+  difficulty: 1
+
+two:
+  rank: MyString
+  number: 1
+  name: MyString
+  url: MyString
+  difficulty: 1
