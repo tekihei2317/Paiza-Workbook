@@ -1,12 +1,23 @@
-table
-  tr
-    th ランク
-    th 問題番号
-    th 問題名
-    th 難易度
-  - @problems.each do |problem|
-    tr
-      td= problem.rank
-      td= problem.number
-      td= problem.name
-      td= problem.difficulty
+.container
+  h1.title 問題一覧
+  table.table.table-hover.table-borderless
+    thead.thead-dark
+      tr
+        th ランク
+        th 問題番号
+        th 問題名
+        th 難易度
+    - @problems.each do |problem|
+      tbody 
+        - if problem.difficulty%2==0
+          tr.table-success= link_to
+            td= problem.rank
+            td= problem.number
+            td= link_to problem.name, problem.url
+            td= problem.difficulty
+        - else
+          tr= link_to
+            td= problem.rank
+            td= problem.number
+            td= link_to problem.name, problem.url
+            td= problem.difficulty
