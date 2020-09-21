@@ -1,6 +1,5 @@
 class ProblemsController < ApplicationController
   def new
-    binding.pry
     @problem = Problem.new
   end
 
@@ -14,6 +13,7 @@ class ProblemsController < ApplicationController
   end
 
   def index
+    @problems = Problem.all
   end
 
   private
