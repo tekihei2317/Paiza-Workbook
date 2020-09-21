@@ -1,0 +1,12 @@
+table
+  tr
+    th ランク
+    th 問題番号
+    th 問題名
+    th 難易度
+  - @problems.each do |problem|
+    tr
+      td= problem.rank
+      td= problem.number
+      td= problem.name
+      td= problem.difficulty
