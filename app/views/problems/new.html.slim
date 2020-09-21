@@ -1,17 +1,24 @@
 = form_with model: @problem do |f|
   .form-group
     = f.label :rank
-    = f.text_field :rank
+    = f.text_field :rank, class: 'form-control'
   .form-gropup
     = f.label :number
-    = f.text_field :number
+    = f.text_field :number, class: 'form-control'
   .form-gropup
     = f.label :name
-    = f.text_field :name
+    = f.text_field :name, class: 'form-control'
   .form-gropup
     = f.label :url
-    = f.text_field :url
+    = f.text_field :url, class: 'form-control'
   .form-gropup
     = f.label :difficulty
-    = f.text_field :difficulty
+    = f.text_field :difficulty, class: 'form-control'
   = f.submit
+
+.container.px-3
+  h1.debug コンテナ
+  .row
+    .col-2.debug(style="height: 200px;")
+    .col-3.debug(style="height: 200px;")
+    .col-7.debug(style="height: 200px;")
