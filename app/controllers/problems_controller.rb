@@ -1,11 +1,11 @@
 class ProblemsController < ApplicationController
   def new
+    binding.pry
     @problem = Problem.new
   end
 
   def create
     @problem = Problem.new(problem_params)
-    byebug
     if @problem.save
       redirect_to problems_path
     else
