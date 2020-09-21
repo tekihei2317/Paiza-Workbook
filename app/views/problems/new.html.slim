@@ -1,24 +1,21 @@
-= form_with model: @problem do |f|
-  .form-group
-    = f.label :rank
-    = f.text_field :rank, class: 'form-control'
-  .form-gropup
-    = f.label :number
-    = f.text_field :number, class: 'form-control'
-  .form-gropup
-    = f.label :name
-    = f.text_field :name, class: 'form-control'
-  .form-gropup
-    = f.label :url
-    = f.text_field :url, class: 'form-control'
-  .form-gropup
-    = f.label :difficulty
-    = f.text_field :difficulty, class: 'form-control'
-  = f.submit
-
 .container
-  h1.debug コンテナ
   .row
-    .col-sm-2.debug(style="height: 200px;")
-    .col-sm-3.debug(style="height: 200px;")
-    .col-sm-7.debug(style="height: 200px;")
+    .col-md-6.offset-md-3
+      h1.title 問題登録
+      = form_with model: @problem do |f|
+        .form-group
+          = f.label :rank, 'ランク'
+          = f.text_field :rank, class: 'form-control'
+        .form-gropup
+          = f.label :number, '問題番号'
+          = f.text_field :number, class: 'form-control'
+        .form-gropup
+          = f.label :name, '問題名'
+          = f.text_field :name, class: 'form-control'
+        .form-gropup
+          = f.label :url, 'URL'
+          = f.text_field :url, class: 'form-control'
+        .form-gropup
+          = f.label :difficulty, '難易度'
+          = f.text_field :difficulty, class: 'form-control'
+        = f.submit '登録'
