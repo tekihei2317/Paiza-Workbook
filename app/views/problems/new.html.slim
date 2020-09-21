@@ -1,3 +1,17 @@
-h1 Problems#new
-p Find me in app/views/problems/new.html.slim
-hoge
+= form_with model: @problem do |f|
+  .form-group
+    = f.label :rank
+    = f.text_field :rank
+  .form-gropup
+    = f.label :number
+    = f.text_field :number
+  .form-gropup
+    = f.label :name
+    = f.text_field :name
+  .form-gropup
+    = f.label :url
+    = f.text_field :url
+  .form-gropup
+    = f.label :difficulty
+    = f.text_field :difficulty
+  = f.submit

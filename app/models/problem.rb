@@ -1,7 +1,7 @@
 class Problem < ApplicationRecord
-  validate :rank, presence: true
-  validate :number, presence: true
-  validate :name, presence: true
-  validate :url, presence: true
-  validate :difficulty, presence: true
+  validates :rank, presence: true
+  validates :number, presence: true
+  validates :name, presence: true
+  validates :url, presence: true
+  validates :difficulty, presence: true
 end
