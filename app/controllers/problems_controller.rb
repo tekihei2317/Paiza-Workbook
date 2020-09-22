@@ -24,6 +24,16 @@ class ProblemsController < ApplicationController
     params.require(:problem).permit(:rank, :number, :name, :url, :difficulty)
   end
 
+  def login_to_paiza(driver)
+    email_elem = driver.find_element(id: 'email')
+    password_elem = driver.find_element(id: 'password')
+    submit_btn = driver.find_element(css: 'input[type=submit]')
+
+    email_elem.send_keys('tekihei2317@yahoo.co.jp')
+    password_elem.send_keys('tekihei4131752')
+    submit_btn.click
+  end
+
   def scraping_problems(url)
     # require 'open-uri'
     # charset = nil
@@ -47,6 +57,7 @@ class ProblemsController < ApplicationController
     # end
     driver = Selenium::WebDriver.for :chrome
     driver.get(url)
+    login_to_paiza(driver)
     []
   end
 
