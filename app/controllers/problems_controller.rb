@@ -35,30 +35,26 @@ class ProblemsController < ApplicationController
   end
 
   def scraping_problems(url)
-    # require 'open-uri'
-    # charset = nil
-    # html = open(url) do |f|
-    # charset = f.charset
-    # f.read
-    # end
-    # doc = Nokogiri::HTML.parse(html, nil, charset)
-    #
-    # nodeset_titles = doc.css('.problem-box__header__title')
-    # nodeset_difficulties = doc.css('.problem-box__bottom > dl > dd:nth-child(10) > b > span')
-    #
-    # titles = nodeset_titles.map { |node| node.text.chomp }
-    # difficulties = nodeset_difficulties.map { |node| node.text.to_i }
-    #
-    # binding.pry
-    #
-    # titles.zip(difficulties).map do |title, difficulty|
-    # rank, number, name = parse_problem_title(title)
-    # Problem.new(rank: rank, number: number, name: name, url: '  #', difficulty: difficulty)
-    # end
     driver = Selenium::WebDriver.for :chrome
     driver.get(url)
     login_to_paiza(driver)
-    []
+
+    # problemが取得できないのでスリープしておく(非同期っぽい)
+    sleep 1.5
+
+    problems = driver.find_elements(class: 'problem-box')
+    res = problems.map do |problem|
+      title_elem = problem.find_element(class: 'problem-box__header__title')
+
+      rank, number, name = parse_problem_title(title_elem.text)
+      problem_url = title_elem.attribute('href')
+      difficulty = problem.find_element(class: 'problem-box__bottom').find_element(css: 'span').text
+
+      Problem.new(rank: rank, number: number, name: name, url: problem_url, difficulty: difficulty)
+    end
+
+    driver.quit
+    res
   end
 
   def parse_problem_title(title)
