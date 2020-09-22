@@ -73,3 +73,4 @@ gem 'jquery-rails'
 
 # scraping
 gem 'nokogiri'
+gem 'selenium-webdriver'
