@@ -14,7 +14,7 @@ class ProblemsController < ApplicationController
 
   def index
     # @problems = Problem.all
-    url = 'https://paiza.jp/challenges/ranks/d'
+    url = 'https://paiza.jp/challenges/ranks/d/info'
     @problems = scraping_problems(url)
   end
 
@@ -24,42 +24,40 @@ class ProblemsController < ApplicationController
     params.require(:problem).permit(:rank, :number, :name, :url, :difficulty)
   end
 
-  def login_to_paiza(driver)
-    email_elem = driver.find_element(id: 'email')
-    password_elem = driver.find_element(id: 'password')
-    submit_btn = driver.find_element(css: 'input[type=submit]')
-
-    email_elem.send_keys('tekihei2317@yahoo.co.jp')
-    password_elem.send_keys('tekihei4131752')
-    submit_btn.click
-  end
-
   def scraping_problems(url)
-    driver = Selenium::WebDriver.for :chrome
-    driver.get(url)
-    login_to_paiza(driver)
-
-    # problemが取得できないのでスリープしておく(非同期っぽい)
-    sleep 1.5
-
-    problems = driver.find_elements(class: 'problem-box')
-    res = problems.map do |problem|
-      title_elem = problem.find_element(class: 'problem-box__header__title')
-
-      rank, number, name = parse_problem_title(title_elem.text)
-      problem_url = title_elem.attribute('href')
-      difficulty = problem.find_element(class: 'problem-box__bottom').find_element(css: 'span').text
-
-      Problem.new(rank: rank, number: number, name: name, url: problem_url, difficulty: difficulty)
+    require 'open-uri'
+    charset = nil
+    html = open(url) do |f|
+      charset = f.charset
+      f.read
     end
 
-    driver.quit
-    res
+    doc = Nokogiri::HTML.parse(html, nil, charset)
+
+    nodeset = doc.css('.problem-box')
+    nodeset.map do |elem|
+      id = elem.attributes['id'].value[/challenge_(\d+)/, 1].to_i
+      title = elem.css('.problem-box__header__title').text.chomp
+      difficulty = elem.css('.problem-box__bottom > dl > dd:nth-child(10) > b > span').text.to_i
+
+      rank, number, name = parse_problem_title(title)
+      Problem.new(
+        rank: rank,
+        number: number,
+        name: name,
+        url: make_url_from_id(id),
+        difficulty: difficulty,
+      )
+    end
   end
 
   def parse_problem_title(title)
     regex = /(?<rank>[A-D,S])(?<number>\d{3}):(?<name>.*)/
     m = regex.match(title)
     [m[:rank], m[:number].to_i, m[:name]]
+  end
+
+  def make_url_from_id(id)
+    "https://paiza.jp/challenges/#{id}/ready"
   end
 end
