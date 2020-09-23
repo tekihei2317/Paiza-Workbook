@@ -15,7 +15,8 @@ class ProblemsController < ApplicationController
   def index
     # @problems = Problem.all
     url = 'https://paiza.jp/challenges/ranks/d/info'
-    @problems = scraping_problems(url)
+    @problems = scraping_all_problems(url)
+    @solved_problems = scraping_solved_problems()
   end
 
   private
@@ -24,7 +25,8 @@ class ProblemsController < ApplicationController
     params.require(:problem).permit(:rank, :number, :name, :url, :difficulty)
   end
 
-  def scraping_problems(url)
+  # スクレイピング(Nokogiri<--Seleniumは遅かった)
+  def scraping_all_problems(url)
     require 'open-uri'
     charset = nil
     html = open(url) do |f|
@@ -50,5 +52,26 @@ class ProblemsController < ApplicationController
         difficulty: difficulty,
       )
     end
+  end
+
+  # scraping(Selenium<--ログインが必要なので)
+  def scraping_solved_problems()
+    driver = Selenium::WebDriver.for :chrome
+
+    driver.get('https://paiza.jp/student/mypage/results')
+    # ログイン画面にリダイレクトされる
+    login_to_paiza(driver)
+    # binding.pry
+    driver.quit
+  end
+
+  def login_to_paiza(driver)
+    email_elem = driver.find_element(id: 'email')
+    password_elem = driver.find_element(id: 'password')
+    submit_btn = driver.find_element(css: 'input[type=submit]')
+
+    email_elem.send_keys('tekihei2317@yahoo.co.jp')
+    password_elem.send_keys('tekihei4131752')
+    submit_btn.click
   end
 end
