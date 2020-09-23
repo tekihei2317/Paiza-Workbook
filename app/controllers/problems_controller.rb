@@ -17,43 +17,14 @@ class ProblemsController < ApplicationController
     url = 'https://paiza.jp/challenges/ranks/d/info'
     # @problems = scraping_all_problems(url)
     @problems = Problem.all
-    # @solved_problems = scraping_solved_problems()
-    @solved_problems = []
+    @solved_problems = scraping_solved_problems()
+    # @solved_problems = []
   end
 
   private
 
   def problem_params
     params.require(:problem).permit(:rank, :number, :name, :url, :difficulty)
-  end
-
-  # スクレイピング(Nokogiri<--Seleniumは遅かった)
-  def scraping_all_problems(url)
-    require 'open-uri'
-    charset = nil
-    html = open(url) do |f|
-      charset = f.charset
-      f.read
-    end
-
-    doc = Nokogiri::HTML.parse(html, nil, charset)
-
-    nodeset = doc.css('.problem-box')
-    nodeset.map do |elem|
-      # "challenge_336"みたいになっているので数字を抜き出す
-      id = elem.attributes['id'].value[/challenge_(\d+)/, 1].to_i
-      title = elem.css('.problem-box__header__title').text.chomp
-      difficulty = elem.css('.problem-box__bottom > dl > dd:nth-child(10) > b > span').text.to_i
-
-      rank, number, name = Problem.parse_title(title)
-      Problem.new(
-        rank: rank,
-        number: number,
-        name: name,
-        url: Problem.get_url_from_id(id),
-        difficulty: difficulty,
-      )
-    end
   end
 
   # スクレイピング(Selenium<--ログインが必要なので)
