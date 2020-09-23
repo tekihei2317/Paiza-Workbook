@@ -18,6 +18,7 @@ namespace :scraping do
     nodeset.map do |elem|
       # "challenge_336"みたいになっているので数字を抜き出す
       id = elem.attributes['id'].value[/challenge_(\d+)/, 1].to_i
+      # title='D104:運賃の計算'など
       title = elem.css('.problem-box__header__title').text.chomp
       difficulty = elem.css('.problem-box__bottom > dl > dd:nth-child(10) > b > span').text.to_i
 
