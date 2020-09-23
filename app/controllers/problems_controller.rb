@@ -54,15 +54,32 @@ class ProblemsController < ApplicationController
     end
   end
 
-  # scraping(Selenium<--ログインが必要なので)
+  # スクレイピング(Selenium<--ログインが必要なので)
   def scraping_solved_problems()
-    driver = Selenium::WebDriver.for :chrome
+    options = Selenium::WebDriver::Chrome::Options.new
+    options.add_argument('--headless')
+    driver = Selenium::WebDriver.for :chrome, options: options
 
     driver.get('https://paiza.jp/student/mypage/results')
     # ログイン画面にリダイレクトされる
     login_to_paiza(driver)
-    # binding.pry
+
+    # JavaScriptの描画が終わるまで待機する
+    wait = Selenium::WebDriver::Wait.new(timeout: 10)
+    wait.until { driver.find_element(class: 'basicBox').displayed? }
+
+    # 解答済みの問題のランクと問題番号を取得する(ハッシュ形式にする)
+    solved_problems = driver.find_element(id: 'tab-results').find_elements(class: 'basicBox')
+    res = solved_problems.map do |problem|
+      title = problem.text.split(/\n/)[0] # C035:試験の合格判定のような形式
+      {
+        rank: title[/([A-Z])(\d+).+/, 1],
+        number: title[/([A-Z])(\d+).+/, 2].to_i,
+      }
+    end
+
     driver.quit
+    res
   end
 
   def login_to_paiza(driver)
