@@ -15,8 +15,10 @@ class ProblemsController < ApplicationController
   def index
     # @problems = Problem.all
     url = 'https://paiza.jp/challenges/ranks/d/info'
-    @problems = scraping_all_problems(url)
-    @solved_problems = scraping_solved_problems()
+    # @problems = scraping_all_problems(url)
+    @problems = Problem.all
+    # @solved_problems = scraping_solved_problems()
+    @solved_problems = []
   end
 
   private
