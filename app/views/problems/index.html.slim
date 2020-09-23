@@ -9,7 +9,10 @@
         th 難易度
     - @problems.each do |problem|
       tbody 
-        - if problem.difficulty%2==0
+        - solved = @solved_problems.inject(false) { |flag, p| \
+            flag || (p[:rank]==problem.rank && p[:number]==problem.number) \
+          }
+        - if solved
           tr.table-success= link_to
             td= problem.rank
             td= problem.number
