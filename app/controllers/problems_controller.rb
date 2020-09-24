@@ -17,8 +17,8 @@ class ProblemsController < ApplicationController
     url = 'https://paiza.jp/challenges/ranks/d/info'
     # @problems = scraping_all_problems(url)
     @problems = Problem.all
-    @solved_problems = scraping_solved_problems()
-    # @solved_problems = []
+    # @solved_problems = scraping_solved_problems()
+    @solved_problems = []
   end
 
   private
