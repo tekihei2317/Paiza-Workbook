@@ -1,0 +1,32 @@
+.container
+  .row
+    .col-md-6.offset-md-3
+      h1 ログイン
+      = form_with url:user_session_path, method: :post do |f|
+        .form-group
+          = f.label :email
+          = f.text_field :email, class: 'form-control' 
+        .form-group
+          = f.label :password
+          = f.text_field :password, class: 'form-control'
+        = f.submit 'ログイン'
+        
+/ deviseのデフォルトのログインフォーム(一応残しておく)
+h2
+  | Log in
+= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+  .field
+    = f.label :email
+    br
+    = f.email_field :email, autofocus: true, autocomplete: "email"
+  .field
+    = f.label :password
+    br
+    = f.password_field :password, autocomplete: "current-password"
+  - if devise_mapping.rememberable?
+    .field
+      = f.check_box :remember_me
+      = f.label :remember_me
+  .actions
+    = f.submit "Log in"
+= render "devise/shared/links"
