@@ -77,3 +77,6 @@ gem 'selenium-webdriver'
 
 # login feature
 gem 'devise'
+
+# do tasks regularly
+gem 'whenever'
