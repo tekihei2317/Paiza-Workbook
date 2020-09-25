@@ -1,4 +1,6 @@
 class Problem < ApplicationRecord
+  has_many :solveds
+
   validates :rank, presence: true
   validates :number, presence: true
   validates :name, presence: true, uniqueness: true
