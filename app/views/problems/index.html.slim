@@ -9,7 +9,7 @@
         th 難易度
     - @problems.each do |problem|
       tbody 
-        - solved = Solved.exists?(user_id: current_user.id, problem_id: problem.id)
+        - solved = user_signed_in? && Solved.exists?(user_id: current_user.id, problem_id: problem.id)
         - if solved
           tr.table-success= link_to
             td= problem.rank
