@@ -7,7 +7,7 @@
           = f.label :name, '名前'
           = f.text_field :name, class: 'form-control'
         .form-group
-          = f.label :email, 'メールアドレス'
+          = f.label :email, 'メールアドレス(Paizaで使用しているもの)'
           = f.text_field :email, class: 'form-control'
         .form-group
           = f.label :password, 'パスワード'
@@ -15,6 +15,9 @@
         .form-group
           = f.label :password_confirmation, 'パスワード(確認)'
           = f.password_field :password_confirmation, class: 'form-control'
+        .form-group
+          = f.label :paiza_password, 'Paizaのパスワード'
+          = f.password_field :paiza_password, class: 'form-control'
         = f.submit '登録する', class: 'mx-auto'
 
 h2
