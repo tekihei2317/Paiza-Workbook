@@ -10,8 +10,8 @@ html
   body
     p.notice= notice
     p.alert= alert
-    - if current_user
-      = link_to 'ログアウト', destroy_user_session_path, method: :delete
-    - else
+    - if !user_signed_in?
       = link_to 'ログイン', new_user_session_path
+    - else
+      = link_to 'ログアウト', destroy_user_session_path, method: :delete
     = yield
