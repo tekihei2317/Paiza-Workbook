@@ -36,6 +36,7 @@ namespace :scraping do
         problem.save
       end
     end
+    puts '問題一覧を更新しました'
   end
 
   def login_to_paiza(user, driver)
@@ -51,7 +52,7 @@ namespace :scraping do
   desc 'ユーザーが解いた問題の一覧を取得して、データベースに保存する'
   task :add_solved_information_to_database => :environment do
     options = Selenium::WebDriver::Chrome::Options.new
-    # options.add_argument('--headless')
+    options.add_argument('--headless')
     driver = Selenium::WebDriver.for :chrome, options: options
 
     # ログイン後、解いた問題が乗っているページに移動する
@@ -76,5 +77,7 @@ namespace :scraping do
       Solved.create(user_id: user.id, problem_id: problem_id)
     end
     driver.quit
+
+    puts '解答状況を更新しました'
   end
 end
