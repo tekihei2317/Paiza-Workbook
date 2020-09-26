@@ -74,6 +74,10 @@ gem 'jquery-rails'
 # scraping
 gem 'nokogiri'
 gem 'selenium-webdriver'
+gem 'chromedriver-helper'
 
 # login feature
 gem 'devise'
+
+# do tasks regularly
+gem 'whenever'
