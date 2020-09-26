@@ -22,10 +22,9 @@
 set :environment, ENV['RAILS_ENV'] || :development
 set :output, 'log/crontab.log'
 
-# every 1.minutes do
-# rake 'scraping:add_solved_information_to_database'
-# p 'ユーザーが解いた問題の一覧を取得して、データベースに保存する'
-# end
+every 5.minutes do
+  rake 'scraping:add_solved_information_to_database'
+end
 
 every 1.day do
   rake 'scraping:add_problems_to_database'
