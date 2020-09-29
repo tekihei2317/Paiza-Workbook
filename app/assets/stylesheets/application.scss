@@ -15,3 +15,16 @@
 .debug{
   border: 1px solid red;
 }
+
+.reset-padding{
+  padding: 0 !important;
+}
+
+.table th, .table td{
+  padding: 0.6rem;
+}
+
+table .wide-link{
+  display: block;
+  padding: 0.6rem;
+}

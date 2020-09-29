@@ -24,7 +24,7 @@ set :environment, ENV['RAILS_ENV'] || :development
 set :output, 'log/crontab.log'
 
 every 5.minutes do
-  rake 'scraping:add_solved_information_to_database'
+  rake 'scraping:add_solved_information'
 end
 
 every 1.day do
