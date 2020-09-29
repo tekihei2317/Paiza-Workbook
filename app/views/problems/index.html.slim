@@ -16,11 +16,11 @@
               tr.table-success
                 td= problem.rank
                 td= problem.number
-                td= link_to problem.name, problem.url, class: 'wide-link'
+                td.reset-padding= link_to problem.name, problem.url, class: 'wide-link'
                 td= problem.difficulty
             - else
               tr
                 td= problem.rank
                 td= problem.number
-                td= link_to problem.name, problem.url, class: 'wide-link'
+                td.reset-padding= link_to problem.name, problem.url, class: 'wide-link'
                 td= problem.difficulty
