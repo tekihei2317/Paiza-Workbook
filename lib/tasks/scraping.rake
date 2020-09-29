@@ -49,21 +49,19 @@ namespace :scraping do
     submit_btn.click
   end
 
-  desc 'ユーザーが解いた問題の一覧を取得して、データベースに保存する'
-  task :add_solved_information_to_database => :environment do
-    options = Selenium::WebDriver::Chrome::Options.new
-    options.add_argument('--headless')
-    driver = Selenium::WebDriver.for :chrome, options: options
-
-    # ログイン後、解いた問題が乗っているページに移動する
-    driver.get('https://paiza.jp/student/mypage/results')
-    user = User.first
-    login_to_paiza(user, driver)
-
+  def get_solved_information(user, driver)
     # JavaScriptの描画が終わるまで待機する
     wait = Selenium::WebDriver::Wait.new(timeout: 10)
-    wait.until { driver.find_element(class: 'basicBox').displayed? }
+    begin
+      wait.until {
+        driver.find_element(class: 'basicBox').displayed?
+      }
+    rescue => exception
+      puts "#{user.name} can\'t log in!"
+      return
+    end
 
+    # ログインできなかった場合の例外処理
     solved_problems = driver.find_element(id: 'tab-results').find_elements(class: 'basicBox')
     solved_problems.map do |problem|
       # タイトルからランクと問題番号を抜き出すする
@@ -76,8 +74,25 @@ namespace :scraping do
       # binding.pry
       Solved.create(user_id: user.id, problem_id: problem_id)
     end
-    driver.quit
+  end
 
+  desc 'ユーザーが解いた問題の一覧を取得して、データベースに保存する'
+  task :add_solved_information => :environment do
+    users = User.all
+    users.each do |user|
+      # Seleniumの初期化
+      options = Selenium::WebDriver::Chrome::Options.new
+      options.add_argument('--headless')
+      driver = Selenium::WebDriver.for :chrome, options: options
+
+      driver.get('https://paiza.jp/student/mypage/results')
+      # ログインページにリダイレクトされるので、ログインする
+      login_to_paiza(user, driver)
+
+      # 解いた問題が乗っているページにリダイレクトされるので、取得する
+      get_solved_information(user, driver)
+      driver.quit
+    end
     puts '解答状況を更新しました'
   end
 end
