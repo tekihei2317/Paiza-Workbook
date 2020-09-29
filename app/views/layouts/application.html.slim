@@ -9,8 +9,8 @@ html
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
     meta name='viewport' content='width=device-width, initial-scale=1.0'
   body
-    p.notice= notice
-    p.alert= alert
+    p.notice.alert-success= notice
+    p.alert.alert-success= alert
     - if !user_signed_in?
       = link_to 'ログイン', new_user_session_path
     - else
