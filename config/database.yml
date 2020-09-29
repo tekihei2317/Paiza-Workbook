@@ -50,5 +50,6 @@ test:
 production:
   <<: *default
   database: paiza_workbook_production
-  username: paiza_workbook
+  username: root
   password: <%= ENV['PAIZA_WORKBOOK_DATABASE_PASSWORD'] %>
+  socket: /var/lib/mysql/mysql.sock
