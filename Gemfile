@@ -78,6 +78,8 @@ gem 'chromedriver-helper'
 
 # login feature
 gem 'devise'
+gem 'devise-i18n'
+gem 'devise-i18n-views'
 
 # do tasks regularly
 gem 'whenever'
