@@ -23,7 +23,7 @@ require File.expand_path(File.dirname(__FILE__) + "/environment")
 set :environment, ENV['RAILS_ENV'] || :development
 set :output, 'log/crontab.log'
 
-every 5.minutes do
+every 3.minutes do
   rake 'scraping:add_solved_information'
 end
 
