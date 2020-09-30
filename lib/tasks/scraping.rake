@@ -79,8 +79,8 @@ namespace :scraping do
       # 問題IDを見つけて、ユーザーIDとのペアをデータベースに保存する
       problem = Problem.find_by(rank: rank, number: number)
       if problem.nil?
-        # 解答済みにはあるけど、問題一覧にない(=消去された)問題
-        puts "#{title}は削除されました"
+        # 解答済みにはあるけど、問題一覧にない(=消去された)問題がある
+        # puts "#{title}は削除されました"
       else
         Solved.create(user_id: user.id, problem_id: problem.id)
       end
