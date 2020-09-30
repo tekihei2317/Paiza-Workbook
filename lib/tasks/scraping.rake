@@ -77,9 +77,13 @@ namespace :scraping do
       number = title[/([A-Z])(\d+).+/, 2].to_i
 
       # 問題IDを見つけて、ユーザーIDとのペアをデータベースに保存する
-      problem_id = Problem.find_by(rank: rank, number: number).id
-      # binding.pry
-      Solved.create(user_id: user.id, problem_id: problem_id)
+      problem = Problem.find_by(rank: rank, number: number)
+      if problem.nil?
+        # 解答済みにはあるけど、問題一覧にない(=消去された)問題
+        puts "#{title}は削除されました"
+      else
+        Solved.create(user_id: user.id, problem_id: problem.id)
+      end
     end
   end
 
