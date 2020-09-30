@@ -49,6 +49,10 @@ namespace :scraping do
     submit_btn.click
   end
 
+  def print_current_url(driver)
+    puts "現在のURL: #{driver.current_url}"
+  end
+
   def get_solved_information(user, driver)
     # JavaScriptの描画が終わるまで待機する
     wait = Selenium::WebDriver::Wait.new(timeout: 10)
@@ -57,11 +61,14 @@ namespace :scraping do
         driver.find_element(class: 'basicBox').displayed?
       }
     rescue => exception
-      puts "#{user.name} can\'t log in!"
+      print_current_url(driver)
+      puts "#{user.name}でログインできませんでした"
       return
+    else
+      print_current_url(driver)
+      puts "#{user.name}でログインしました"
     end
 
-    # ログインできなかった場合の例外処理
     solved_problems = driver.find_element(id: 'tab-results').find_elements(class: 'basicBox')
     solved_problems.map do |problem|
       # タイトルからランクと問題番号を抜き出すする
@@ -86,13 +93,19 @@ namespace :scraping do
       driver = Selenium::WebDriver.for :chrome, options: options
 
       driver.get('https://paiza.jp/student/mypage/results')
+      print_current_url(driver)
+      puts "#{user.name}でログインを試みます..."
       # ログインページにリダイレクトされるので、ログインする
       login_to_paiza(user, driver)
 
       # 解いた問題が乗っているページにリダイレクトされるので、取得する
       get_solved_information(user, driver)
+      puts "#{user.name}の解答状況の取得が終了しました"
+      puts
+
       driver.quit
     end
     puts '解答状況を更新しました'
+    puts '-----------------------------------'
   end
 end
