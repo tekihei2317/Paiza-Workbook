@@ -44,12 +44,11 @@ class ProblemsController < ApplicationController
     }
 
     # 解いているものを除外する
-    # solved_problemsはActiveRecordと同じようにfind_byが使える
-    solved_problems = current_user.solved_problems
-    # binding.pry
-    if hide_solved
+    # solved_problemsはActiveRecordと同じように使えるみたい
+    solved_problems = current_user&.solved_problems if user_signed_in?
+    if hide_solved && !solved_problems.blank? # nil or []
       @problems = @problems.filter { |problem|
-        solved_problems.find_by(id: problem.id).nil?
+        !solved_problems.exists?(id: problem.id)
       }
     end
 
