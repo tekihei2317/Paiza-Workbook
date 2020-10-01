@@ -28,3 +28,7 @@ table .wide-link{
   display: block;
   padding: 0.6rem;
 }
+
+input:focus{
+  box-shadow: none !important;
+}
