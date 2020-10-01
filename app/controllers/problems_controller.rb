@@ -13,12 +13,13 @@ class ProblemsController < ApplicationController
   end
 
   def index
-    # @problems = Problem.all
     url = 'https://paiza.jp/challenges/ranks/d/info'
-    # @problems = scraping_all_problems(url)
-    @problems = Problem.all
-    # @solved_problems = scraping_solved_problems()
-    @solved_problems = []
+
+    # ランクが低い順、同じランクは難易度の昇順にソートする
+    problems_rank_neq_s = Problem.where.not(rank: 'S').order({ rank: :desc }, :difficulty)
+    problems_rank_eq_s = Problem.where(rank: 'S').order(:difficulty)
+    # ActiveRecord Relationは足し算出来るみたい(Arrayになる)
+    @problems = problems_rank_neq_s + problems_rank_eq_s
   end
 
   private
