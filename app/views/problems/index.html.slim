@@ -1,7 +1,38 @@
 .container
   .row
+    .col-md-8.offset-md-2
+      h2.text-muted 設定
+      = form_with url: '#', local: true do |f|
+        p.text-primary Rank
+        = f.select 'rank_min', { 'D'=>0, 'C'=>1 ,'B'=>2, 'A'=>3, 'S'=>4}, \
+          {}, {class: 'btn'}
+        span から
+        = f.select 'rank_max', { 'D'=>0, 'C'=>1 ,'B'=>2, 'A'=>3, 'S'=>4}, \
+          { selected: '4' }, {class: 'btn'}
+
+        p.text-primary Difficulty
+        = f.select 'difficulty_min', { \
+            '0'=>0, '800'=>800, '1000'=>1000, '1200'=>1200, '1400'=>1400, '1600'=>1600, \
+            '1800'=>1800, '2000'=>2000, '2200'=>2200, '2400'=>2400, '3000'=>3000 \
+          }, \
+          {}, { class: 'btn'}
+        span から
+        = f.select 'difficulty_min', { \
+            '0'=>0, '800'=>800, '1000'=>1000, '1200'=>1200, '1400'=>1400, '1600'=>1600, \
+            '1800'=>1800, '2000'=>2000, '2200'=>2200, '2400'=>2400, '3000'=>3000 \
+          }, \
+          { selected: '3000' }, { class: 'btn'}
+
+        .w-100
+        = f.check_box 'hide_solved', class: 'mr-1'
+        = f.label 'hide_solved', '解いた問題を非表示にする', class: 'text-muted'
+
+        .w100
+        = f.submit '設定を反映する', class: 'btn btn-raised bg-primary text-white'
+
+  .row
    .col-md-8.offset-md-2
-      h1.title 問題一覧
+      h2.text-muted 問題一覧
       table.table.table-hover.table-borderless
         thead.thead-dark
           tr
