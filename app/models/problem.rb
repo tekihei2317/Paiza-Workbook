@@ -7,6 +7,8 @@ class Problem < ApplicationRecord
   validates :url, presence: true, uniqueness: true
   validates :difficulty, presence: true
 
+  enum rank: { D: 0, C: 1, B: 2, A: 3, S: 4 }
+
   def self.parse_title(title)
     regex = /(?<rank>[A-D,S])(?<number>\d{3}):(?<name>.*)/
     m = regex.match(title)
