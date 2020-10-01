@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   # Problems
   resources :problems
+  post 'problems/filter', to: 'problems#filter'
 
   # Users
   resources :users
