@@ -15,10 +15,7 @@ html
     - if alert
       p.alert.alert-warning= alert
 
-    - if !user_signed_in?
-      = link_to 'ログイン', new_user_session_path
-    - else
-      = link_to 'ログアウト', destroy_user_session_path, method: :delete
+    = render 'layouts/header'
     = yield
 
     script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"
