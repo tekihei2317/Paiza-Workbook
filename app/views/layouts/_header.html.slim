@@ -1,0 +1,18 @@
+  
+nav.navbar.navbar-expand.fixed-top
+  .container
+    = link_to 'Paiza Workbook', root_path, class: 'navbar-brand'
+    ul.navbar-nav
+      li.nav-item
+        = link_to 'progress', '#', class: 'nav-link'
+      li.nav-item
+        = link_to 'recommend', '#', class: 'nav-link'
+    ul.navbar-nav.ml-auto
+      - if user_signed_in?
+        li.nav-item
+          = link_to 'logout', destroy_user_session_path, method: :delete, class: 'nav-link'
+      - else
+        li.nav-item
+          = link_to 'login', new_user_session_path, class: 'nav-link'
+        li.nav-item
+          = link_to 'signup', new_user_registration_path, class: 'nav-link'
