@@ -15,11 +15,8 @@ class ProblemsController < ApplicationController
   def index
     url = 'https://paiza.jp/challenges/ranks/d/info'
 
-    # ランクが低い順、同じランクは難易度の昇順にソートする
-    problems_rank_neq_s = Problem.where.not(rank: 'S').order({ rank: :desc }, :difficulty)
-    problems_rank_eq_s = Problem.where(rank: 'S').order(:difficulty)
-    # ActiveRecord Relationは足し算出来るみたい(Arrayになる)
-    @problems = problems_rank_neq_s + problems_rank_eq_s
+    # ランクの昇順、同じランクは難易度の昇順にソートする
+    @problems = Problem.order(:rank, :difficulty)
   end
 
   def filter
