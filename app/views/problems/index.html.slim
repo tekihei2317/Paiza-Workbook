@@ -10,23 +10,21 @@
         - initial_difficulty_max = params[:difficulty_max] || '3000'
         - initial_hide_solved = params[:hide_solved] == '1'
 
-        = f.select 'rank_min', { 'D'=>0, 'C'=>1 ,'B'=>2, 'A'=>3, 'S'=>4}, { selected: initial_rank_min }, {class: 'btn'}
+        / f.selectの第２引数はoptionとvalue(送信される値=paramsで受け取れる値)のペアを書く
+        / 配列の場合: [[op1, val1], [op2, val2], ...] と書く
+        / ハッシュの場合: { op1 => val1, op2 => val2, ...} と書く
+        / optionとvalueの値が同じ場合は、[op1, op2, ...]と書くとvalueは自動的に設定される
+        / 参考: https://310nae.com/rails-selectbox/
+        / 第３引数のselectedはvalueのほうを書く
+
+        = f.select 'rank_min', Problem::SELECT_OPTIONS_RANK, { selected: initial_rank_min }, {class: 'btn'}
         span から
-        = f.select 'rank_max', { 'D'=>0, 'C'=>1 ,'B'=>2, 'A'=>3, 'S'=>4}, { selected: initial_rank_max }, {class: 'btn'}
+        = f.select 'rank_max', Problem::SELECT_OPTIONS_RANK, { selected: initial_rank_max }, {class: 'btn'}
 
         p.text-primary Difficulty
-        = f.select 'difficulty_min', { \
-            '0'=>0, '800'=>800, '1000'=>1000, '1200'=>1200, '1400'=>1400, '1600'=>1600, \
-            '1800'=>1800, '2000'=>2000, '2200'=>2200, '2400'=>2400, '3000'=>3000 \
-          }, \
-          { selected: initial_difficulty_min }, { class: 'btn'}
+        = f.select 'difficulty_min', Problem::SELECT_OPTIONS_DIFFICULTY, { selected: initial_difficulty_min }, { class: 'btn'} 
         span から
-
-        = f.select 'difficulty_max', { \
-            '0'=>0, '800'=>800, '1000'=>1000, '1200'=>1200, '1400'=>1400, '1600'=>1600, \
-            '1800'=>1800, '2000'=>2000, '2200'=>2200, '2400'=>2400, '3000'=>3000 \
-          }, \
-          { selected: initial_difficulty_max }, { class: 'btn'}
+        = f.select 'difficulty_max', Problem::SELECT_OPTIONS_DIFFICULTY, { selected: initial_difficulty_max }, { class: 'btn'}
 
         .w-100
         = f.check_box 'hide_solved', class: 'mr-1', checked: initial_hide_solved
