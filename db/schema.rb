@@ -10,10 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_25_041424) do
+ActiveRecord::Schema.define(version: 2020_10_01_121542) do
 
   create_table "problems", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "rank"
+    t.integer "rank"
     t.integer "number"
     t.string "name"
     t.string "url"
@@ -45,6 +45,4 @@ ActiveRecord::Schema.define(version: 2020_09_25_041424) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "solveds", "problems"
-  add_foreign_key "solveds", "users"
 end
