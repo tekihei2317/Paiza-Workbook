@@ -2,7 +2,7 @@
   .row
     .col-md-8.offset-md-2
       h2.text-muted 設定
-      = form_with url: problems_filter_path, local: true do |f|
+      = form_with url: problems_filter_path do |f|
         p.text-primary Rank
         - initial_rank_min = params[:rank_min] || '0'
         - initial_rank_max = params[:rank_max] || '4'

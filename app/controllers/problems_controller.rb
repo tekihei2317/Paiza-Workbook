@@ -20,6 +20,18 @@ class ProblemsController < ApplicationController
   end
 
   def filter
+    render json: {
+      rank: {
+        min: params[:rank_min],
+        max: params[:rank_max],
+      },
+      difficulty: {
+        min: params[:difficulty_min],
+        max: params[:difficulty_max],
+      },
+      hideSolved: params[:hide_solved] == '1',
+    }
+
     ranks = ['D', 'C', 'B', 'A', 'S']
     rank_min = params[:rank_min].to_i
     rank_max = params[:rank_max].to_i
@@ -56,7 +68,7 @@ class ProblemsController < ApplicationController
       }
     end
 
-    render :index
+    # render :index
   end
 
   private
