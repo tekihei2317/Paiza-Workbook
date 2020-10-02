@@ -4,8 +4,6 @@ Rails.application.routes.draw do
 
   # Problems
   post 'problems/filter', to: 'problems#filter'
-  # problems/filterでリロードしたとき用
-  get 'problems/filter', to: 'problems#index'
   resources :problems
 
   # Users
