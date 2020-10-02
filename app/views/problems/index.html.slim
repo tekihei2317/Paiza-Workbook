@@ -47,13 +47,13 @@
           tbody 
             - solved = user_signed_in? && Solved.exists?(user_id: current_user.id, problem_id: problem.id)
             - if solved
-              tr.table-success
+              tr.table-success.problem
                 td= problem.rank
                 td= problem.number
                 td.reset-padding= link_to problem.name, problem.url, class: 'wide-link', target: :_blank
                 td= problem.difficulty
             - else
-              tr
+              tr.problem
                 td= problem.rank
                 td= problem.number
                 td.reset-padding= link_to problem.name, problem.url, class: 'wide-link', target: :_blank
