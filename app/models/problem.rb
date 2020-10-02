@@ -9,6 +9,9 @@ class Problem < ApplicationRecord
 
   enum rank: { D: 0, C: 1, B: 2, A: 3, S: 4 }
 
+  SELECT_OPTIONS_RANK = ['S', 'A', 'B', 'C', 'D'].map { |rank| [rank, self.ranks[rank]] }
+  SELECT_OPTIONS_DIFFICULTY = [0, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2200, 2400, 3000]
+
   def self.parse_title(title)
     regex = /(?<rank>[A-D,S])(?<number>\d{3}):(?<name>.*)/
     m = regex.match(title)
