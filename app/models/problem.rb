@@ -21,4 +21,8 @@ class Problem < ApplicationRecord
   def self.get_url_from_id(id)
     "https://paiza.jp/challenges/#{id}/ready"
   end
+
+  def average_time
+    average_time_min.to_s.rjust(2, '0') + ':' + average_time_sec.to_s.rjust(2, '0')
+  end
 end
