@@ -3,10 +3,17 @@
   let allProblems = null;
 
   const COLUMN_COUNT = 6;
-  // カラムが昇順ソートされているか
-  let isColumnSortedAsc = new Array(COLUMN_COUNT).fill(false);
-  // IDは最初ソートされているのでtrueにする
-  isColumnSortedAsc[0] = true;
+  // 現在のカラムのソートの状態 [昇順, ソートされていない, 降順] = [1, 0, -1]
+  let columnSortState = new Array(COLUMN_COUNT).fill(0);
+  // IDのカラムは最初昇順ソートされている
+  columnSortState[0] = 1;
+
+  // ソートされていないときに、どちらの方向にソートするか [昇順, 降順] = [1, -1]
+  let firstSortDirection = new Array(COLUMN_COUNT).fill(1);
+  // 正解率と平均スコアは最初は降順ソートする(易しい順に並ぶように)
+  firstSortDirection[COLUMN_COUNT - 2] = -1;
+  firstSortDirection[COLUMN_COUNT - 1] = -1;
+
 
   document.addEventListener('turbolinks:load', () => {
     console.log('page loaded!');
@@ -83,8 +90,17 @@
         console.log('th clicked!');
         const currentProblems = Array.from(document.getElementsByClassName('problem'));
 
-        // 昇順ソートされていない(ソートされていないor降順ソートされている)場合は昇順ソート、
-        // 昇順ソートされている場合は場合は降順ソートする
+        // ソートされていない→最初のソートの向き、されている→逆向き
+        let sortDirection = firstSortDirection[index];
+        if (columnSortState[index] !== 0) sortDirection = -columnSortState[index];
+        columnSortState[index] = sortDirection;
+
+        // ソートの状態を更新する
+        columnSortState = columnSortState.map((sortState, i) => {
+          return i === index ? sortDirection : 0;
+        });
+
+        // ソートする
         currentProblems.sort((problemA, problemB) => {
           valueA = problemA.childNodes[index].textContent;
           valueB = problemB.childNodes[index].textContent;
@@ -100,13 +116,7 @@
             // その他(数値)の場合
             [valueA, valueB] = [Number(valueA), Number(valueB)];
           }
-          return !isColumnSortedAsc[index] ? valueA - valueB : valueB - valueA;
-        });
-
-        // 昇順ソートされているかのフラグを更新する
-        isColumnSortedAsc = isColumnSortedAsc.map((sortFlag, i) => {
-          if (i === index) return !sortFlag
-          return false;
+          return (valueA - valueB) * sortDirection;
         });
 
         // 変更を反映する
