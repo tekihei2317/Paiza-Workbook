@@ -2,9 +2,6 @@
   let table = null;
   let allProblems = null;
 
-  let isIdSortedAsc = true;
-  let isDifficultySortedAsc = false;
-
   document.addEventListener('turbolinks:load', () => {
     console.log('page loaded!');
 
@@ -19,7 +16,6 @@
   function eventSetting() {
     setFilterEvent();
     setSortEvent();
-    setSortByIdEvent();
   }
 
   // 引数で指定した問題だけを表示する
@@ -54,46 +50,25 @@
     });
   }
 
-  function setSortByIdEvent() {
-    // IDでのソート(同じランクなら番号順、ランクが別ならランク順)
-    const idElem = document.querySelector('tr').childNodes[0];
-    idElem.addEventListener('click', () => {
-      console.log('id elem clicked!');
-      const currentProblems = Array.from(document.getElementsByClassName('problem'));
-
-      // IDからランクと問題番号を取得するための関数
-      const rankToInt = { D: 0, C: 1, B: 2, A: 3, S: 4 };
-      const parseId = (id) => {
-        rank = rankToInt[id[0]];
-        number = Number(id.slice(1));
-        return [rank, number];
-      };
-      // console.log(parseId('S103'));
-
-      // 並べ替える
-      currentProblems.sort((a, b) => {
-        [rankA, numberA] = parseId(a.childNodes[0].textContent);
-        [rankB, numberB] = parseId(b.childNodes[0].textContent);
-        sumA = rankA * 1000 + numberA;
-        sumB = rankB * 1000 + numberB;
-        return isIdSortedAsc === false ? sumA - sumB : sumB - sumA;
-      })
-      isIdSortedAsc = !isIdSortedAsc;
-
-      // 変更を反映する
-      applyProblems(currentProblems);
-    });
-  }
-
   function comp(a, b) {
     if (a === b) return 0;
     return a > b ? 1 : -1;
   }
 
+  function idToInt(id) {
+    const rankToInt = { D: 0, C: 1, B: 2, A: 3, S: 4 };
+    const rank = rankToInt[id[0]];
+    const number = Number(id.slice(1));
+    // ランクが等しい場合は問題番号の大小関係、
+    // ランクが異なる場合はランクの大小関係が保たれるような数値に変換する
+    return rank * 1000 + number;
+  }
+
   function setSortEvent() {
     // 難易度順のソート
     document.querySelector('tr').childNodes.forEach((th, index) => {
-      if (index < 2) return;
+      // 名前のカラムではソートしない
+      if (index === 1) return;
 
       th.addEventListener('click', () => {
         console.log('th clicked!');
@@ -102,28 +77,14 @@
         currentProblems.sort((problemA, problemB) => {
           valueA = problemA.childNodes[index].textContent;
           valueB = problemB.childNodes[index].textContent;
+          // IDを数値に変換する
+          if (index === 0) [valueA, valueB] = [idToInt(valueA), idToInt(valueB)];
           return comp(valueA, valueB);
         });
 
+        // 変更を反映する
         applyProblems(currentProblems);
       });
     })
-    /*
-    const difficultyElem = document.querySelector('tr').childNodes[2];
-    difficultyElem.addEventListener('click', () => {
-      const currentProblems = Array.from(document.getElementsByClassName('problem'));
-
-      // 難易度順に並べ替える
-      currentProblems.sort((a, b) => {
-        difficultyA = Number(a.childNodes[2].textContent);
-        difficultyB = Number(b.childNodes[2].textContent);
-        return isDifficultySortedAsc === false ? difficultyA - difficultyB : difficultyB - difficultyA;
-      })
-      isDifficultySortedAsc = !isDifficultySortedAsc;
-
-      // 変更を反映する
-      applyProblems(currentProblems);
-    });
-    */
   }
 })();
