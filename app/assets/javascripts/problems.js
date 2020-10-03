@@ -2,6 +2,7 @@
   let table = null;
   let allProblems = null;
 
+  let isRankAndNumberSortedAsc = false;
   let isDifficultySortedAsc = false;
 
   document.addEventListener('turbolinks:load', () => {
@@ -12,10 +13,8 @@
 
     // HTMLCollection->Array
     allProblems = Array.from(document.getElementsByClassName('problem'));
-    console.log(allProblems);
 
     eventSetting();
-
   });
 
   function eventSetting() {
@@ -32,7 +31,6 @@
 
   function setFilterEvent() {
     const form = document.querySelector('form');
-    console.log(form);
     form.addEventListener('ajax:success', (event) => {
       // クライアントサイドで問題フィルタリング処理を書く
       const data = event.detail[0];
@@ -41,8 +39,8 @@
 
       // 条件に合う問題だけ抜き出す
       filtered_problems = allProblems.filter((problem) => {
-        const rank = rankToNumber[problem.childNodes[0].textContent];
-        const difficulty = Number(problem.childNodes[3].textContent);
+        const rank = rankToNumber[problem.childNodes[0].textContent[0]];
+        const difficulty = Number(problem.childNodes[2].textContent);
 
         let ok = true;
         ok = ok && (data.rank.min <= rank && rank <= data.rank.max);
@@ -58,14 +56,14 @@
 
   function setSortEvent() {
     // 難易度順のソート
-    const difficultyElem = document.querySelector('tr').childNodes[3];
+    const difficultyElem = document.querySelector('tr').childNodes[2];
     difficultyElem.addEventListener('click', () => {
       const currentProblems = Array.from(document.getElementsByClassName('problem'));
 
       // 難易度順に並べ替える
       currentProblems.sort((a, b) => {
-        difficultyA = Number(a.childNodes[3].textContent);
-        difficultyB = Number(b.childNodes[3].textContent);
+        difficultyA = Number(a.childNodes[2].textContent);
+        difficultyB = Number(b.childNodes[2].textContent);
         return isDifficultySortedAsc === false ? difficultyA - difficultyB : difficultyB - difficultyA;
       })
       isDifficultySortedAsc = !isDifficultySortedAsc;
