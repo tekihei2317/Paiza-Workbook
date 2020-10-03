@@ -4,11 +4,12 @@
 
   // 最初のカラムのソートの状態 [昇順, ソートされていない, 降順] = [1, 0, -1]
   const INITIAL_SORT_STATES = [1, 0, 0, 0, 0, 0];
-  let columnSortStates = INITIAL_SORT_STATES;
+  // 参照が代入されるので、コピーしてから代入する
+  let columnSortStates = INITIAL_SORT_STATES.concat();
 
   // ソートされていないときに、どちらの方向にソートするか [昇順, 降順] = [1, -1]
   const INITIAL_SORT_DIRECTIONS = [1, 1, 1, 1, -1, -1];
-  let firstSortDirections = INITIAL_SORT_DIRECTIONS;
+  let firstSortDirections = INITIAL_SORT_DIRECTIONS.concat();
 
   document.addEventListener('turbolinks:load', () => {
     console.log('page loaded!');
@@ -55,6 +56,9 @@
 
       // 変更を反映する
       applyProblems(filteredProblems);
+
+      // ソートの状態を元に戻す
+      columnSortStates = INITIAL_SORT_STATES.concat();;
     });
   }
 
