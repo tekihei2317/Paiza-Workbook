@@ -56,11 +56,6 @@
     });
   }
 
-  function comp(a, b) {
-    if (a === b) return 0;
-    return a > b ? 1 : -1;
-  }
-
   // IDでソート出来るように数値に変換する
   function idToInt(id) {
     const rankToInt = { D: 0, C: 1, B: 2, A: 3, S: 4 };
@@ -69,6 +64,12 @@
     // ランクが等しい場合は問題番号の大小関係、
     // ランクが異なる場合はランクの大小関係が保たれるような数値に変換する
     return rank * 1000 + number;
+  }
+
+  // 秒に変換する
+  function timeToInt(id) {
+    const [m, s] = id.match(/\d+/g).map((num) => Number(num));
+    return m * 60 + s;
   }
 
   // ソート処理を設定する
@@ -87,9 +88,19 @@
         currentProblems.sort((problemA, problemB) => {
           valueA = problemA.childNodes[index].textContent;
           valueB = problemB.childNodes[index].textContent;
-          // IDの場合は数値に変換する
-          if (index === 0) [valueA, valueB] = [idToInt(valueA), idToInt(valueB)];
-          return !isColumnSortedAsc[index] ? comp(valueA, valueB) : comp(valueB, valueA);
+
+          // ソートできるように数値に変換する
+          if (index === 0) {
+            // IDの場合
+            [valueA, valueB] = [idToInt(valueA), idToInt(valueB)];
+          } else if (index === 3) {
+            // 時間の場合
+            [valueA, valueB] = [timeToInt(valueA), timeToInt(valueB)];
+          } else {
+            // その他(数値)の場合
+            [valueA, valueB] = [Number(valueA), Number(valueB)];
+          }
+          return !isColumnSortedAsc[index] ? valueA - valueB : valueB - valueA;
         });
 
         // 昇順ソートされているかのフラグを更新する
