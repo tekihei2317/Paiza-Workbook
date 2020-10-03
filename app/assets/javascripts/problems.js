@@ -1,6 +1,6 @@
 (() => {
   let table = null;
-  let problems = null;
+  let allProblems = null;
 
   document.addEventListener('turbolinks:load', () => {
     console.log('page loaded!');
@@ -9,8 +9,8 @@
     table = document.querySelector('table');
 
     // HTMLCollection->Array
-    problems = Array.from(document.getElementsByClassName('problem'));
-    console.log(problems);
+    allProblems = Array.from(document.getElementsByClassName('problem'));
+    console.log(allProblems);
 
     eventSetting();
 
@@ -18,6 +18,14 @@
 
   function eventSetting() {
     setFilterEvent();
+    setSortEvent();
+  }
+
+  // 引数で指定した問題だけを表示する
+  function applyProblems(problems) {
+    // 一旦全部消去してから追加する
+    allProblems.forEach((problem) => problem.remove());
+    problems.forEach((problem) => table.appendChild(problem));
   }
 
   function setFilterEvent() {
@@ -30,7 +38,7 @@
       rankToNumber = { D: 0, C: 1, B: 2, A: 3, S: 4 };
 
       // 条件に合う問題だけ抜き出す
-      filtered_problems = problems.filter((problem) => {
+      filtered_problems = allProblems.filter((problem) => {
         const rank = rankToNumber[problem.childNodes[0].textContent];
         const difficulty = Number(problem.childNodes[3].textContent);
 
@@ -41,9 +49,25 @@
         return ok;
       });
 
-      // 一旦全部消去してから、フィルタした問題を追加する
-      problems.forEach((problem) => problem.remove());
-      filtered_problems.forEach((problem) => table.appendChild(problem));
+      // 変更を反映する
+      applyProblems(filtered_problems);
+    });
+  }
+
+  function setSortEvent() {
+    const difficultyElem = document.querySelector('tr').childNodes[3];
+    difficultyElem.addEventListener('click', () => {
+      const currentProblems = Array.from(document.getElementsByClassName('problem'));
+
+      // 難易度順に並べ替える
+      currentProblems.sort((a, b) => {
+        difficultyA = Number(a.childNodes[3].textContent);
+        difficultyB = Number(b.childNodes[3].textContent);
+        return difficultyA - difficultyB;
+      })
+
+      // 変更を反映する
+      applyProblems(currentProblems);
     });
   }
 })();
