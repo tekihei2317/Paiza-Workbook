@@ -2,7 +2,7 @@
   let table = null;
   let allProblems = null;
 
-  let isIdSortedAsc = false;
+  let isIdSortedAsc = true;
   let isDifficultySortedAsc = false;
 
   document.addEventListener('turbolinks:load', () => {
@@ -78,6 +78,7 @@
     // IDでのソート(同じランクなら番号順、ランクが別ならランク順)
     const idElem = document.querySelector('tr').childNodes[0];
     idElem.addEventListener('click', () => {
+      console.log('id elem clicked!');
       const currentProblems = Array.from(document.getElementsByClassName('problem'));
 
       // IDからランクと問題番号を取得するための関数
