@@ -2,11 +2,14 @@
   let table = null;
   let allProblems = null;
 
-  const COLUMN_COUNT = 6;
-  // カラムが昇順ソートされているか
-  let isColumnSortedAsc = new Array(COLUMN_COUNT).fill(false);
-  // IDは最初ソートされているのでtrueにする
-  isColumnSortedAsc[0] = true;
+  // 最初のカラムのソートの状態 [昇順, ソートされていない, 降順] = [1, 0, -1]
+  const INITIAL_SORT_STATES = [1, 0, 0, 0, 0, 0];
+  // 参照が代入されるので、コピーしてから代入する
+  let columnSortStates = INITIAL_SORT_STATES.concat();
+
+  // ソートされていないときに、どちらの方向にソートするか [昇順, 降順] = [1, -1]
+  const INITIAL_SORT_DIRECTIONS = [1, 1, 1, 1, -1, -1];
+  let firstSortDirections = INITIAL_SORT_DIRECTIONS.concat();
 
   document.addEventListener('turbolinks:load', () => {
     console.log('page loaded!');
@@ -53,6 +56,9 @@
 
       // 変更を反映する
       applyProblems(filteredProblems);
+
+      // ソートの状態を元に戻す
+      columnSortStates = INITIAL_SORT_STATES.concat();;
     });
   }
 
@@ -83,8 +89,17 @@
         console.log('th clicked!');
         const currentProblems = Array.from(document.getElementsByClassName('problem'));
 
-        // 昇順ソートされていない(ソートされていないor降順ソートされている)場合は昇順ソート、
-        // 昇順ソートされている場合は場合は降順ソートする
+        // ソートされていない→最初のソートの向き、されている→逆向き
+        let sortDirection = firstSortDirections[index];
+        if (columnSortStates[index] !== 0) sortDirection = -columnSortStates[index];
+        columnSortStates[index] = sortDirection;
+
+        // ソートの状態を更新する
+        columnSortStates = columnSortStates.map((sortState, i) => {
+          return i === index ? sortDirection : 0;
+        });
+
+        // ソートする
         currentProblems.sort((problemA, problemB) => {
           valueA = problemA.childNodes[index].textContent;
           valueB = problemB.childNodes[index].textContent;
@@ -100,13 +115,7 @@
             // その他(数値)の場合
             [valueA, valueB] = [Number(valueA), Number(valueB)];
           }
-          return !isColumnSortedAsc[index] ? valueA - valueB : valueB - valueA;
-        });
-
-        // 昇順ソートされているかのフラグを更新する
-        isColumnSortedAsc = isColumnSortedAsc.map((sortFlag, i) => {
-          if (i === index) return !sortFlag
-          return false;
+          return (valueA - valueB) * sortDirection;
         });
 
         // 変更を反映する
