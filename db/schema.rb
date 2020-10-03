@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_01_121542) do
+ActiveRecord::Schema.define(version: 2020_10_03_044814) do
 
   create_table "problems", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "rank"
@@ -20,6 +20,10 @@ ActiveRecord::Schema.define(version: 2020_10_01_121542) do
     t.integer "difficulty"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "average_time"
+    t.integer "num_of_people"
+    t.float "acceptance_rate"
+    t.float "average_score"
   end
 
   create_table "solveds", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
