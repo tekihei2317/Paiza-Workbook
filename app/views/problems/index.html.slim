@@ -39,8 +39,7 @@
       table.table.table-hover.table-borderless
         thead.thead-dark
           tr
-            th ランク
-            th 問題番号
+            th #
             th 問題名
             th 難易度
         - @problems.each do |problem|
@@ -48,13 +47,11 @@
             - solved = user_signed_in? && Solved.exists?(user_id: current_user.id, problem_id: problem.id)
             - if solved
               tr.table-success.problem
-                td= problem.rank
-                td= problem.number
+                td= problem.rank + format("%03d",problem.number)
                 td.reset-padding= link_to problem.name, problem.url, class: 'wide-link', target: :_blank
                 td= problem.difficulty
             - else
               tr.problem
-                td= problem.rank
-                td= problem.number
+                td= problem.rank + format("%03d",problem.number)
                 td.reset-padding= link_to problem.name, problem.url, class: 'wide-link', target: :_blank
                 td= problem.difficulty
