@@ -36,3 +36,7 @@ input:focus{
 body{
   padding-top: 3.5rem;
 }
+
+table th:hover{
+  cursor: pointer;
+}
