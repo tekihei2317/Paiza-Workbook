@@ -2,10 +2,15 @@
   let table = null;
   let allProblems = null;
 
+  const COLUMN_COUNT = 6;
+  // カラムが昇順ソートされているか
+  let isColumnSortedAsc = new Array(COLUMN_COUNT).fill(false);
+  // IDは最初ソートされているのでtrueにする
+  isColumnSortedAsc[0] = true;
+
   document.addEventListener('turbolinks:load', () => {
     console.log('page loaded!');
 
-    form = document.querySelector('form');
     table = document.querySelector('table');
     // HTMLCollection->Array
     allProblems = Array.from(document.getElementsByClassName('problem'));
@@ -25,6 +30,7 @@
     problems.forEach((problem) => table.appendChild(problem));
   }
 
+  // フィルタリング処理を設定する
   function setFilterEvent() {
     const form = document.querySelector('form');
     form.addEventListener('ajax:success', (event) => {
@@ -34,7 +40,7 @@
       const rankToInt = { D: 0, C: 1, B: 2, A: 3, S: 4 };
 
       // 条件に合う問題だけ抜き出す
-      filtered_problems = allProblems.filter((problem) => {
+      filteredProblems = allProblems.filter((problem) => {
         const rank = rankToInt[problem.childNodes[0].textContent[0]];
         const difficulty = Number(problem.childNodes[2].textContent);
 
@@ -46,7 +52,7 @@
       });
 
       // 変更を反映する
-      applyProblems(filtered_problems);
+      applyProblems(filteredProblems);
     });
   }
 
@@ -55,6 +61,7 @@
     return a > b ? 1 : -1;
   }
 
+  // IDでソート出来るように数値に変換する
   function idToInt(id) {
     const rankToInt = { D: 0, C: 1, B: 2, A: 3, S: 4 };
     const rank = rankToInt[id[0]];
@@ -64,6 +71,7 @@
     return rank * 1000 + number;
   }
 
+  // ソート処理を設定する
   function setSortEvent() {
     // 難易度順のソート
     document.querySelector('tr').childNodes.forEach((th, index) => {
@@ -74,12 +82,20 @@
         console.log('th clicked!');
         const currentProblems = Array.from(document.getElementsByClassName('problem'));
 
+        // 昇順ソートされていない(ソートされていないor降順ソートされている)場合は昇順ソート、
+        // 昇順ソートされている場合は場合は降順ソートする
         currentProblems.sort((problemA, problemB) => {
           valueA = problemA.childNodes[index].textContent;
           valueB = problemB.childNodes[index].textContent;
-          // IDを数値に変換する
+          // IDの場合は数値に変換する
           if (index === 0) [valueA, valueB] = [idToInt(valueA), idToInt(valueB)];
-          return comp(valueA, valueB);
+          return !isColumnSortedAsc[index] ? comp(valueA, valueB) : comp(valueB, valueA);
+        });
+
+        // 昇順ソートされているかのフラグを更新する
+        isColumnSortedAsc = isColumnSortedAsc.map((sortFlag, i) => {
+          if (i === index) return !sortFlag
+          return false;
         });
 
         // 変更を反映する
