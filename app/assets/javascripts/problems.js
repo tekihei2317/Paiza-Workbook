@@ -2,18 +2,13 @@
   let table = null;
   let allProblems = null;
 
-  const COLUMN_COUNT = 6;
-  // 現在のカラムのソートの状態 [昇順, ソートされていない, 降順] = [1, 0, -1]
-  let columnSortState = new Array(COLUMN_COUNT).fill(0);
-  // IDのカラムは最初昇順ソートされている
-  columnSortState[0] = 1;
+  // 最初のカラムのソートの状態 [昇順, ソートされていない, 降順] = [1, 0, -1]
+  const INITIAL_SORT_STATES = [1, 0, 0, 0, 0, 0];
+  let columnSortStates = INITIAL_SORT_STATES;
 
   // ソートされていないときに、どちらの方向にソートするか [昇順, 降順] = [1, -1]
-  let firstSortDirection = new Array(COLUMN_COUNT).fill(1);
-  // 正解率と平均スコアは最初は降順ソートする(易しい順に並ぶように)
-  firstSortDirection[COLUMN_COUNT - 2] = -1;
-  firstSortDirection[COLUMN_COUNT - 1] = -1;
-
+  const INITIAL_SORT_DIRECTIONS = [1, 1, 1, 1, -1, -1];
+  let firstSortDirections = INITIAL_SORT_DIRECTIONS;
 
   document.addEventListener('turbolinks:load', () => {
     console.log('page loaded!');
@@ -91,12 +86,12 @@
         const currentProblems = Array.from(document.getElementsByClassName('problem'));
 
         // ソートされていない→最初のソートの向き、されている→逆向き
-        let sortDirection = firstSortDirection[index];
-        if (columnSortState[index] !== 0) sortDirection = -columnSortState[index];
-        columnSortState[index] = sortDirection;
+        let sortDirection = firstSortDirections[index];
+        if (columnSortStates[index] !== 0) sortDirection = -columnSortStates[index];
+        columnSortStates[index] = sortDirection;
 
         // ソートの状態を更新する
-        columnSortState = columnSortState.map((sortState, i) => {
+        columnSortStates = columnSortStates.map((sortState, i) => {
           return i === index ? sortDirection : 0;
         });
 
