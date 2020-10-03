@@ -27,10 +27,13 @@ namespace :scraping do
 
         # 人数は非ログイン状態では表示されませんでした
         acceptance_rate = elem.css('.problem-box__bottom > dl > dd:nth-child(3)').text.to_f
-        average_time = elem.css('.problem-box__bottom > dl > dd:nth-child(5)').text
-        average_score = elem.css('.problem-box__bottom > dl > dd:nth-child(7)').text.to_f
 
-        binding.pry
+        average_time = elem.css('.problem-box__bottom > dl > dd:nth-child(5)').text
+        average_time_min = average_time[/(\d+)分(\d+)秒/, 1].to_i
+        average_time_sec = average_time[/(\d+)分(\d+)秒/, 2].to_i
+
+        average_score = elem.css('.problem-box__bottom > dl > dd:nth-child(7)').text.to_f
+        # binding.pry
 
         rank, number, name = Problem.parse_title(title)
         problem = Problem.new(
@@ -39,6 +42,10 @@ namespace :scraping do
           name: name,
           url: Problem.get_url_from_id(id),
           difficulty: difficulty,
+          acceptance_rate: acceptance_rate,
+          average_time_min: average_time_min,
+          average_time_sec: average_time_sec,
+          average_score: average_score,
         )
         problem.save
       end

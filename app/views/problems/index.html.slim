@@ -43,7 +43,7 @@
             th 名前
             th 難易度
             th 平均解答時間
-            th 受験者数
+            / th 受験者数
             th 正解率
             th 平均スコア
         - @problems.each do |problem|
@@ -54,8 +54,8 @@
                 td= problem.rank + format("%03d",problem.number)
                 td.reset-padding= link_to problem.name, problem.url, class: 'wide-link', target: :_blank
                 td= problem.difficulty
-                td= problem.average_time
-                td= problem.num_of_people
+                td= "#{problem.average_time_min}分#{problem.average_time_sec}秒"
+                / td= problem.num_of_people
                 td= problem.acceptance_rate
                 td= problem.average_score
             - else
@@ -63,7 +63,7 @@
                 td= problem.rank + format("%03d",problem.number)
                 td.reset-padding= link_to problem.name, problem.url, class: 'wide-link', target: :_blank
                 td= problem.difficulty
-                td= problem.average_time
-                td= problem.num_of_people
+                td= "#{problem.average_time_min}分#{problem.average_time_sec}秒"
+                / td= problem.num_of_people
                 td= problem.acceptance_rate
                 td= problem.average_score
