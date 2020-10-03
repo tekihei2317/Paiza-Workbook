@@ -10,7 +10,6 @@
 
     form = document.querySelector('form');
     table = document.querySelector('table');
-
     // HTMLCollection->Array
     allProblems = Array.from(document.getElementsByClassName('problem'));
 
@@ -55,25 +54,6 @@
     });
   }
 
-  function setSortEvent() {
-    // 難易度順のソート
-    const difficultyElem = document.querySelector('tr').childNodes[2];
-    difficultyElem.addEventListener('click', () => {
-      const currentProblems = Array.from(document.getElementsByClassName('problem'));
-
-      // 難易度順に並べ替える
-      currentProblems.sort((a, b) => {
-        difficultyA = Number(a.childNodes[2].textContent);
-        difficultyB = Number(b.childNodes[2].textContent);
-        return isDifficultySortedAsc === false ? difficultyA - difficultyB : difficultyB - difficultyA;
-      })
-      isDifficultySortedAsc = !isDifficultySortedAsc;
-
-      // 変更を反映する
-      applyProblems(currentProblems);
-    });
-  }
-
   function setSortByIdEvent() {
     // IDでのソート(同じランクなら番号順、ランクが別ならランク順)
     const idElem = document.querySelector('tr').childNodes[0];
@@ -103,5 +83,47 @@
       // 変更を反映する
       applyProblems(currentProblems);
     });
+  }
+
+  function comp(a, b) {
+    if (a === b) return 0;
+    return a > b ? 1 : -1;
+  }
+
+  function setSortEvent() {
+    // 難易度順のソート
+    document.querySelector('tr').childNodes.forEach((th, index) => {
+      if (index < 2) return;
+
+      th.addEventListener('click', () => {
+        console.log('th clicked!');
+        const currentProblems = Array.from(document.getElementsByClassName('problem'));
+
+        currentProblems.sort((problemA, problemB) => {
+          valueA = problemA.childNodes[index].textContent;
+          valueB = problemB.childNodes[index].textContent;
+          return comp(valueA, valueB);
+        });
+
+        applyProblems(currentProblems);
+      });
+    })
+    /*
+    const difficultyElem = document.querySelector('tr').childNodes[2];
+    difficultyElem.addEventListener('click', () => {
+      const currentProblems = Array.from(document.getElementsByClassName('problem'));
+
+      // 難易度順に並べ替える
+      currentProblems.sort((a, b) => {
+        difficultyA = Number(a.childNodes[2].textContent);
+        difficultyB = Number(b.childNodes[2].textContent);
+        return isDifficultySortedAsc === false ? difficultyA - difficultyB : difficultyB - difficultyA;
+      })
+      isDifficultySortedAsc = !isDifficultySortedAsc;
+
+      // 変更を反映する
+      applyProblems(currentProblems);
+    });
+    */
   }
 })();
