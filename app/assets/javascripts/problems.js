@@ -2,6 +2,8 @@
   let table = null;
   let allProblems = null;
 
+  let isDifficultySortedAsc = false;
+
   document.addEventListener('turbolinks:load', () => {
     console.log('page loaded!');
 
@@ -55,6 +57,7 @@
   }
 
   function setSortEvent() {
+    // 難易度順のソート
     const difficultyElem = document.querySelector('tr').childNodes[3];
     difficultyElem.addEventListener('click', () => {
       const currentProblems = Array.from(document.getElementsByClassName('problem'));
@@ -63,8 +66,9 @@
       currentProblems.sort((a, b) => {
         difficultyA = Number(a.childNodes[3].textContent);
         difficultyB = Number(b.childNodes[3].textContent);
-        return difficultyA - difficultyB;
+        return isDifficultySortedAsc === false ? difficultyA - difficultyB : difficultyB - difficultyA;
       })
+      isDifficultySortedAsc = !isDifficultySortedAsc;
 
       // 変更を反映する
       applyProblems(currentProblems);
