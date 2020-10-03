@@ -2,15 +2,16 @@
   let table = null;
   let allProblems = null;
 
-  let isIdSortedAsc = false;
-  let isDifficultySortedAsc = false;
+  const COLUMN_COUNT = 6;
+  // カラムが昇順ソートされているか
+  let isColumnSortedAsc = new Array(COLUMN_COUNT).fill(false);
+  // IDは最初ソートされているのでtrueにする
+  isColumnSortedAsc[0] = true;
 
   document.addEventListener('turbolinks:load', () => {
     console.log('page loaded!');
 
-    form = document.querySelector('form');
     table = document.querySelector('table');
-
     // HTMLCollection->Array
     allProblems = Array.from(document.getElementsByClassName('problem'));
 
@@ -20,7 +21,6 @@
   function eventSetting() {
     setFilterEvent();
     setSortEvent();
-    setSortByIdEvent();
   }
 
   // 引数で指定した問題だけを表示する
@@ -30,6 +30,7 @@
     problems.forEach((problem) => table.appendChild(problem));
   }
 
+  // フィルタリング処理を設定する
   function setFilterEvent() {
     const form = document.querySelector('form');
     form.addEventListener('ajax:success', (event) => {
@@ -39,7 +40,7 @@
       const rankToInt = { D: 0, C: 1, B: 2, A: 3, S: 4 };
 
       // 条件に合う問題だけ抜き出す
-      filtered_problems = allProblems.filter((problem) => {
+      filteredProblems = allProblems.filter((problem) => {
         const rank = rankToInt[problem.childNodes[0].textContent[0]];
         const difficulty = Number(problem.childNodes[2].textContent);
 
@@ -51,56 +52,66 @@
       });
 
       // 変更を反映する
-      applyProblems(filtered_problems);
+      applyProblems(filteredProblems);
     });
   }
 
+  // IDでソート出来るように数値に変換する
+  function idToInt(id) {
+    const rankToInt = { D: 0, C: 1, B: 2, A: 3, S: 4 };
+    const rank = rankToInt[id[0]];
+    const number = Number(id.slice(1));
+    // ランクが等しい場合は問題番号の大小関係、
+    // ランクが異なる場合はランクの大小関係が保たれるような数値に変換する
+    return rank * 1000 + number;
+  }
+
+  // 秒に変換する
+  function timeToInt(id) {
+    const [m, s] = id.match(/\d+/g).map((num) => Number(num));
+    return m * 60 + s;
+  }
+
+  // ソート処理を設定する
   function setSortEvent() {
     // 難易度順のソート
-    const difficultyElem = document.querySelector('tr').childNodes[2];
-    difficultyElem.addEventListener('click', () => {
-      const currentProblems = Array.from(document.getElementsByClassName('problem'));
+    document.querySelector('tr').childNodes.forEach((th, index) => {
+      // 名前のカラムではソートしない
+      if (index === 1) return;
 
-      // 難易度順に並べ替える
-      currentProblems.sort((a, b) => {
-        difficultyA = Number(a.childNodes[2].textContent);
-        difficultyB = Number(b.childNodes[2].textContent);
-        return isDifficultySortedAsc === false ? difficultyA - difficultyB : difficultyB - difficultyA;
-      })
-      isDifficultySortedAsc = !isDifficultySortedAsc;
+      th.addEventListener('click', () => {
+        console.log('th clicked!');
+        const currentProblems = Array.from(document.getElementsByClassName('problem'));
 
-      // 変更を反映する
-      applyProblems(currentProblems);
-    });
-  }
+        // 昇順ソートされていない(ソートされていないor降順ソートされている)場合は昇順ソート、
+        // 昇順ソートされている場合は場合は降順ソートする
+        currentProblems.sort((problemA, problemB) => {
+          valueA = problemA.childNodes[index].textContent;
+          valueB = problemB.childNodes[index].textContent;
 
-  function setSortByIdEvent() {
-    // IDでのソート(同じランクなら番号順、ランクが別ならランク順)
-    const idElem = document.querySelector('tr').childNodes[0];
-    idElem.addEventListener('click', () => {
-      const currentProblems = Array.from(document.getElementsByClassName('problem'));
+          // ソートできるように数値に変換する
+          if (index === 0) {
+            // IDの場合
+            [valueA, valueB] = [idToInt(valueA), idToInt(valueB)];
+          } else if (index === 3) {
+            // 時間の場合
+            [valueA, valueB] = [timeToInt(valueA), timeToInt(valueB)];
+          } else {
+            // その他(数値)の場合
+            [valueA, valueB] = [Number(valueA), Number(valueB)];
+          }
+          return !isColumnSortedAsc[index] ? valueA - valueB : valueB - valueA;
+        });
 
-      // IDからランクと問題番号を取得するための関数
-      const rankToInt = { D: 0, C: 1, B: 2, A: 3, S: 4 };
-      const parseId = (id) => {
-        rank = rankToInt[id[0]];
-        number = Number(id.slice(1));
-        return [rank, number];
-      };
-      // console.log(parseId('S103'));
+        // 昇順ソートされているかのフラグを更新する
+        isColumnSortedAsc = isColumnSortedAsc.map((sortFlag, i) => {
+          if (i === index) return !sortFlag
+          return false;
+        });
 
-      // 並べ替える
-      currentProblems.sort((a, b) => {
-        [rankA, numberA] = parseId(a.childNodes[0].textContent);
-        [rankB, numberB] = parseId(b.childNodes[0].textContent);
-        sumA = rankA * 1000 + numberA;
-        sumB = rankB * 1000 + numberB;
-        return isIdSortedAsc === false ? sumA - sumB : sumB - sumA;
-      })
-      isIdSortedAsc = !isIdSortedAsc;
-
-      // 変更を反映する
-      applyProblems(currentProblems);
-    });
+        // 変更を反映する
+        applyProblems(currentProblems);
+      });
+    })
   }
 })();
