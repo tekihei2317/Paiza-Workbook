@@ -15,8 +15,8 @@ class ProblemsController < ApplicationController
   def index
     url = 'https://paiza.jp/challenges/ranks/d/info'
 
-    # ランクの昇順、同じランクは難易度の昇順にソートする
-    @problems = Problem.order(:rank, :difficulty)
+    # ランクの昇順、同じランクは番号の昇順にソートする
+    @problems = Problem.order(:rank, :number)
   end
 
   def filter
