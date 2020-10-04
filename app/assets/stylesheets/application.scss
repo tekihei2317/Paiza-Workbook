@@ -11,8 +11,7 @@
  * It is generally better to create a new file per style scope.
  */
 @import "bootstrap";
-@import url(http://fonts.googleapis.com/earlyaccess/notosansjp.css);
-
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
 
 .debug{
   border: 1px solid red;
@@ -42,7 +41,6 @@ body{
 }
 
 // Problem filter form
-
 .problem-index-wrapper form{
   border-radius: 8px;
   padding: 16px;
