@@ -41,21 +41,26 @@
       // クライアントサイドで問題フィルタリング処理を書く
       const data = event.detail[0];
       console.log(data);
-      const rankToInt = { D: 0, C: 1, B: 2, A: 3, S: 4 };
+
+      selectedRanks = ['D', 'C', 'B', 'A', 'S'].filter((rank) => {
+        return data.rank[rank.toLowerCase()];
+      });
+      console.log(selectedRanks);
 
       // 条件に合う問題だけ抜き出す
       filteredProblems = allProblems.filter((problem) => {
-        const rank = rankToInt[problem.childNodes[0].textContent[0]];
+        const rank = problem.childNodes[0].textContent[0];
         const difficulty = Number(problem.childNodes[2].textContent);
 
         let ok = true;
-        ok = ok && (data.rank.min <= rank && rank <= data.rank.max);
+        ok = ok && selectedRanks.includes(rank);
         ok = ok && (data.difficulty.min <= difficulty && difficulty <= data.difficulty.max);
         ok = ok && (!data.hideSolved || !problem.classList.contains('table-success'))
         return ok;
       });
 
       // 変更を反映する
+      // console.log(filteredProblems.length);
       applyProblems(filteredProblems);
 
       // ソートの状態を元に戻す
