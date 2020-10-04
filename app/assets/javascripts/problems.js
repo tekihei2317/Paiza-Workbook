@@ -1,6 +1,64 @@
+// 問題を扱うクラス
+class ProblemsUtility {
+  /**
+   * @constructor
+   * @param {HTMLTableElement} table - 問題が入っているテーブル要素
+   * @param {Array<HTMLTableRowElement>} allProblems - 全ての問題の配列
+   */
+  constructor(table, allProblems) {
+    console.log(table, allProblems);
+    this.table = table;
+    this.allProblems = allProblems;
+  }
+
+  // 問題の変更を反映する
+  applyProblems(problems) {
+    // 一旦全部消去してから追加する
+    this.allProblems.forEach((problem) => problem.remove());
+    problems.forEach((problem) => this.table.appendChild(problem));
+  }
+
+  setFilterEvent() {
+    const form = document.querySelector('form');
+
+    // JSONを受け取ってフィルタ処理をする
+    form.addEventListener('ajax:success', (event) => {
+      const data = event.detail[0];
+      console.log(data);
+
+      const selectedRanks = ['D', 'C', 'B', 'A', 'S'].filter((rank) => {
+        return data.rank[rank.toLowerCase()] === true;
+      });
+      console.log(selectedRanks);
+
+      // 条件に合う問題だけ抜き出す
+      const filteredProblems = this.allProblems.filter((problem) => {
+        const rank = problem.childNodes[0].textContent[0];
+        const difficulty = Number(problem.childNodes[2].textContent);
+
+        let ok = true;
+        ok = ok && selectedRanks.includes(rank);
+        ok = ok && (data.difficulty.min <= difficulty && difficulty <= data.difficulty.max);
+        ok = ok && (!data.hideSolved || !problem.classList.contains('table-success'))
+        return ok;
+      });
+      // 変更を反映する
+      this.applyProblems(filteredProblems);
+
+      // ソートの状態を初期化する
+      // columnSortStates = INITIAL_SORT_STATES.concat();;
+    });
+  }
+}
+
 (() => {
   let table = null;
   let allProblems = null;
+
+  /**
+   * @type {ProblemsUtility} - 問題を管理するクラス
+   */
+  let util = null;
 
   // 最初のカラムのソートの状態 [昇順, ソートされていない, 降順] = [1, 0, -1]
   const INITIAL_SORT_STATES = [1, 0, 0, 0, 0, 0];
@@ -17,55 +75,14 @@
     table = document.querySelector('table');
     // HTMLCollection->Array
     allProblems = Array.from(document.getElementsByClassName('problem'));
-
+    util = new ProblemsUtility(table, allProblems);
     setEvents();
   });
 
   function setEvents() {
-    setFilterEvent();
+    util.setFilterEvent();
     setSubmitEvent();
     setSortEvent();
-  }
-
-  // 引数で指定した問題だけを表示する
-  function applyProblems(problems) {
-    // 一旦全部消去してから追加する
-    allProblems.forEach((problem) => problem.remove());
-    problems.forEach((problem) => table.appendChild(problem));
-  }
-
-  // フィルタリング処理を設定する
-  function setFilterEvent() {
-    const form = document.querySelector('form');
-    form.addEventListener('ajax:success', (event) => {
-      // クライアントサイドで問題フィルタリング処理を書く
-      const data = event.detail[0];
-      console.log(data);
-
-      selectedRanks = ['D', 'C', 'B', 'A', 'S'].filter((rank) => {
-        return data.rank[rank.toLowerCase()];
-      });
-      console.log(selectedRanks);
-
-      // 条件に合う問題だけ抜き出す
-      filteredProblems = allProblems.filter((problem) => {
-        const rank = problem.childNodes[0].textContent[0];
-        const difficulty = Number(problem.childNodes[2].textContent);
-
-        let ok = true;
-        ok = ok && selectedRanks.includes(rank);
-        ok = ok && (data.difficulty.min <= difficulty && difficulty <= data.difficulty.max);
-        ok = ok && (!data.hideSolved || !problem.classList.contains('table-success'))
-        return ok;
-      });
-
-      // 変更を反映する
-      // console.log(filteredProblems.length);
-      applyProblems(filteredProblems);
-
-      // ソートの状態を元に戻す
-      columnSortStates = INITIAL_SORT_STATES.concat();;
-    });
   }
 
   // IDでソート出来るように数値に変換する
