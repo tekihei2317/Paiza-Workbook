@@ -6,7 +6,6 @@ class ProblemsUtility {
    * @param {Array<HTMLTableRowElement>} allProblems - 全ての問題の配列
    */
   constructor(table, allProblems) {
-    console.log(table, allProblems);
     this.table = table;
     this.allProblems = allProblems;
   }
@@ -18,6 +17,7 @@ class ProblemsUtility {
     problems.forEach((problem) => this.table.appendChild(problem));
   }
 
+  // フィルタ処理をするイベントを設定する
   setFilterEvent() {
     const form = document.querySelector('form');
 
@@ -47,6 +47,20 @@ class ProblemsUtility {
 
       // ソートの状態を初期化する
       // columnSortStates = INITIAL_SORT_STATES.concat();;
+    });
+  }
+
+  // フォームの変更を検知して送信するイベントを設定する 
+  setSubmitEvent() {
+    const submitBtn = document.querySelector('input[type=submit]');
+
+    // セレクト要素とチェックボックスを取り出す
+    const selectElems = Array.from(document.querySelectorAll('select'));
+    const checkboxElems = Array.from(document.querySelectorAll('input[type=checkbox]'));
+    const targets = selectElems.concat(checkboxElems);
+
+    targets.forEach((target) => {
+      target.addEventListener('change', () => submitBtn.click());
     });
   }
 }
@@ -81,7 +95,7 @@ class ProblemsUtility {
 
   function setEvents() {
     util.setFilterEvent();
-    setSubmitEvent();
+    util.setSubmitEvent();
     setSortEvent();
   }
 
