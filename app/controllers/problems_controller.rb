@@ -22,8 +22,11 @@ class ProblemsController < ApplicationController
   def filter
     render json: {
       rank: {
-        min: params[:rank_min].to_i,
-        max: params[:rank_max].to_i,
+        d: params[:rank_d] == '1',
+        c: params[:rank_c] == '1',
+        b: params[:rank_b] == '1',
+        a: params[:rank_a] == '1',
+        s: params[:rank_s] == '1',
       },
       difficulty: {
         min: params[:difficulty_min].to_i,

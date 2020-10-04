@@ -11,6 +11,7 @@
  * It is generally better to create a new file per style scope.
  */
 @import "bootstrap";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
 
 .debug{
   border: 1px solid red;
@@ -20,21 +21,70 @@
   padding: 0 !important;
 }
 
-.table th, .table td{
-  padding: 0.6rem;
-}
-
-table .wide-link{
-  display: block;
-  padding: 0.6rem;
-}
-
 input:focus{
   box-shadow: none !important;
 }
 
 body{
   padding-top: 3.5rem;
+  font-family: 'Noto Sans JP', sans-serif !important;
+  background-color: #F3F4F8 !important;
+}
+
+.bg-my-white{
+  background-color: #FAFBFC !important;
+}
+
+// problems/index
+.problem-index-wrapper{
+  padding: 24px;
+}
+
+// Problem filter form
+.problem-index-wrapper form{
+  border-radius: 8px;
+  padding: 16px;
+  user-select: none;
+
+  input[type=submit]{
+    display: none;
+  }
+
+  select{
+    direction: rtl;
+    border: 1px solid lightgray !important;
+  }
+
+  option{
+    background-color: #FAFBFC !important;
+  }
+
+  .filter-title{
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+}
+
+// Problem Table
+.problem-index-wrapper table{
+  border-radius: 8px;
+  th{
+    user-select: none;
+  }
+}
+
+tbody{
+  border: none !important;
+}
+
+.table .problem th, .table .problem td{
+  padding: 0.6rem;
+  border: none;
+}
+
+table .wide-link{
+  display: block;
+  padding: 0.6rem;
 }
 
 table th:hover{
