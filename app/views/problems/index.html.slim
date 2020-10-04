@@ -1,56 +1,54 @@
-.container
-  .row
-    .col-md-8.offset-md-2
-      h2.text-muted 設定
-      = form_with url: problems_filter_path do |f|
-        p.text-primary Rank
-        - initial_rank_min = params[:rank_min] || '0'
-        - initial_rank_max = params[:rank_max] || '4'
-        - initial_difficulty_min = params[:difficulty_min] || '0'
-        - initial_difficulty_max = params[:difficulty_max] || '3000'
-        - initial_hide_solved = params[:hide_solved] == '1'
+.problem-index-wrapper
+  .container
+    .row
+      .col-md-8.offset-md-2
+        = form_with url: problems_filter_path, class: 'shadow bg-my-white' do |f|
+          p.text-primary.filter-title Rank
+          - initial_rank_min = params[:rank_min] || '0'
+          - initial_rank_max = params[:rank_max] || '4'
+          - initial_difficulty_min = params[:difficulty_min] || '0'
+          - initial_difficulty_max = params[:difficulty_max] || '3000'
+          - initial_hide_solved = params[:hide_solved] == '1'
+          
+          - ['d', 'c', 'b', 'a', 's'].each do |rank|
+            = f.check_box "rank_#{rank}", class: 'mr-1', checked: true
+            = f.label "rank_#{rank}", rank.upcase, class: 'mr-4'
 
-        / f.selectの第２引数はoptionとvalue(送信される値=paramsで受け取れる値)のペアを書く
-        / 配列の場合: [[op1, val1], [op2, val2], ...] と書く
-        / ハッシュの場合: { op1 => val1, op2 => val2, ...} と書く
-        / optionとvalueの値が同じ場合は、[op1, op2, ...]と書くとvalueは自動的に設定される
-        / 参考: https://310nae.com/rails-selectbox/
-        / 第３引数のselectedはvalueのほうを書く
+          / f.selectの第２引数はoptionとvalue(送信される値=paramsで受け取れる値)のペアを書く
+          / 配列の場合: [[op1, val1], [op2, val2], ...] と書く
+          / ハッシュの場合: { op1 => val1, op2 => val2, ...} と書く
+          / optionとvalueの値が同じ場合は、[op1, op2, ...]と書くとvalueは自動的に設定される
+          / 参考: https://310nae.com/rails-selectbox/
+          / 第３引数のselectedはvalueのほうを書く
 
-        = f.select 'rank_min', Problem::SELECT_OPTIONS_RANK, { selected: initial_rank_min }, {class: 'btn'}
-        span から
-        = f.select 'rank_max', Problem::SELECT_OPTIONS_RANK, { selected: initial_rank_max }, {class: 'btn'}
+          p.text-primary.filter-title.mt-3 Difficulty
+          = f.select 'difficulty_min', Problem::SELECT_OPTIONS_DIFFICULTY, { selected: initial_difficulty_min }, { class: 'btn'} 
+          span から
+          = f.select 'difficulty_max', Problem::SELECT_OPTIONS_DIFFICULTY, { selected: initial_difficulty_max }, { class: 'btn'}
 
-        p.text-primary Difficulty
-        = f.select 'difficulty_min', Problem::SELECT_OPTIONS_DIFFICULTY, { selected: initial_difficulty_min }, { class: 'btn'} 
-        span から
-        = f.select 'difficulty_max', Problem::SELECT_OPTIONS_DIFFICULTY, { selected: initial_difficulty_max }, { class: 'btn'}
+          .w-100
+          = f.check_box 'hide_solved', class: 'mr-1 mt-3', checked: initial_hide_solved
+          = f.label 'hide_solved', '解いた問題を非表示にする', class: 'text-muted'
 
-        .w-100
-        = f.check_box 'hide_solved', class: 'mr-1', checked: initial_hide_solved
-        = f.label 'hide_solved', '解いた問題を非表示にする', class: 'text-muted'
+          .w100
+          = f.submit '反映する', class: 'btn btn-raised bg-primary text-white'
 
-        .w100
-        = f.submit '反映する', class: 'btn btn-raised bg-primary text-white'
-
-  .row
-   .col-md-8.offset-md-2
-      h2.text-muted 問題一覧
-      table.table.table-hover.table-borderless
-        thead.thead-dark
-          tr
-            th 問題ID
-            th 名前
-            th 難易度
-            th 平均解答時間
-            / th 受験者数
-            th 正解率
-            th 平均スコア
-        - @problems.each do |problem|
-          tbody 
-            - solved = user_signed_in? && Solved.exists?(user_id: current_user.id, problem_id: problem.id)
-            - if solved
-              tr.table-success.problem
+    .row
+     .col-md-8.offset-md-2
+        table.table.table-hover.shadow.bg-my-white
+          thead
+            tr
+              th 問題ID
+              th 名前
+              th 難易度
+              th 平均解答時間
+              / th 受験者数
+              th 正解率
+              th 平均スコア
+          - @problems.each do |problem|
+            tbody 
+              - solved = user_signed_in? && Solved.exists?(user_id: current_user.id, problem_id: problem.id)
+              tr.problem class="#{'table-success' if solved}"
                 td= problem.rank + format("%03d",problem.number)
                 td.reset-padding= link_to problem.name, problem.url, class: 'wide-link', target: :_blank
                 td= problem.difficulty
@@ -58,15 +56,3 @@
                 / td= problem.num_of_people
                 td= problem.acceptance_rate
                 td= problem.average_score
-            - else
-              tr.problem
-                td= problem.rank + format("%03d",problem.number)
-                td.reset-padding= link_to problem.name, problem.url, class: 'wide-link', target: :_blank
-                td= problem.difficulty
-<<<<<<< HEAD
-=======
-                td= problem.average_time
-                / td= problem.num_of_people
-                td= problem.acceptance_rate
-                td= problem.average_score
->>>>>>> 643a172d3dfc8516ce142b61202e649e44845e72
