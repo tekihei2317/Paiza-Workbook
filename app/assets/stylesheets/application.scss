@@ -36,10 +36,15 @@ body{
   background-color: #FAFBFC !important;
   
 }
+
 // Problem filter form
 
 .problem-index-wrapper form{
   border-radius: 8px;
+
+  input[type=submit]{
+    display: none;
+  }
 }
 
 // Problem Table

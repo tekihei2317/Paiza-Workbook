@@ -18,11 +18,12 @@
     // HTMLCollection->Array
     allProblems = Array.from(document.getElementsByClassName('problem'));
 
-    eventSetting();
+    setEvents();
   });
 
-  function eventSetting() {
+  function setEvents() {
     setFilterEvent();
+    setSubmitEvent();
     setSortEvent();
   }
 
@@ -122,5 +123,21 @@
         applyProblems(currentProblems);
       });
     })
+  }
+
+  // input要素、select要素の変更を検出して送信する
+  function setSubmitEvent() {
+    const submitBtn = document.querySelector('input[type=submit]');
+    console.log(submitBtn);
+
+    // セレクト要素とチェックボックスを取り出す
+    selectElems = Array.from(document.querySelectorAll('select'));
+    checkboxElems = Array.from(document.querySelectorAll('input[type=checkbox]'));
+    targets = selectElems.concat(checkboxElems);
+    console.log(targets);
+
+    targets.forEach((target) => {
+      target.addEventListener('change', () => submitBtn.click());
+    });
   }
 })();
