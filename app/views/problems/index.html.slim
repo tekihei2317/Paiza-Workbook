@@ -49,21 +49,11 @@
         - @problems.each do |problem|
           tbody 
             - solved = user_signed_in? && Solved.exists?(user_id: current_user.id, problem_id: problem.id)
-            - if solved
-              tr.table-success.problem
-                td= problem.rank + format("%03d",problem.number)
-                td.reset-padding= link_to problem.name, problem.url, class: 'wide-link', target: :_blank
-                td= problem.difficulty
-                td= problem.average_time
-                / td= problem.num_of_people
-                td= problem.acceptance_rate
-                td= problem.average_score
-            - else
-              tr.problem
-                td= problem.rank + format("%03d",problem.number)
-                td.reset-padding= link_to problem.name, problem.url, class: 'wide-link', target: :_blank
-                td= problem.difficulty
-                td= problem.average_time
-                / td= problem.num_of_people
-                td= problem.acceptance_rate
-                td= problem.average_score
+            tr.problem class="#{'table-success' if solved}"
+              td= problem.rank + format("%03d",problem.number)
+              td.reset-padding= link_to problem.name, problem.url, class: 'wide-link', target: :_blank
+              td= problem.difficulty
+              td= problem.average_time
+              / td= problem.num_of_people
+              td= problem.acceptance_rate
+              td= problem.average_score
