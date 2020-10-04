@@ -9,7 +9,6 @@ class Problem < ApplicationRecord
 
   enum rank: { D: 0, C: 1, B: 2, A: 3, S: 4 }
 
-  SELECT_OPTIONS_RANK = ['S', 'A', 'B', 'C', 'D'].map { |rank| [rank, self.ranks[rank]] }
   SELECT_OPTIONS_DIFFICULTY = [0, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2200, 2400, 3000]
 
   def self.parse_title(title)
@@ -24,5 +23,6 @@ class Problem < ApplicationRecord
 
   def average_time
     average_time_min.to_s.rjust(2, '0') + ':' + average_time_sec.to_s.rjust(2, '0')
+    format('%02d:%02d', average_time_min, average_time_sec)
   end
 end
