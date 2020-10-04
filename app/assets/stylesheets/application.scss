@@ -34,22 +34,45 @@ body{
 
 .bg-my-white{
   background-color: #FAFBFC !important;
-  
+}
+
+// problems/index
+.problem-index-wrapper{
+  padding: 24px;
 }
 
 // Problem filter form
 
 .problem-index-wrapper form{
   border-radius: 8px;
+  padding: 16px;
+  user-select: none;
 
   input[type=submit]{
     display: none;
+  }
+
+  select{
+    direction: rtl;
+    border: 1px solid lightgray !important;
+  }
+
+  option{
+    background-color: #FAFBFC !important;
+  }
+
+  .filter-title{
+    font-size: 18px;
+    margin-bottom: 8px;
   }
 }
 
 // Problem Table
 .problem-index-wrapper table{
   border-radius: 8px;
+  th{
+    user-select: none;
+  }
 }
 
 tbody{
