@@ -9,6 +9,10 @@
           - initial_difficulty_min = params[:difficulty_min] || '0'
           - initial_difficulty_max = params[:difficulty_max] || '3000'
           - initial_hide_solved = params[:hide_solved] == '1'
+          
+          - ['d', 'c', 'b', 'a', 's'].each do |rank|
+            = f.check_box "rank_#{rank}", class: 'mr-1', checked: true
+            = f.label "rank_#{rank}", rank.upcase, class: 'mr-4'
 
           / f.selectの第２引数はoptionとvalue(送信される値=paramsで受け取れる値)のペアを書く
           / 配列の場合: [[op1, val1], [op2, val2], ...] と書く
@@ -16,26 +20,6 @@
           / optionとvalueの値が同じ場合は、[op1, op2, ...]と書くとvalueは自動的に設定される
           / 参考: https://310nae.com/rails-selectbox/
           / 第３引数のselectedはvalueのほうを書く
-
-          = f.select 'rank_min', Problem::SELECT_OPTIONS_RANK, { selected: initial_rank_min }, {class: 'btn'}
-          span から
-          = f.select 'rank_max', Problem::SELECT_OPTIONS_RANK, { selected: initial_rank_max }, {class: 'btn'}
-          .w100
-
-          = f.check_box 'rank_d', class: 'mr-1', checked: true
-          = f.label 'rank_d', 'D', class: 'mr-4'
-
-          = f.check_box 'rank_c', class: 'mr-1', checked: true
-          = f.label 'rank_c', 'C', class: 'mr-4'
-
-          = f.check_box 'rank_b', class: 'mr-1', checked: true
-          = f.label 'rank_b', 'B', class: 'mr-4'          
-
-          = f.check_box 'rank_a', class: 'mr-1', checked: true
-          = f.label 'rank_a', 'A', class: 'mr-4'  
-
-          = f.check_box 'rank_s', class: 'mr-1', checked: true
-          = f.label 'rank_s', 'S', class: 'mr-4'
 
           p.text-primary Difficulty
           = f.select 'difficulty_min', Problem::SELECT_OPTIONS_DIFFICULTY, { selected: initial_difficulty_min }, { class: 'btn'} 
