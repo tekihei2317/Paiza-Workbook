@@ -22,6 +22,13 @@ class UsersController < ApplicationController
   end
 
   def progress
+    @data = Problem.ranks.keys.map do |rank|
+      {
+        '正解' => current_user.solved_problems.where(rank: rank).count,
+        '未正解' => Problem.where(rank: rank).count,
+      }
+    end
+    binding.pry
   end
 
   private
