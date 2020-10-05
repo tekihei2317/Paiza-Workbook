@@ -8,4 +8,5 @@ Rails.application.routes.draw do
 
   # Users
   resources :users
+  get '/progress', to: 'users#progress'
 end

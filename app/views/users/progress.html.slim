@@ -1,0 +1,7 @@
+.progress-wrapper
+  .container
+    .row
+      .pies-container.shadow.bg-my-white.mx-auto.d-flex.flex-wrap.justify-content-around
+        - Problem.ranks.each do |rank_str, rank_int|
+          = pie_chart @data[rank_int], width: '200px', height: '200px', display: 'inline-block',\
+            legend: false, colors: ['#4285F4', '#E7E9F2']
