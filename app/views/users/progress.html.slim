@@ -1,1 +1,3 @@
-h1 Hoge
+- Problem.ranks.each do |rank_str, rank_int|
+  = pie_chart @data[rank_int]
+  p= "#{rank_str}ランク"
