@@ -28,7 +28,6 @@ class UsersController < ApplicationController
         '未正解' => Problem.where(rank: rank).count,
       }
     end
-    binding.pry
   end
 
   private
