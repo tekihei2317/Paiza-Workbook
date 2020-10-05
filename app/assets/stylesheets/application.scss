@@ -35,7 +35,8 @@ body{
   background-color: #FAFBFC !important;
 }
 
-// problems/index
+// Problems
+
 .problem-index-wrapper{
   padding: 24px;
 }
@@ -66,6 +67,7 @@ body{
 }
 
 // Problem Table
+
 .problem-index-wrapper table{
   border-radius: 8px;
   th{
@@ -89,4 +91,9 @@ table .wide-link{
 
 table th:hover{
   cursor: pointer;
+}
+
+// Recommend
+.progress-wrapper{
+  padding-top: 24px;
 }
