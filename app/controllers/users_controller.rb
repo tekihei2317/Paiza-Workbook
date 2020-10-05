@@ -21,6 +21,9 @@ class UsersController < ApplicationController
   def edit
   end
 
+  def progress
+  end
+
   private
 
   def user_params
