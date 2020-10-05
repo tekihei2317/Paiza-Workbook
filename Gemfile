@@ -83,3 +83,6 @@ gem 'devise-i18n-views'
 
 # do tasks regularly
 gem 'whenever'
+
+# graphs
+gem 'chartkick'
