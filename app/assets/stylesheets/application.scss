@@ -106,10 +106,10 @@ table th:hover{
 
 // statistics table
 .progress-wrapper{
-  table {
+  .table-responsive{
     border-radius: 8px;
-    padding: 16px;
   }
+  
   table th, table td{
     padding: 0.6rem;
   }
