@@ -75,7 +75,7 @@ body{
   }
 }
 
-tbody{
+.problem-index-wrapper tbody{
   border: none !important;
 }
 
@@ -96,6 +96,23 @@ table th:hover{
 // Recommend
 .progress-wrapper{
   padding-top: 24px;
+}
+
+// Pie charts
+.pies-container{
+  border-radius: 8px;
+  padding: 16px;
+}
+
+// statistics table
+.progress-wrapper{
+  table {
+    border-radius: 8px;
+    padding: 16px;
+  }
+  table th, table td{
+    padding: 0.6rem;
+  }
 }
 
 // Pie charts container
