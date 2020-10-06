@@ -2,7 +2,7 @@
   .container
     .row
       = form_with url: problems_filter_path, class: 'shadow bg-my-white col-md-8 offset-md-2' do |f|
-        p.text-primary.filter-title Rank
+        p.filter-title Rank
         - initial_rank_min = params[:rank_min] || '0'
         - initial_rank_max = params[:rank_max] || '4'
         - initial_difficulty_min = params[:difficulty_min] || '0'
@@ -18,7 +18,7 @@
         / optionとvalueの値が同じ場合は、[op1, op2, ...]と書くとvalueは自動的に設定される
         / 参考: https://310nae.com/rails-selectbox/
         / 第３引数のselectedはvalueのほうを書く
-        p.text-primary.filter-title.mt-3 Difficulty
+        p.filter-title.mt-3 Difficulty
         = f.select 'difficulty_min', Problem::SELECT_OPTIONS_DIFFICULTY, { selected: initial_difficulty_min }, { class: 'btn'} 
         span から
         = f.select 'difficulty_max', Problem::SELECT_OPTIONS_DIFFICULTY, { selected: initial_difficulty_max }, { class: 'btn'}
