@@ -1,10 +1,25 @@
 .progress-wrapper
   .container
     .row
-      .pies-container.shadow.bg-my-white.mx-auto.d-flex.flex-wrap.justify-content-around
-        - Problem.ranks.each do |rank_str, rank_int|
-          = pie_chart @data[rank_int], width: '200px', height: '200px', display: 'inline-block',\
-            legend: false, colors: ['#4285F4', '#E7E9F2']
+      .pies-container.shadow.bg-my-white.col-lg-10.offset-lg-1
+        .row
+          / - Problem.ranks.each do |rank_str, rank_int|
+          .pie-container.col-md-4.col-sm-6
+            = pie_chart @data[0], width: '200px', height: '200px', display: 'inline-block',\
+              legend: false, colors: ['#4285F4', '#E7E9F2'], class: 'mx-auto'
+          .pie-container.col-md-4.col-sm-6
+            = pie_chart @data[1], width: '200px', height: '200px', display: 'inline-block',\
+              legend: false, colors: ['#4285F4', '#E7E9F2']
+          .pie-container.col-md-4.col-sm-6
+            = pie_chart @data[2], width: '200px', height: '200px', display: 'inline-block',\
+              legend: false, colors: ['#4285F4', '#E7E9F2']
+          .pie-container.col-md-4.col-sm-6
+            = pie_chart @data[3], width: '200px', height: '200px', display: 'inline-block',\
+              legend: false, colors: ['#4285F4', '#E7E9F2']
+          .pie-container.col-md-4.col-sm-6
+            = pie_chart @data[4], width: '200px', height: '200px', display: 'inline-block',\
+              legend: false, colors: ['#4285F4', '#E7E9F2']
+            
     .row.mt-3
       .table-responsive.shadow.bg-my-white.col-lg-10.offset-lg-1
         - boundaries=[0,1000,1200,1400,1600,1800,2000,2200,2400,3000]
