@@ -1,21 +1,17 @@
-.container
-  .row
-    .col-md-4.offset-md-4
-      h1 ユーザー登録
-      = form_with model: @user, url: user_registration_path, local: true do |f|
-        .form-group
-          = f.label :name, '名前'
-          = f.text_field :name, class: 'form-control', autofocus: true
-        .form-group
-          = f.label :email, 'メールアドレス(Paizaで使用しているもの)'
-          = f.text_field :email, class: 'form-control'
-        .form-group
-          = f.label :password, 'パスワード'
-          = f.password_field :password, class: 'form-control'
-        .form-group
-          = f.label :password_confirmation, 'パスワード(確認)'
-          = f.password_field :password_confirmation, class: 'form-control'
-        .form-group
-          = f.label :paiza_password, 'Paizaのパスワード'
-          = f.password_field :paiza_password, class: 'form-control'
-        = f.submit '登録する'
+.sign-in-wrapper
+  .container
+    .row
+      .col-md-6.offset-md-3.text-center.bg-my-white.shadow.sign-in-form.p-4
+        p.h4 Sign up
+        = form_with model: @user, url: user_registration_path, local: true do |f|
+          .form-group.pt-4
+            = f.text_field :name, class: 'form-control', autofocus: true, placeholder: 'Username'
+          .form-group.pt-4
+            = f.text_field :email, class: 'form-control', placeholder: 'E-mail used in paiza'
+          .form-group.pt-4
+            = f.password_field :password, class: 'form-control', placeholder: 'Password'
+          .form-group.pt-4
+            = f.password_field :password_confirmation, class: 'form-control', placeholder: 'Password Confirmation'
+          .form-group.pt-4
+            = f.password_field :paiza_password, class: 'form-control', placeholder: 'Password used in paiza'
+          = f.submit 'SIGN UP', class: 'btn bg-primary text-white btn-block mt-5 p-3'

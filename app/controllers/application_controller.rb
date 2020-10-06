@@ -5,4 +5,10 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
     devise_parameter_sanitizer.permit(:sign_up, keys: [:paiza_password])
   end
+
+  private
+
+  def require_login
+    redirect_to new_user_session_path, notice: 'ログインしてください' if !user_signed_in?
+  end
 end
