@@ -3,22 +3,13 @@
     .row
       .pies-container.shadow.bg-my-white.col-lg-10.offset-lg-1
         .row
-          / - Problem.ranks.each do |rank_str, rank_int|
-          .pie-container.col-md-4.col-sm-6
-            = pie_chart @data[0], width: '200px', height: '200px', display: 'inline-block',\
-              legend: false, colors: ['#4285F4', '#E7E9F2'], class: 'mx-auto'
-          .pie-container.col-md-4.col-sm-6
-            = pie_chart @data[1], width: '200px', height: '200px', display: 'inline-block',\
-              legend: false, colors: ['#4285F4', '#E7E9F2']
-          .pie-container.col-md-4.col-sm-6
-            = pie_chart @data[2], width: '200px', height: '200px', display: 'inline-block',\
-              legend: false, colors: ['#4285F4', '#E7E9F2']
-          .pie-container.col-md-4.col-sm-6
-            = pie_chart @data[3], width: '200px', height: '200px', display: 'inline-block',\
-              legend: false, colors: ['#4285F4', '#E7E9F2']
-          .pie-container.col-md-4.col-sm-6
-            = pie_chart @data[4], width: '200px', height: '200px', display: 'inline-block',\
-              legend: false, colors: ['#4285F4', '#E7E9F2']
+          - Problem.ranks.each do |rank_str, rank_int|
+            .pie-container.col-md-4.col-sm-6
+              p.pie-title.text-center.mb-1= format("Rank %s", rank_str)
+              = pie_chart @data[rank_int], width: '200px', height: '200px', display: 'inline-block',\
+                legend: false, colors: ['#4285F4', '#E7E9F2'], class: 'mx-auto'
+              p.text-center.mb-5= format("%d correct / %d unsolved", @data[rank_int]['正解'], @data[rank_int]['未正解'])
+    
             
     .row.mt-3
       .table-responsive.shadow.bg-my-white.col-lg-10.offset-lg-1
