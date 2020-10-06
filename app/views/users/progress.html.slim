@@ -5,3 +5,28 @@
         - Problem.ranks.each do |rank_str, rank_int|
           = pie_chart @data[rank_int], width: '200px', height: '200px', display: 'inline-block',\
             legend: false, colors: ['#4285F4', '#E7E9F2']
+    .row.mt-3
+      .col-md-8.offset-md-2.bg-my-white.shadow
+        - boundaries=[0,1000,1200,1400,1600,1800,2000,2200,2400,3000]
+        table.table
+          tr
+            th 難易度
+            - boundaries.each.with_index do |b_crt, i|
+              - next if i == boundaries.size - 1
+              - b_nxt=boundaries[i + 1]
+              th= "~#{b_nxt}"
+            th 合計
+          tr
+            th 問題数
+            - boundaries.each.with_index do |b_crt, i|
+              - next if i == boundaries.size - 1
+              - b_nxt=boundaries[i + 1]
+              td= Problem.where(difficulty: (b_crt+1)..b_nxt).count
+            td= Problem.count
+          tr
+            th 正解数
+            - boundaries.each.with_index do |b_crt, i|
+              - next if i == boundaries.size - 1
+              - b_nxt=boundaries[i + 1]
+              td= current_user.solved_problems.where(difficulty: (b_crt+1)..b_nxt).count
+            td= current_user.solved_problems.count
