@@ -1,12 +1,13 @@
-.container
-  .row
-    .col-md-4.offset-md-4
-      h1 ログイン
-      = form_with scope: :user, url: user_session_path, method: :post, local: true do |f|
-        .form-group
-          = f.label :email, 'メールアドレス'
-          = f.text_field :email, class: 'form-control' 
-        .form-group
-          = f.label :password, 'パスワード'
-          = f.password_field :password, class: 'form-control'
-        = f.submit 'ログイン'
+.sign-in-wrapper
+  .container
+    .row
+      .col-md-6.offset-md-3.text-center.bg-my-white.shadow.sign-in-form.p-4
+        p.h4 Sign in
+        = form_with scope: :user, url: user_session_path, method: :post, local: true do |f|
+          .form-group
+            / = f.label :email
+            = f.text_field :email, class: 'form-control', placeholder: 'E-mail', autofocus: true
+          .form-group
+            / = f.label :password, 'パスワード'
+            = f.password_field :password, class: 'form-control', placeholder: 'Password'
+          = f.submit 'SIGN IN', class: 'btn bg-primary text-white btn-block mt-5 p-3'
