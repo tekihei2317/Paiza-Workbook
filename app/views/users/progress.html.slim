@@ -1,7 +1,38 @@
 .progress-wrapper
   .container
     .row
-      .pies-container.shadow.bg-my-white.mx-auto.d-flex.flex-wrap.justify-content-around
-        - Problem.ranks.each do |rank_str, rank_int|
-          = pie_chart @data[rank_int], width: '200px', height: '200px', display: 'inline-block',\
-            legend: false, colors: ['#4285F4', '#E7E9F2']
+      .pies-container.shadow.bg-my-white.col-lg-10.offset-lg-1
+        .row
+          - Problem.ranks.each do |rank_str, rank_int|
+            .pie-container.col-md-4.col-sm-6
+              p.pie-title.text-center.mb-1= format("Rank %s", rank_str)
+              = pie_chart @data[rank_int], width: '200px', height: '200px', display: 'inline-block',\
+                legend: false, colors: ['#4285F4', '#E7E9F2'], class: 'mx-auto'
+              p.text-center.mb-5= format("%d correct / %d unsolved", @data[rank_int]['正解'], @data[rank_int]['未正解'])
+    
+            
+    .row.mt-3
+      .table-responsive.shadow.bg-my-white.col-lg-10.offset-lg-1
+        - boundaries=[0,1000,1200,1400,1600,1800,2000,2200,2400,3000]
+        table.table.text-nowrap
+          tr
+            th 難易度
+            - boundaries.each.with_index do |b_crt, i|
+              - next if i == boundaries.size - 1
+              - b_nxt=boundaries[i + 1]
+              th= "~#{b_nxt}"
+            th 合計
+          tr
+            th 問題数
+            - boundaries.each.with_index do |b_crt, i|
+              - next if i == boundaries.size - 1
+              - b_nxt=boundaries[i + 1]
+              td= Problem.where(difficulty: (b_crt+1)..b_nxt).count
+            td= Problem.count
+          tr
+            th 正解数
+            - boundaries.each.with_index do |b_crt, i|
+              - next if i == boundaries.size - 1
+              - b_nxt=boundaries[i + 1]
+              td= current_user.solved_problems.where(difficulty: (b_crt+1)..b_nxt).count
+            td= current_user.solved_problems.count

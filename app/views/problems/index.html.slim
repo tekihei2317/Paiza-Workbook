@@ -1,41 +1,35 @@
 .problem-index-wrapper
   .container
     .row
-      .col-md-8.offset-md-2
-        = form_with url: problems_filter_path, class: 'shadow bg-my-white' do |f|
-          p.text-primary.filter-title Rank
-          - initial_rank_min = params[:rank_min] || '0'
-          - initial_rank_max = params[:rank_max] || '4'
-          - initial_difficulty_min = params[:difficulty_min] || '0'
-          - initial_difficulty_max = params[:difficulty_max] || '3000'
-          - initial_hide_solved = params[:hide_solved] == '1'
-          
-          - ['d', 'c', 'b', 'a', 's'].each do |rank|
-            = f.check_box "rank_#{rank}", class: 'mr-1', checked: true
-            = f.label "rank_#{rank}", rank.upcase, class: 'mr-4'
-
-          / f.selectの第２引数はoptionとvalue(送信される値=paramsで受け取れる値)のペアを書く
-          / 配列の場合: [[op1, val1], [op2, val2], ...] と書く
-          / ハッシュの場合: { op1 => val1, op2 => val2, ...} と書く
-          / optionとvalueの値が同じ場合は、[op1, op2, ...]と書くとvalueは自動的に設定される
-          / 参考: https://310nae.com/rails-selectbox/
-          / 第３引数のselectedはvalueのほうを書く
-
-          p.text-primary.filter-title.mt-3 Difficulty
-          = f.select 'difficulty_min', Problem::SELECT_OPTIONS_DIFFICULTY, { selected: initial_difficulty_min }, { class: 'btn'} 
-          span から
-          = f.select 'difficulty_max', Problem::SELECT_OPTIONS_DIFFICULTY, { selected: initial_difficulty_max }, { class: 'btn'}
-
-          .w-100
-          = f.check_box 'hide_solved', class: 'mr-1 mt-3', checked: initial_hide_solved
-          = f.label 'hide_solved', '解いた問題を非表示にする', class: 'text-muted'
-
-          .w100
-          = f.submit '反映する', class: 'btn btn-raised bg-primary text-white'
-
+      = form_with url: problems_filter_path, class: 'shadow bg-my-white col-md-8 offset-md-2' do |f|
+        p.text-primary.filter-title Rank
+        - initial_rank_min = params[:rank_min] || '0'
+        - initial_rank_max = params[:rank_max] || '4'
+        - initial_difficulty_min = params[:difficulty_min] || '0'
+        - initial_difficulty_max = params[:difficulty_max] || '3000'
+        - initial_hide_solved = params[:hide_solved] == '1'
+        
+        - ['d', 'c', 'b', 'a', 's'].each do |rank|
+          = f.check_box "rank_#{rank}", class: 'mr-1', checked: true
+          = f.label "rank_#{rank}", rank.upcase, class: 'mr-4'
+        / f.selectの第２引数はoptionとvalue(送信される値=paramsで受け取れる値)のペアを書く
+        / 配列の場合: [[op1, val1], [op2, val2], ...] と書く
+        / ハッシュの場合: { op1 => val1, op2 => val2, ...} と書く
+        / optionとvalueの値が同じ場合は、[op1, op2, ...]と書くとvalueは自動的に設定される
+        / 参考: https://310nae.com/rails-selectbox/
+        / 第３引数のselectedはvalueのほうを書く
+        p.text-primary.filter-title.mt-3 Difficulty
+        = f.select 'difficulty_min', Problem::SELECT_OPTIONS_DIFFICULTY, { selected: initial_difficulty_min }, { class: 'btn'} 
+        span から
+        = f.select 'difficulty_max', Problem::SELECT_OPTIONS_DIFFICULTY, { selected: initial_difficulty_max }, { class: 'btn'}
+        .w-100
+        = f.check_box 'hide_solved', class: 'mr-1 mt-3', checked: initial_hide_solved
+        = f.label 'hide_solved', '解いた問題を非表示にする', class: 'text-muted'
+        .w100
+        = f.submit '反映する', class: 'btn btn-raised bg-primary text-white'
     .row
-     .col-md-8.offset-md-2
-        table.table.table-hover.shadow.bg-my-white
+     .table-responsive.col-md-8.offset-md-2.bg-my-white.shadow.px-0
+        table.table.table-hover
           thead
             tr
               th 問題ID

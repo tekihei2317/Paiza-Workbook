@@ -35,10 +35,16 @@ body{
   background-color: #FAFBFC !important;
 }
 
+// Header
+nav{
+  background-color: #4285F4;
+  background-color: #E7E9F2;
+  background-color: #80cbc4;
+}
 // Problems
 
 .problem-index-wrapper{
-  padding: 24px;
+  padding-top: 24px;
 }
 
 // Problem filter form
@@ -68,14 +74,14 @@ body{
 
 // Problem Table
 
-.problem-index-wrapper table{
+.problem-index-wrapper .table-responsive{
   border-radius: 8px;
   th{
     user-select: none;
   }
 }
 
-tbody{
+.problem-index-wrapper tbody{
   border: none !important;
 }
 
@@ -90,16 +96,49 @@ table .wide-link{
 }
 
 table th:hover{
-  cursor: pointer;
+  cursor: pointer
 }
 
-// Recommend
+// Progress
 .progress-wrapper{
   padding-top: 24px;
 }
 
-// Pie charts container
+// progress pie charts
 .pies-container{
   border-radius: 8px;
   padding: 16px;
+
+  #chart-1{
+    margin: 0 auto;
+  }
+  #chart-2{
+    margin: 0 auto;
+  }
+  #chart-3{
+    margin: 0 auto;
+  }
+  #chart-4{
+    margin: 0 auto;
+  }
+  #chart-5{
+    margin: 0 auto;
+  }
+}
+
+.pie-container{
+  .pie-title{
+    font-size: 20px;
+  }
+}
+
+// progress table
+.progress-wrapper{
+  .table-responsive{
+    border-radius: 8px;
+  }
+
+  table th, table td{
+    padding: 0.6rem;
+  }
 }
