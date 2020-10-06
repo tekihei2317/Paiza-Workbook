@@ -38,7 +38,7 @@ body{
 // Problems
 
 .problem-index-wrapper{
-  padding: 24px;
+  padding-top: 24px;
 }
 
 // Problem filter form
@@ -68,7 +68,7 @@ body{
 
 // Problem Table
 
-.problem-index-wrapper table{
+.problem-index-wrapper .table-responsive{
   border-radius: 8px;
   th{
     user-select: none;
@@ -90,15 +90,15 @@ table .wide-link{
 }
 
 table th:hover{
-  cursor: pointer;
+  cursor: pointer
 }
 
-// Recommend
+// Progress
 .progress-wrapper{
   padding-top: 24px;
 }
 
-// Pie charts
+// progress pie charts
 .pies-container{
   border-radius: 8px;
   padding: 16px;
@@ -109,7 +109,7 @@ table th:hover{
   .table-responsive{
     border-radius: 8px;
   }
-  
+
   table th, table td{
     padding: 0.6rem;
   }
