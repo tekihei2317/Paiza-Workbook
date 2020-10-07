@@ -42,6 +42,17 @@ nav{
   background-color: #80cbc4;
 }
 
+// Toast
+.toast{
+  position: fixed; 
+  top: 10px;
+  right: 40px;
+  z-index: 2; 
+  width: 320px;
+  border-radius: 8px;
+  background-color: #e0f2f1;
+}
+
 // Account
 
 // Account sign in
