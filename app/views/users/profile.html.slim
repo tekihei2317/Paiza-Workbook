@@ -1,1 +1,10 @@
-h1.mt-5 Hello!
+.mt-5
+
+p= @user.name
+p= @user.email
+
+.hoge style='height: 100px; background-color: red;'
+p Paizaのメールアドレス
+p Paizaのパスワード
+
+= link_to '削除', user_registration_path, method: :delete, data: { confirm: '本当にアカウントを削除しますか？' }
