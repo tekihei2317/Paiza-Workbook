@@ -50,10 +50,17 @@ nav{
   z-index: 2; 
   width: 320px;
   border-radius: 8px;
-  background-color: #e0f2f1;
   &:hover{
     cursor: pointer;
   }
+}
+
+.toast-default{
+  background-color: #e0f2f1;
+}
+
+.toast-warning{
+  background-color: #fff9c4
 }
 
 // Account
