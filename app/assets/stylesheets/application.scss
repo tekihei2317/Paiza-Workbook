@@ -51,6 +51,9 @@ nav{
   width: 320px;
   border-radius: 8px;
   background-color: #e0f2f1;
+  &:hover{
+    cursor: pointer;
+  }
 }
 
 // Account
