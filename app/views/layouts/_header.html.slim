@@ -7,11 +7,13 @@ nav.navbar.navbar-expand-sm.fixed-top.navbar-dark
     .collapse.navbar-collapse id='nav1'
       ul.navbar-nav
         li.nav-item
-          = link_to 'progress', progress_path, class: 'nav-link text-white'
+          = link_to 'progress', users_progress_path, class: 'nav-link text-white'
         li.nav-item
-          = link_to 'recommend', '#', class: 'nav-link text-white'
+          = link_to 'recommend', users_recommend_path, class: 'nav-link text-white'
       ul.navbar-nav.ml-auto
         - if user_signed_in?
+          li.nav-item
+            = link_to 'profile', users_profile_path, class: 'nav-link text-white'
           li.nav-item
             = link_to 'logout', destroy_user_session_path, method: :delete, class: 'nav-link text-white'
         - else
