@@ -41,7 +41,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   protected
 
   def update_resource(resource, params)
-    binding.pry
+    # binding.pry
     # update_without_passwordを使うとパスワードの変更が出来なくなる
     resource.update_without_password(params)
   end
