@@ -14,13 +14,13 @@ class UsersController < ApplicationController
     end
   end
 
-  def index
-  end
-
-  def show
+  def profile
   end
 
   def edit
+  end
+
+  def destroy
   end
 
   def progress
@@ -30,6 +30,9 @@ class UsersController < ApplicationController
         '未正解' => Problem.where(rank: rank).count,
       }
     end
+  end
+
+  def recommend
   end
 
   private
