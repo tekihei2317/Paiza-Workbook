@@ -11,12 +11,12 @@ html
     link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous"
   body
     - if notice
-      .toast.d-inline-block.p-3.shadow-sm
+      .toast.p-3.shadow-sm
         .toast-header
         .toast-body
           p.mb-0= notice
     - if alert
-      .toast.d-inline-block.p-3.shadow-sm
+      .toast.p-3.shadow-sm
         .toast-header
         .toast-body
           p.mb-0= alert
@@ -29,3 +29,9 @@ html
     script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"
     javascript:
       $(document).ready(function() { $('body').bootstrapMaterialDesign(); });
+      $(function() {
+        setTimeout("$('.toast').fadeOut(1500)", 2000);
+        $('.toast').on('click', ()=>{
+          $('.toast').remove();
+        });
+      });
