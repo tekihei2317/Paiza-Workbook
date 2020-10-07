@@ -1,46 +1,19 @@
-h2
-  | Edit 
-  = resource_name.to_s.humanize
-= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
-  = render "devise/shared/error_messages", resource: resource
-  .field
-    = f.label :email
-    br
-    = f.email_field :email, autofocus: true, autocomplete: "email"
-  - if devise_mapping.confirmable? && resource.pending_reconfirmation?
-    div
-      | Currently waiting confirmation for: 
-      = resource.unconfirmed_email
-  .field
-    = f.label :password
-    i
-      | (leave blank if you don't want to change it)
-    br
-    = f.password_field :password, autocomplete: "new-password"
-    - if @minimum_password_length
-      br
-      em
-        = @minimum_password_length
-        |  characters minimum
-  .field
-    = f.label :password_confirmation
-    br
-    = f.password_field :password_confirmation, autocomplete: "new-password"
-  .actions
-    = f.submit "Update"
+.user-edit-wrapper
+  .container
+    .row
+      .col-md-6.offset-md-3.text-center.bg-my-white.shadow.p-4
+        = form_with model: @user, url: user_registration_path, method: :patch, local: true do |f|
+          .form-group
+            = f.label '名前'
+            = f.text_field :name, class: 'form-control', autofocus: true
+          .form-group
+            = f.label 'メールアドレス'
+            = f.email_field :email, class: 'form-control'
+          .form-group
+            = f.label 'Paizaのログインメールアドレス'
+            = f.email_field :paiza_email, class: 'form-control'
+          .form-group
+            = f.label 'Paizaのログインパスワード'
+            = f.password_field :paiza_password, class: 'form-control'
 
-= form_with model: @user, url: user_registration_path, method: :patch, local: true do |f|
-  .form-group
-    = f.label '名前'
-    = f.text_field :name, class: 'form-control', autofocus: true
-  .form-group
-    = f.label 'メールアドレス'
-    = f.email_field :email, class: 'form-control', placeholder: 'E-mail'
-  .form-group
-    = f.label 'Paizaのログインメールアドレス'
-    = f.email_field :paiza_email, class: 'form-control'
-  .form-group
-    = f.label 'Paizaのログインパスワード'
-    = f.password_field :paiza_password, class: 'form-control'
-  
-  = f.submit '送信'
+          = f.submit '更新する', class: 'btn bg-primary text-white btn-block mt-4 p-3'
