@@ -58,7 +58,7 @@ namespace :scraping do
     password_elem = driver.find_element(id: 'password')
     submit_btn = driver.find_element(css: 'input[type=submit]')
 
-    email_elem.send_keys(user.email)
+    email_elem.send_keys(user.paiza_email)
     password_elem.send_keys(user.paiza_password)
     submit_btn.click
   end
