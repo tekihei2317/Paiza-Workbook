@@ -16,7 +16,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # GET /resource/edit
   # def edit
-  #   super
+  # super
   # end
 
   # PUT /resource
@@ -42,6 +42,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def update_resource(resource, params)
     # binding.pry
+    # update_without_passwordを使うとパスワードの変更が出来なくなる
     resource.update_without_password(params)
   end
 
