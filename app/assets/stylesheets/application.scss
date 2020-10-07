@@ -75,6 +75,16 @@ nav{
     border-radius: 8px;
   }
 }
+
+// Account user edit
+.user-edit-wrapper{
+  padding-top: 24px;
+
+  input[type=submit]{
+    font-size: 16px;
+  }
+}
+
 // Problems
 
 .problem-index-wrapper{
