@@ -3,7 +3,7 @@ class User < ApplicationRecord
   has_many :solved_problems, through: :solveds, source: :problem
 
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable, :omniauthable
   attr_accessor :current_password
 
   validates :name, presence: true
