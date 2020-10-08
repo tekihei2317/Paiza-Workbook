@@ -12,4 +12,25 @@ class User < ApplicationRecord
 
   validates :name, uniqueness: true
   validates :email, uniqueness: true
+
+  def self.find_for_oauth(auth)
+    user = User.find_by(uid: auth.uid, provider: auth.provider)
+
+    if user.nil?
+      user = User.create(
+        name: 'hoge',
+        uid: auth.uid,
+        email: User.dummy_email(auth),
+        password: Devise.friendly_token[0, 20],
+      )
+    end
+
+    user
+  end
+
+  private
+
+  def self.dummy_email(auth)
+    "#{auth.uid}-#{auth.provider}@example.com"
+  end
 end
