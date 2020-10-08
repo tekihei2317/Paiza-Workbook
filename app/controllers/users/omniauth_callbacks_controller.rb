@@ -32,12 +32,18 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     callback_from :twitter
   end
 
+  def google_oauth2
+    callback_from :google
+  end
+
   def callback_from(provider)
     provider = provider.to_s
 
     @user = User.find_for_oauth(request.env['omniauth.auth'].except('extra'))
+    # binding.pry
 
     if @user.persisted?
+      # binding.pry
       flash[:notice] = I18n.t('devise.omniauth_callbacks.success', kind: provider.capitalize)
       sign_in_and_redirect @user, event: :authentication
     else
