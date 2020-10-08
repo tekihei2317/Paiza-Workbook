@@ -40,7 +40,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     provider = provider.to_s
 
     @user = User.find_for_oauth(request.env['omniauth.auth'].except('extra'))
-    # binding.pry
+    binding.pry
 
     if @user.persisted?
       # binding.pry

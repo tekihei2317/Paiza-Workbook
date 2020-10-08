@@ -311,5 +311,5 @@ Devise.setup do |config|
 
   # config.omniauth :twitter, 'SCWpwXH4LKn2d7jZqZMhgU3hG', 'p9bdgnVirKRgaVq4tLjU6DftkgKeNtTS2qWPhjFSinyGA9roXl', callback_url: 'http://localhost:3000/users/auth/twitter/callback'
   config.omniauth :twitter, 'SCWpwXH4LKn2d7jZqZMhgU3hG', 'p9bdgnVirKRgaVq4tLjU6DftkgKeNtTS2qWPhjFSinyGA9roXl'
-  config.omniauth :google_oauth2, 'hoge', 'fuga'
+  config.omniauth :google_oauth2, '1023204912832-a1n1q5ef7o1pit89jdqvm177i90divt5.apps.googleusercontent.com', 'FbhuHEySKyfrM1f5b0Z1swxq'
 end

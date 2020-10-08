@@ -16,7 +16,7 @@ class User < ApplicationRecord
   def self.find_for_oauth(auth)
     user = User.find_by(uid: auth.uid, provider: auth.provider)
 
-    # binding.pry
+    binding.pry
     if user.nil?
       user = User.create(
         name: auth.info.nickname,
