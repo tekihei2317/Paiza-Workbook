@@ -15,3 +15,4 @@
           = f.submit 'SIGN UP', class: 'btn bg-primary text-white btn-block mt-5 p-3'
         / = user_omniauth_authorize_path(:twitter)
         = link_to 'Sign up with Twitter', user_twitter_omniauth_authorize_path
+        = link_to 'Sign up with Google', user_google_oauth2_omniauth_authorize_path
