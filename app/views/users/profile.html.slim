@@ -1,15 +1,17 @@
-.mt-5
+.user-profile-wrapper
+  .container
+    .row
+      .col-md-6.offset-md-3.bg-my-white.shadow.sign-in-form.p-4
+        p.mb-1.profile-title.text-muted ユーザー名
+        p.profile-content= @user.name
 
-p= @user.name
-p= @user.email
+        p.mb-1.profile-title.text-muted メールアドレス
+        p.profile-content= @user.email
 
-.hoge style='height: 100px; background-color: red;'
-p Paizaのメールアドレス
-- if @user.paiza_email.nil? 
-  p 未設定
-p Paizaのパスワード
-- if @user.paiza_password.nil?
-  p 未設定
+        p.mb-1.profile-title.text-muted Paizaのメールアドレス
+        p.profile-content= @user.paiza_email
 
-= link_to '編集', edit_user_registration_path, class: 'mr-3'
-= link_to '削除', user_registration_path, method: :delete, data: { confirm: '本当にアカウントを削除しますか？' }
+        p.mb-1.profile-title.text-muted Paizaのパスワード
+        p.profile-content= '*' * @user.paiza_email.length
+        
+        = link_to '編集する', edit_user_registration_path, class: 'btn bg-primary text-white btn-block mt-4 p-3'
