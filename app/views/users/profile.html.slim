@@ -1,0 +1,17 @@
+.user-profile-wrapper
+  .container
+    .row
+      .col-md-6.offset-md-3.bg-my-white.shadow.sign-in-form.p-4
+        p.mb-1.profile-title.text-muted ユーザー名
+        p.profile-content= @user.name
+
+        p.mb-1.profile-title.text-muted メールアドレス
+        p.profile-content= @user.email
+
+        p.mb-1.profile-title.text-muted Paizaのメールアドレス
+        p.profile-content= @user.paiza_email
+
+        p.mb-1.profile-title.text-muted Paizaのパスワード
+        p.profile-content= '*' * @user.paiza_email.length
+        
+        = link_to '編集する', edit_user_registration_path, class: 'btn bg-primary text-white btn-block mt-4 p-3'

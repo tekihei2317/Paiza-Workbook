@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { registrations: 'users/registrations' }
   root to: 'problems#index'
 
   # Problems
@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   resources :problems
 
   # Users
-  resources :users
-  get '/progress', to: 'users#progress'
+  # resources :users
+  get 'users/progress'
+  get 'users/recommend'
+  get 'users/profile'
 end
