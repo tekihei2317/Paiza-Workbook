@@ -13,3 +13,5 @@
           .form-group.pt-4
             = f.password_field :password_confirmation, class: 'form-control', placeholder: 'Password Confirmation'
           = f.submit 'SIGN UP', class: 'btn bg-primary text-white btn-block mt-5 p-3'
+        / = user_omniauth_authorize_path(:twitter)
+        = link_to 'Sign up with Twitter', user_twitter_omniauth_authorize_path
