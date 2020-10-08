@@ -13,14 +13,14 @@ class User < ApplicationRecord
   validates :name, uniqueness: true
   validates :email, uniqueness: true
 
-  def self.find_for_oauth(auth)
-    user = User.find_by(uid: auth.uid, provider: auth.provider)
+  def self.find_for_oauth(uid, provider)
+    user = User.find_by(uid: uid, provider: provider)
 
     if user.nil?
       user = User.create(
         name: 'hoge',
-        uid: auth.uid,
-        email: User.dummy_email(auth),
+        uid: uid,
+        email: User.dummy_email(uid, provider),
         password: Devise.friendly_token[0, 20],
       )
     end
@@ -29,7 +29,7 @@ class User < ApplicationRecord
 
   private
 
-  def self.dummy_email(auth)
-    "#{auth.uid}-#{auth.provider}@example.com"
+  def self.dummy_email(uid, provider)
+    "#{uid}-#{provider}@example.com"
   end
 end
