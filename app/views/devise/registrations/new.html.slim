@@ -7,11 +7,9 @@
           .form-group.pt-4
             = f.text_field :name, class: 'form-control', autofocus: true, placeholder: 'Username'
           .form-group.pt-4
-            = f.text_field :email, class: 'form-control', placeholder: 'E-mail used in paiza'
+            = f.text_field :email, class: 'form-control', placeholder: 'E-mail'
           .form-group.pt-4
             = f.password_field :password, class: 'form-control', placeholder: 'Password'
           .form-group.pt-4
             = f.password_field :password_confirmation, class: 'form-control', placeholder: 'Password Confirmation'
-          .form-group.pt-4
-            = f.password_field :paiza_password, class: 'form-control', placeholder: 'Password used in paiza'
           = f.submit 'SIGN UP', class: 'btn bg-primary text-white btn-block mt-5 p-3'

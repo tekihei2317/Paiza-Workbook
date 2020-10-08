@@ -75,6 +75,35 @@ nav{
     border-radius: 8px;
   }
 }
+
+// Account user profile
+.user-profile-wrapper{
+  padding-top: 24px;
+
+  .profile-title{
+    padding-top: 16px;
+    font-size: 14px;
+  }
+  
+  .profile-content{
+    border-bottom: 1px solid lightgray;
+    margin-bottom: 16px;
+  }
+
+  a{
+    font-size: 16px;
+  }
+}
+
+// Account user edit
+.user-edit-wrapper{
+  padding-top: 24px;
+
+  input[type=submit]{
+    font-size: 16px;
+  }
+}
+
 // Problems
 
 .problem-index-wrapper{
