@@ -14,5 +14,7 @@
             = f.password_field :password_confirmation, class: 'form-control', placeholder: 'Password Confirmation'
           = f.submit 'SIGN UP', class: 'btn bg-primary text-white btn-block mt-5 p-3'
         / = user_omniauth_authorize_path(:twitter)
+        p or sign up with
+        <a href="#" class="mx-2" role="button"><i class="fab fa-facebook-f light-blue-text"></i></a>
         = link_to 'Sign up with Twitter', user_twitter_omniauth_authorize_path
         = link_to 'Sign up with Google', user_google_oauth2_omniauth_authorize_path

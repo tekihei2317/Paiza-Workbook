@@ -88,3 +88,6 @@ gem 'whenever'
 
 # graphs
 gem 'chartkick'
+
+# icons
+gem 'font-awesome-sass'
