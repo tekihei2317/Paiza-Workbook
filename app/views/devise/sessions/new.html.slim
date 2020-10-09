@@ -11,3 +11,9 @@
             / = f.label :password, 'パスワード'
             = f.password_field :password, class: 'form-control', placeholder: 'Password'
           = f.submit 'SIGN IN', class: 'btn bg-primary text-white btn-block mt-5 p-3'
+
+        p.text-muted or sign in with:
+        = link_to user_twitter_omniauth_authorize_path, class: 'mr-3 shadow-sm' do
+          = icon 'fab', 'twitter p-2 shadow'
+        = link_to user_google_oauth2_omniauth_authorize_path do
+          = icon 'fab', 'google p-2 shadow'

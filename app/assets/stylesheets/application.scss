@@ -12,6 +12,8 @@
  */
 @import "bootstrap";
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
+@import 'font-awesome-sprockets';
+@import "font-awesome";
 
 .debug{
   border: 1px solid red;
@@ -67,12 +69,37 @@ nav{
 
 // Account sign in
 .sign-in-wrapper{
-  padding-top: 24px
+  padding-top: 24px;
+  padding-bottom: 120px;
 }
 
 .sign-in-wrapper{
   .sign-in-form{
     border-radius: 8px;
+  }
+
+  .fa-twitter{
+    font-size: 2rem;
+    color: white;
+    background-color: #55ACEE;
+    border-radius: 50%;
+
+    transition: 0.2s all;
+    &:hover{
+      transform: translateY(-4px);
+    }
+  }
+
+  .fa-google{
+    font-size: 2rem;
+    color: white;
+    background-color: #4285F4;
+    border-radius: 50%;
+
+    transition: 0.2s all;
+    &:hover{
+      transform: translateY(-4px);
+    }
   }
 }
 
