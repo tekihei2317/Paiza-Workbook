@@ -16,4 +16,5 @@ Rails.application.routes.draw do
   get 'users/progress'
   get 'users/recommend'
   get 'users/profile'
+  post 'users/update/problems', to: 'users#update_solved_problems'
 end
