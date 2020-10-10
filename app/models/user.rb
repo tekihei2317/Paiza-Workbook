@@ -56,7 +56,12 @@ class User < ApplicationRecord
 
     # 解答状況を取得して保存する
     solved_problems = driver.find_element(id: 'tab-results').find_elements(class: 'basicBox')
-    solved_problems.map do |problem|
+    must_update_count = solved_problems.count - self.solved_problems.count
+
+    solved_problems.map.with_index do |problem, i|
+      # 差分だけ更新する
+      break if i >= must_update_count
+
       # タイトルからランクと問題番号を抜き出すする
       title = problem.text.split(/\n/)[0] # C035:試験の合格判定のような形式
       rank = title[/([A-Z])(\d+).+/, 1]
