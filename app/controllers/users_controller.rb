@@ -34,6 +34,7 @@ class UsersController < ApplicationController
   end
 
   def recommend
+    SampleJob.perform_later(current_user, 'tekihei2317@yahoo.co.jp', 'tekihei4131752')
   end
 
   private

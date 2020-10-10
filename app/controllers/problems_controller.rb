@@ -17,7 +17,6 @@ class ProblemsController < ApplicationController
 
     # ランクの昇順、同じランクは番号の昇順にソートする
     @problems = Problem.order(:rank, :number)
-    SampleJob.perform_later
   end
 
   def filter
