@@ -18,6 +18,7 @@
         / optionとvalueの値が同じ場合は、[op1, op2, ...]と書くとvalueは自動的に設定される
         / 参考: https://310nae.com/rails-selectbox/
         / 第３引数のselectedはvalueのほうを書く
+        
         p.filter-title.mt-3 Difficulty
         = f.select 'difficulty_min', Problem::SELECT_OPTIONS_DIFFICULTY, { selected: initial_difficulty_min }, { class: 'btn'} 
         span から
