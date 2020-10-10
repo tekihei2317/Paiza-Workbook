@@ -7,7 +7,7 @@
         = f.submit '解答状況を更新する', class: 'btn btn-raised bg-primary text-white'
 
       
-      = form_with url: problems_filter_path, class: 'shadow bg-my-white col-md-8 offset-md-2' do |f|
+      = form_with url: problems_filter_path, class: 'shadow bg-my-white col-md-8 offset-md-2', id: 'filter-form' do |f|
         p.filter-title Rank
         - initial_rank_min = params[:rank_min] || '0'
         - initial_rank_max = params[:rank_max] || '4'
@@ -33,7 +33,7 @@
         = f.check_box 'hide_solved', class: 'mr-1 mt-3', checked: initial_hide_solved
         = f.label 'hide_solved', '解いた問題を非表示にする', class: 'text-muted'
         .w100
-        = f.submit '反映する', class: 'hidden btn btn-raised bg-primary text-white'
+        = f.submit '反映する', class: 'hidden btn btn-raised bg-primary text-white', id: 'filter-submit-btn'
     .row
      .table-responsive.col-md-8.offset-md-2.bg-my-white.shadow.px-0
         table.table.table-hover
