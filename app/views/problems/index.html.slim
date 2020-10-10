@@ -1,7 +1,13 @@
 .problem-index-wrapper
   .container
     .row
-      = form_with url: problems_filter_path, class: 'shadow bg-my-white col-md-8 offset-md-2' do |f|
+      = form_with url: users_update_problems_path, class: 'shadow bg-my-white col-md-8 offset-md-2', local: true do |f|
+        = f.email_field :paiza_email, class: 'form-control mb-2', placeholder: 'Paizaのメールアドレス'
+        = f.password_field :paiza_password, class: 'form-control mb-2', placeholder: 'Paizaのパスワード'
+        = f.submit '解答状況を更新する', class: 'btn btn-raised bg-primary text-white'
+
+      
+      = form_with url: problems_filter_path, class: 'shadow bg-my-white col-md-8 offset-md-2', id: 'filter-form' do |f|
         p.filter-title Rank
         - initial_rank_min = params[:rank_min] || '0'
         - initial_rank_max = params[:rank_max] || '4'
@@ -18,6 +24,7 @@
         / optionとvalueの値が同じ場合は、[op1, op2, ...]と書くとvalueは自動的に設定される
         / 参考: https://310nae.com/rails-selectbox/
         / 第３引数のselectedはvalueのほうを書く
+        
         p.filter-title.mt-3 Difficulty
         = f.select 'difficulty_min', Problem::SELECT_OPTIONS_DIFFICULTY, { selected: initial_difficulty_min }, { class: 'btn'} 
         span から
@@ -26,7 +33,7 @@
         = f.check_box 'hide_solved', class: 'mr-1 mt-3', checked: initial_hide_solved
         = f.label 'hide_solved', '解いた問題を非表示にする', class: 'text-muted'
         .w100
-        = f.submit '反映する', class: 'btn btn-raised bg-primary text-white'
+        = f.submit '反映する', class: 'hidden btn btn-raised bg-primary text-white', id: 'filter-submit-btn'
     .row
      .table-responsive.col-md-8.offset-md-2.bg-my-white.shadow.px-0
         table.table.table-hover

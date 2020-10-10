@@ -48,7 +48,7 @@ class ProblemsUtility {
 
   // フィルタ処理をするイベントを設定する
   setFilterEvent() {
-    const form = document.querySelector('form');
+    const form = document.getElementById('filter-form');
 
     // JSONを受け取ってフィルタ処理をする
     form.addEventListener('ajax:success', (event) => {
@@ -81,7 +81,7 @@ class ProblemsUtility {
 
   // フォームの変更を検知して送信するイベントを設定する 
   setSubmitEvents() {
-    const submitBtn = document.querySelector('input[type=submit]');
+    const submitBtn = document.getElementById('filter-submit-btn');
 
     // セレクト要素とチェックボックスを取り出す
     const selectElems = Array.from(document.querySelectorAll('select'));
