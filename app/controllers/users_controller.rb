@@ -34,7 +34,7 @@ class UsersController < ApplicationController
   end
 
   def update_solved_problems
-    binding.pry
+    # binding.pry
     paiza_email = params[:paiza_email]
     paiza_password = params[:paiza_password]
     UpdateSolvedProblemsJob.perform_later(current_user, paiza_email, paiza_password)
