@@ -20,6 +20,7 @@ class ProblemsController < ApplicationController
   end
 
   def filter
+    # binding.pry
     render json: {
       rank: {
         d: params[:rank_d] == '1',
