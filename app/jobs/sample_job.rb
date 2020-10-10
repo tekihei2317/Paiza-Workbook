@@ -1,12 +1,10 @@
 class SampleJob < ApplicationJob
   queue_as :default
 
-  def perform(*args)
+  def perform(user, paiza_email, paiza_password)
     # Do something later
-    puts 'Hello, world!'
-
-    (0..10 ** 7).each do |i|
-      puts "current: #{i}" if i % 10 ** 6 == 0
-    end
+    user.update_solved_problems(paiza_email, paiza_password)
+    sleep 3
+    puts '[LOG] Job ended!'
   end
 end
