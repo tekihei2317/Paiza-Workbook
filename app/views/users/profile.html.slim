@@ -7,11 +7,5 @@
 
         p.mb-1.profile-title.text-muted メールアドレス
         p.profile-content= @user.email
-
-        p.mb-1.profile-title.text-muted Paizaのメールアドレス
-        p.profile-content= @user.paiza_email.nil? ? '未設定' : @user.paiza_email
-
-        p.mb-1.profile-title.text-muted Paizaのパスワード
-        p.profile-content= @user.paiza_password.nil? ? '未設定' : '*' * @user.paiza_password.length
-        
+       
         = link_to '編集する', edit_user_registration_path, class: 'btn bg-primary text-white btn-block mt-4 p-3'
