@@ -57,7 +57,7 @@ class User < ApplicationRecord
 
     # 解答状況を取得して保存する
     solved_problems = driver.find_element(id: 'tab-results').find_elements(class: 'basicBox')
-  must_update_count = solved_problems.count - self.solved_problems.count
+    must_update_count = solved_problems.count - self.solved_problems.count
 
     solved_problems.map.with_index do |problem, i|
       # 差分だけ更新する
