@@ -22,7 +22,6 @@ class Problem < ApplicationRecord
   end
 
   def average_time
-    average_time_min.to_s.rjust(2, '0') + ':' + average_time_sec.to_s.rjust(2, '0')
     format('%02d:%02d', average_time_min, average_time_sec)
   end
 end
