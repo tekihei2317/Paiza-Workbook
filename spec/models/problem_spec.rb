@@ -79,4 +79,28 @@ RSpec.describe Problem, type: :model do
     problem.valid?
     expect(problem.errors[:url]).to include('はすでに存在します')
   end
+
+  # インスタンスメソッドのテスト
+  describe 'インスタンスメソッド' do
+    it '分:秒の形式に変換する' do
+      problem = Problem.new(
+        average_time_min: 1,
+        average_time_sec: 23,
+      )
+      expect(problem.average_time).to eq '01:23'
+    end
+  end
+
+  # クラスメソッドのテスト
+  describe 'クラスメソッド' do
+    it 'IDからURLを取得する' do
+      url = Problem.get_url_from_id(17)
+      expect(url).to eq 'https://paiza.jp/challenges/17/ready'
+    end
+
+    it 'タイトルからランク、番号、問題名をパースする' do
+      title = 'S015:ABC文字列'
+      expect(Problem.parse_title(title)).to eq ['S', 15, 'ABC文字列']
+    end
+  end
 end
