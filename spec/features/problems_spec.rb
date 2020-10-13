@@ -5,7 +5,7 @@ RSpec.feature 'Problems', type: :feature, js: true do
   # user = FactoryBot.create(:user)
   #
   # visit root_path
-  # click_link 'login'
+  # click_link 'login'tr
   # expect(page).to have_current_path new_user_session_path
   #
   # fill_in 'E-mail', with: user.email
