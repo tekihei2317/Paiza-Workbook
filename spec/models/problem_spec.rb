@@ -1,21 +1,20 @@
 require 'rails_helper'
 
 RSpec.describe Problem, type: :model do
+  it '有効なファクトリを持つ' do
+    expect(FactoryBot.build(:problem)).to be_valid
+  end
+
+  # バリデーションのテスト
   describe 'バリデーション' do
     it 'ランク、問題番号、問題名、URL、難易度があれば有効である' do
-      problem = Problem.new(
-        rank: 'D',
-        number: 166,
-        name: '何日後になるか',
-        url: 'https://paiza.jp/challenges/405/ready',
-        difficulty: 847,
-      )
+      problem = FactoryBot.build(:problem)
       expect(problem).to be_valid
     end
 
     context 'rankカラム' do
       it '存在しなければ無効である' do
-        problem = Problem.new(rank: nil)
+        problem = FactoryBot.build(:problem, rank: nil)
         problem.valid?
         expect(problem.errors[:rank]).to include('を入力してください')
       end
@@ -23,7 +22,7 @@ RSpec.describe Problem, type: :model do
 
     context 'numberカラム' do
       it '存在しなければ無効である' do
-        problem = Problem.new(number: nil)
+        problem = FactoryBot.build(:problem, number: nil)
         problem.valid?
         expect(problem.errors[:number]).to include('を入力してください')
       end
@@ -31,26 +30,14 @@ RSpec.describe Problem, type: :model do
 
     context 'nameカラム' do
       it '存在しなければ無効である' do
-        problem = Problem.new(name: nil)
+        problem = FactoryBot.build(:problem, name: nil)
         problem.valid?
         expect(problem.errors[:name]).to include('を入力してください')
       end
 
       it '一意である(同じ名前の問題を複数登録できない)' do
-        Problem.create(
-          rank: 'D',
-          number: 166,
-          name: '何日後になるか',
-          url: 'https://paiza.jp/challenges/405/ready',
-          difficulty: 847,
-        )
-        problem = Problem.new(
-          rank: 'D',
-          number: 166,
-          name: '何日後になるか',
-          url: 'https://paiza.jp/challenges/405/ready',
-          difficulty: 847,
-        )
+        FactoryBot.create(:problem)
+        problem = FactoryBot.build(:problem)
         problem.valid?
         expect(problem.errors[:name]).to include('はすでに存在します')
       end
@@ -58,26 +45,14 @@ RSpec.describe Problem, type: :model do
 
     context 'urlカラム' do
       it '存在しなければ無効である' do
-        problem = Problem.new(url: nil)
+        problem = FactoryBot.build(:problem, url: nil)
         problem.valid?
         expect(problem.errors[:url]).to include('を入力してください')
       end
 
       it '一意である(同じURLの問題を複数登録できない)' do
-        Problem.create(
-          rank: 'D',
-          number: 166,
-          name: '何日後になるか',
-          url: 'https://paiza.jp/challenges/405/ready',
-          difficulty: 847,
-        )
-        problem = Problem.new(
-          rank: 'D',
-          number: 166,
-          name: '何日後になるか',
-          url: 'https://paiza.jp/challenges/405/ready',
-          difficulty: 847,
-        )
+        FactoryBot.create(:problem)
+        problem = FactoryBot.build(:problem)
         problem.valid?
         expect(problem.errors[:url]).to include('はすでに存在します')
       end
@@ -85,7 +60,7 @@ RSpec.describe Problem, type: :model do
 
     context 'difficultyカラム' do
       it '存在しなければ無効である' do
-        problem = Problem.new(difficulty: nil)
+        problem = FactoryBot.build(:problem, difficulty: nil)
         problem.valid?
         expect(problem.errors[:difficulty]).to include('を入力してください')
       end
@@ -95,7 +70,8 @@ RSpec.describe Problem, type: :model do
   # インスタンスメソッドのテスト
   describe 'インスタンスメソッド' do
     it '分:秒の形式に変換する' do
-      problem = Problem.new(
+      problem = FactoryBot.build(
+        :problem,
         average_time_min: 1,
         average_time_sec: 23,
       )

@@ -19,10 +19,10 @@ RSpec.describe User, type: :model do
       end
 
       it '一意である(同じ名前のユーザーを複数登録できない)' do
-        FactoryBot.create(:user)
-        user = FactoryBot.build(:user)
-        user.valid?
-        expect(user.errors[:name]).to include('はすでに存在します')
+        user = FactoryBot.create(:user)
+        other_user = FactoryBot.build(:user, name: user.name)
+        other_user.valid?
+        expect(other_user.errors[:name]).to include('はすでに存在します')
       end
     end
 
@@ -32,11 +32,12 @@ RSpec.describe User, type: :model do
         user.valid?
         expect(user.errors[:email]).to include('が入力されていません。')
       end
+
       it '一意である(同じメールアドレスのユーザーを複数登録できない)' do
-        FactoryBot.create(:user)
-        user = FactoryBot.build(:user)
-        user.valid?
-        expect(user.errors[:email]).to include('は既に使用されています。')
+        user = FactoryBot.create(:user)
+        other_user = FactoryBot.build(:user, name: 'Bob', email: user.email)
+        other_user.valid?
+        expect(other_user.errors[:email]).to include('は既に使用されています。')
       end
     end
   end
