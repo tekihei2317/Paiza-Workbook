@@ -19,6 +19,7 @@ RSpec.feature 'Accounts', type: :feature do
 
       # 問題一覧画面にリダイレクトされる
       expect(page).to have_current_path root_path
+      expect(page).to have_content 'アカウント登録が完了しました'
     end
 
     scenario '無効な属性の場合は登録できない' do
@@ -50,15 +51,26 @@ RSpec.feature 'Accounts', type: :feature do
       fill_in 'E-mail', with: user.email
       fill_in 'Password', with: user.password
       click_button 'SIGN IN'
+
       expect(page).to have_current_path root_path
+      expect(page).to have_content 'ログインしました'
     end
   end
 
   describe 'ログアウト機能' do
     before do
+      user = FactoryBot.create(:user)
+      visit new_user_session_path
+      fill_in 'E-mail', with: user.email
+      fill_in 'Password', with: user.password
+      click_button 'SIGN IN'
     end
 
     scenario 'ログアウトすることができる' do
+      # トーストをクリックして消す
+      find(:css, 'div.toast').click
+      click_link 'logout'
+      expect(page).to have_content 'ログアウトしました'
     end
   end
 end
