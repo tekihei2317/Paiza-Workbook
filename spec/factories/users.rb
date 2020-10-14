@@ -8,5 +8,9 @@ FactoryBot.define do
     factory :other_user do
       name { 'Bob' }
     end
+
+    trait :invalid_password do
+      password { 'hoge' }
+    end
   end
 end
