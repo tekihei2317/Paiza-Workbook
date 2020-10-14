@@ -57,6 +57,8 @@ group :development do
   # デプロイ自動化
   gem 'capistrano'
   gem 'capistrano-rbenv'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rails'
 end
 
 group :test do
