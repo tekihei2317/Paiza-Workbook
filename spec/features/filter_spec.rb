@@ -7,7 +7,7 @@ RSpec.feature 'Filters', type: :feature do
     visit root_path
   end
 
-  describe 'ランク' do
+  describe 'ランクでのフィルタ' do
     describe 'Dランク' do
       context 'チェックを外したとき' do
         it 'そのランクの問題が表示されなくなる' do
@@ -53,9 +53,49 @@ RSpec.feature 'Filters', type: :feature do
     end
   end
 
-  describe '難易度' do
+  describe '難易度でのフィルタ' do
   end
 
   describe '解いた問題の非表示' do
+    before do
+      # ユーザーを作成する
+      @user = FactoryBot.create(:user)
+      FactoryBot.create(:solved, user_id: @user.id, problem_id: 200)
+      FactoryBot.create(:solved, user_id: @user.id, problem_id: 300)
+      # binding.pry
+
+      # ログインする
+      visit new_user_session_path
+      fill_in 'E-mail', with: @user.email
+      fill_in 'Password', with: @user.password
+      click_button 'SIGN IN'
+      expect(page).to have_current_path root_path
+    end
+
+    context 'チェックをつけたとき' do
+      it '解いた問題数だけ表示される問題が減る' do
+        solved_count = @user.solved_problems.count # 2
+        expect {
+          check '解いた問題を非表示にする'
+          expect(page).to_not have_css 'tr.table-success'
+        }.to change { all(:css, 'tr.problem').count }.by(-solved_count)
+      end
+    end
+
+    context 'チェックを外したとき' do
+      it '解いた問題数だけ表示される問題が増える' do
+        solved_count = @user.solved_problems.count
+
+        # まずはチェックを付ける
+        check '解いた問題を非表示にする'
+        expect(page).to_not have_css 'tr.table-success'
+
+        # チェックを外す
+        expect {
+          uncheck '解いた問題を非表示にする'
+          expect(page).to have_css 'tr.table-success'
+        }.to change { all(:css, 'tr.problem').count }.by(solved_count)
+      end
+    end
   end
 end
