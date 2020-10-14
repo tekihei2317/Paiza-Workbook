@@ -11,6 +11,13 @@ set :rbenv_type, :user
 set :rbenv_ruby, '2.7.1'
 set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} #{fetch(:rbenv_path)}/bin/rbenv exec"
 
+# bundlerの設定
+append :linked_dirs, '.bundle'
+
+# 共有ファイルの設定
+append :linked_files, 'config/master.key'
+append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/socket'
+
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
