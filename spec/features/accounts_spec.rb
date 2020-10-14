@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.feature 'Accounts', type: :feature do
-  Capybara.default_driver = :selenium_chrome
+  Capybara.default_driver = :selenium_chrome_headless
 
   describe 'アカウント登録機能' do
     scenario '有効な属性の場合は登録できる' do
