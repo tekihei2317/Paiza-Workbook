@@ -73,4 +73,60 @@ RSpec.feature 'Accounts', type: :feature do
       expect(page).to have_content 'ログアウトしました'
     end
   end
+
+  describe 'ユーザー編集機能' do
+    before do
+      @user = FactoryBot.create(:user)
+      visit new_user_session_path
+      fill_in 'E-mail', with: @user.email
+      fill_in 'Password', with: @user.password
+      click_button 'SIGN IN'
+
+      # トーストをクリックして消す
+      find(:css, 'div.toast').click
+    end
+
+    scenario '有効な情報のとき更新できる' do
+      click_link 'profile'
+      click_link '編集する'
+
+      # フォームの中身を削除する
+      fill_in 'user_name', with: ''
+      fill_in 'user_email', with: ''
+
+      fill_in 'user_name', with: 'Bob'
+      fill_in 'user_email', with: 'bob@example.com'
+      click_button '更新する'
+
+      # 編集ページにリダイレクトされることを確認する
+      expect(page).to have_current_path users_profile_path
+      expect(page).to have_content 'アカウント情報を変更しました'
+
+      # 更新されていることを確認する
+      expect(page).to have_content 'Bob'
+      expect(page).to have_content 'bob@example.com'
+
+      expect(@user.name).to eq 'Alice'
+      expect(@user.reload.name).to eq 'Bob'
+      expect(@user.email).to eq 'bob@example.com'
+    end
+
+    scenario '無効な情報のとき更新できない' do
+      click_link 'profile'
+      click_link '編集する'
+
+      # フォームの中身を削除する
+      fill_in 'user_name', with: ''
+      fill_in 'user_email', with: ''
+
+      # 空のまま送信する
+      click_button '更新する'
+
+      # リダイレクトされないことを確認する
+      expect(page).to have_content 'アカウントを削除する'
+
+      # 更新されていないことを確認する
+      expect(@user.reload.name).to eq 'Alice'
+    end
+  end
 end
