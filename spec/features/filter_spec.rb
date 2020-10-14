@@ -54,6 +54,33 @@ RSpec.feature 'Filters', type: :feature do
   end
 
   describe '難易度でのフィルタ' do
+    context '有効な範囲のとき' do
+      it '条件を満たす問題が表示される' do
+        within '#difficulty_min' do
+          select '1000'
+        end
+        within '#difficulty_max' do
+          select '1800'
+        end
+
+        expected_count = Problem.where(difficulty: 1000..1800).count
+        expect(page).to have_css('tr.problem')
+        expect(all(:css, 'tr.problem').count).to eq expected_count
+      end
+    end
+
+    context '無効な範囲のとき' do
+      it '問題が表示されない' do
+        within '#difficulty_min' do
+          select '2000'
+        end
+        within '#difficulty_max' do
+          select '1000'
+        end
+
+        expect(page).to_not have_css('tr.problem')
+      end
+    end
   end
 
   describe '解いた問題の非表示' do
