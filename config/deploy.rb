@@ -1,9 +1,15 @@
 # config valid for current version and patch releases of Capistrano
 lock '~> 3.14.1'
 
+# ファイルを配置するための設定
 set :application, 'my_app'
 set :repo_url, 'git@github.com:tekihei2317/paiza-workbook.git'
 set :deploy_to, '/var/www/app/paiza-workbook'
+
+# rbenvの設定
+set :rbenv_type, :user
+set :rbenv_ruby, '2.7.1'
+set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} #{fetch(:rbenv_path)}/bin/rbenv exec"
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
