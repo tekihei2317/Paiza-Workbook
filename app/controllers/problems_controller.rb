@@ -1,17 +1,4 @@
 class ProblemsController < ApplicationController
-  def new
-    @problem = Problem.new
-  end
-
-  def create
-    @problem = Problem.new(problem_params)
-    if @problem.save
-      redirect_to problems_path
-    else
-      render :new
-    end
-  end
-
   def index
     url = 'https://paiza.jp/challenges/ranks/d/info'
 
@@ -35,11 +22,5 @@ class ProblemsController < ApplicationController
       },
       hideSolved: params[:hide_solved] == '1',
     }
-  end
-
-  private
-
-  def problem_params
-    params.require(:problem).permit(:rank, :number, :name, :url, :difficulty)
   end
 end
