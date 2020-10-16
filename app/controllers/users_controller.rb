@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :require_login, only: [:progress, :update_solved_problems]
+  before_action :require_login, only: [:profile, :progress, :update_solved_problems]
 
   def profile
     @user = current_user

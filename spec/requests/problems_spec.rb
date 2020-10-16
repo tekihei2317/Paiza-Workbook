@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Problems', type: :request do
   describe 'GET /' do
-    it '正常なレスポンスを返すこと' do
+    it '正常なレスポンスを返す' do
       get root_path
       # binding.pry
       expect(response).to be_success
@@ -11,12 +11,12 @@ RSpec.describe 'Problems', type: :request do
   end
 
   describe 'POST /problems/filter' do
-    it '正常なレスポンスを返すこと' do
+    it '正常なレスポンスを返す' do
       post problems_filter_path
       expect(response).to have_http_status(:success)
     end
 
-    it '送信パラメーターが正しくJSONに変換されていること' do
+    it '送信パラメーターが正しくJSONに変換される' do
       post problems_filter_path,
            params: {
              rank_d: '1',
