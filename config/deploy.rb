@@ -16,22 +16,11 @@ append :linked_dirs, '.bundle'
 
 # 共有ファイルの設定
 append :linked_files, 'config/master.key'
-append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/socket'
+append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets'
 
 # puma:nginx_configでエラーが出るので追記
 set :pty, true
 
-# cap production deployでpumaが起動しないので追記
-# (ログではしてそうに見える)けど
-# ↑上手くいきませんでした
-
-# namespace :deploy do
-# task :restart_puma do
-# invoke 'puma:stop'
-# invoke!('puma:start')
-# end
-# end
-#
 # after 'deploy:finishing', 'deploy:restart_puma'
 
 # Default branch is :master
