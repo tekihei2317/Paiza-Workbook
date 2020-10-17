@@ -3,4 +3,4 @@ test:
   encoding: utf8
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: root
-  password: hoge # なんでもいい..?
+  password: root # なんでもいい..?←hogeだと駄目でした
