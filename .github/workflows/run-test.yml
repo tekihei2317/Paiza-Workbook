@@ -16,6 +16,7 @@ jobs:
       with:
         ruby-version: 2.7.1
     
-  
-    - run: ruby -v
-    - run: ls -la
+    - run: |
+        ruby -v
+        ls -la
+        ls -la app/
