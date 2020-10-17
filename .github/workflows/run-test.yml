@@ -49,10 +49,12 @@ jobs:
     
     - name: Run tests
       run: bundle exec rspec
-      
+
     - name: Deploy
       uses: miloserdow/capistrano-deploy@v2.1
       with:
         target: production
         deploy_key: ${{ secrets.CAPISTEANO_SECRET }}
+        enc_rsa_key_pth: config/capistrano_rsa_enc
+
     
