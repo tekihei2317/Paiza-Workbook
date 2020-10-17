@@ -33,9 +33,13 @@ jobs:
     - run: mysql --version
     - run: cat db/schema.rb
 
+    - name: Install libraries for mysql
+      run: sudo apt install libmysqlclient-dev
+
     - name: Set up MySQL
       run: |
         cp config/database_ci.yml config/database.yml
+        cat config/database.yml
         bin/rails db:create 
         bin/rails db:schema:load
       env:
