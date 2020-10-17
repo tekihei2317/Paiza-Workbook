@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  test:
+  test-and-deploy:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout 
@@ -16,7 +16,7 @@ jobs:
       with:
         ruby-version: 2.7.1
     
-    - name: Cache(Restore?) vendor/bundle
+    - name: Cache/Restore vendor/bundle
       id: bundler-cache
       uses: actions/cache@v2
       with:
@@ -49,3 +49,6 @@ jobs:
     
     - name: Run tests
       run: bundle exec rspec
+
+    - name: Deploy
+      run: bundle exec cap production deploy
