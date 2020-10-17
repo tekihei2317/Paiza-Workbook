@@ -16,6 +16,6 @@ jobs:
       with:
         ruby-version: 2.7.1
     
-    - name: Debug
-      run: ruby -v
-      run: ls -la
+  
+    - run: ruby -v
+    - run: ls -la
