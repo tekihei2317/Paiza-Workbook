@@ -16,7 +16,13 @@ jobs:
       with:
         ruby-version: 2.7.1
     
-    - run: |
-        ruby -v
-        ls -la
-        ls -la app/
+    - run: ruby -v
+
+    - name: Set up Bundler
+      run: |
+        gem install bundler
+        bundle install
+        
+    - run: gem list
+    - run: which rspec
+    - run: bundle exec rspec
