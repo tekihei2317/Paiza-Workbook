@@ -32,22 +32,12 @@ jobs:
         bundle config path vendor/bundle
         bundle install
     
-    - run: ls vendor/bundle    
-    - run: mysql --version
-    - run: bundle config
-
-    - run: ls -la
-    - run: ls -la | grep hoge || echo 'nothing matched'
-    - run: bundle list | grep concurrent || echo 'nothing matched'
-
-    - name: Install libraries for mysql
-      run: sudo apt install libmysqlclient-dev
 
     - run: mysql_config --socket
-    - run: sudo service mysql status
-    - run: sudo service mysql start
-    
+    - run: |
+        sudo /etc/init.d/mysql start
     - name: Set up MySQL
+    
       run: |
         cp config/database_ci.yml config/database.yml
         cat config/database.yml
