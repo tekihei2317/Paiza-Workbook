@@ -54,7 +54,7 @@ jobs:
       uses: miloserdow/capistrano-deploy@v2.1
       with:
         target: production
-        deploy_key: ${{ secrets.CAPISTEANO_SECRET }}
+        deploy_key: ${{ secrets.CAPISTRANO_SECRET }}
         enc_rsa_key_pth: config/capistrano_rsa_enc
 
     
