@@ -26,7 +26,7 @@ jobs:
           ${{ runner.os }}-gems-
 
     - name: Install gems with bundler
-      if: steps.bundler-cache.outputs.cache-hit != 'true'
+      # if: steps.bundler-cache.outputs.cache-hit != 'true'
       run: |
         gem install bundler
         bundle config path vendor/bundle
@@ -34,11 +34,11 @@ jobs:
     
     - run: ls vendor/bundle    
     - run: mysql --version
-    - run: cat db/schema.rb
+    - run: bundle config
 
-    - run: gem list | grep concurrent
-    - run: which nokogiri
-    - run: which concurrent-ruby
+    - run: ls -la
+    - run: ls -la | grep hoge || echo 'nothing matched'
+    - run: bundle list | grep concurrent || echo 'nothing matched'
 
     - name: Install libraries for mysql
       run: sudo apt install libmysqlclient-dev
