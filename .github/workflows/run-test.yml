@@ -16,11 +16,18 @@ jobs:
       with:
         ruby-version: 2.7.1
     
-    - run: ruby -v
+    - name: Cache vendor/bundle
+    - uses: actions/cache@v2
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-gems-
 
-    - name: Set up Bundler
+    - name: Bundle install
       run: |
         gem install bundler
+        bundle config path vendor/bundle
         bundle install
         
     - run: mysql --version
@@ -29,8 +36,10 @@ jobs:
     - name: Set up MySQL
       run: |
         cp config/database_ci.yml config/database.yml
-        bin/rails db:create
+        bin/rails db:create 
         bin/rails db:schema:load
+      env:
+        RAILS_ENV: test
 
     - run: gem list
     - run: which rspec
