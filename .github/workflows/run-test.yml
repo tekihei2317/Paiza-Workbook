@@ -39,15 +39,15 @@ jobs:
     - name: Install libraries for mysql
       run: sudo apt install libmysqlclient-dev
 
-    # - name: Set up MySQL
-      # run: |
-        # cp config/database_ci.yml config/database.yml
-        # cat config/database.yml
-        # bin/rails db:create 
-        # bin/rails db:schema:load
-      # env:
-        # RAILS_ENV: test
-# 
-    # - run: gem list
-    # - run: which rspec
-    # - run: bundle exec rspec
+    - name: Set up MySQL
+      run: |
+        cp config/database_ci.yml config/database.yml
+        cat config/database.yml
+        bin/rails db:create 
+        bin/rails db:schema:load
+      env:
+        RAILS_ENV: test
+
+    - run: gem list
+    - run: which rspec
+    - run: bundle exec rspec
