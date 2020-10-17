@@ -43,6 +43,10 @@ jobs:
     - name: Install libraries for mysql
       run: sudo apt install libmysqlclient-dev
 
+    - run: mysql_config --socket
+    - run: sudo service mysql status
+    - run: sudo service mysql start
+    
     - name: Set up MySQL
       run: |
         cp config/database_ci.yml config/database.yml
