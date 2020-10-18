@@ -18,4 +18,8 @@ Rails.application.routes.draw do
   get 'users/recommend'
   get 'users/profile'
   post 'users/update/problems', to: 'users#update_solved_problems'
+
+  # sidekiq
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq'
 end
