@@ -19,7 +19,7 @@ class UsersController < ApplicationController
     paiza_email = params[:paiza_email]
     paiza_password = params[:paiza_password]
     UpdateSolvedProblemsJob.perform_later(current_user, paiza_email, paiza_password)
-    redirect_to root_path
+    redirect_to root_path, notice: '解答状況を更新中です...'
   end
 
   def recommend
