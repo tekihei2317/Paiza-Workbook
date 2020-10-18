@@ -1,0 +1,53 @@
+name: run test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout 
+      uses: actions/checkout@v2
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1.47.0
+      with:
+        ruby-version: 2.7.1
+    
+    - name: Cache/Restore vendor/bundle
+      id: bundler-cache
+      uses: actions/cache@v2
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-gems-
+
+    - name: Install gems with bundler
+      # if: steps.bundler-cache.outputs.cache-hit != 'true'
+      run: |
+        gem install bundler
+        bundle config path vendor/bundle
+        bundle install
+    
+    - name: Set up MySQL
+      run: |
+        cp config/database_ci.yml config/database.yml
+        sudo /etc/init.d/mysql start
+        bin/rails db:create 
+        bin/rails db:schema:load
+      env:
+        RAILS_ENV: test
+  
+    - name: Create records
+      run:
+        bin/rails scraping:add_problems_to_database
+      env:
+        RAILS_ENV: test
+    
+    - name: Run tests
+      run: bundle exec rspec
