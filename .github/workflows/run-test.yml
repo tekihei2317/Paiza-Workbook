@@ -2,10 +2,12 @@ name: run test
 
 on:
   push:
+    branches:
+      - main
   pull_request:
 
 jobs:
-  test-and-deploy:
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout 
@@ -42,19 +44,10 @@ jobs:
         RAILS_ENV: test
   
     - name: Create records
-      run: |
+      run:
         bin/rails scraping:add_problems_to_database
       env:
         RAILS_ENV: test
     
     - name: Run tests
       run: bundle exec rspec
-
-    - name: Deploy
-      uses: miloserdow/capistrano-deploy@v2.1
-      with:
-        target: production
-        deploy_key: ${{ secrets.CAPISTRANO_SECRET }}
-        enc_rsa_key_pth: config/capistrano_rsa_enc
-
-    
