@@ -15,11 +15,8 @@ class UsersController < ApplicationController
   end
 
   def update_solved_problems
-    # binding.pry
-    paiza_email = params[:paiza_email]
-    paiza_password = params[:paiza_password]
-    UpdateSolvedProblemsJob.perform_later(current_user, paiza_email, paiza_password)
-    redirect_to root_path
+    # ログインしている場合はActionCableとJSで処理します
+    # ログインしていない場合はログインページにリダイレクトされます
   end
 
   def recommend

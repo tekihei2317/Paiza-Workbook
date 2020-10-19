@@ -20,8 +20,8 @@ html
     javascript:
       $(document).ready(function() { $('body').bootstrapMaterialDesign(); });
       $(function() {
-        setTimeout("$('.toast').fadeOut(1500)", 2000);
-        $('.toast').on('click', ()=>{
+        // setTimeout("$('.toast').fadeOut(1500)", 2000);
+        $('body').on('click', '.toast', ()=>{
           $('.toast').remove();
         });
       });
