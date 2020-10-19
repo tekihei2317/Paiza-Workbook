@@ -9,6 +9,9 @@ class NotificationChannel < ApplicationCable::Channel
   end
 
   def display(data)
+    # ここで更新処理を書く(代わりにスリープさせておく)
+    sleep 5
+
     ActionCable.server.broadcast 'hoge', email: data['email'], password: data['password']
   end
 end
