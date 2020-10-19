@@ -1,9 +1,9 @@
-name: run test
+name: CI
 
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
 
 jobs:
