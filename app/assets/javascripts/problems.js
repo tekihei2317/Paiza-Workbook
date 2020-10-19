@@ -151,5 +151,28 @@ class ProblemsUtility {
     util.setFilterEvent();
     util.setSubmitEvents();
     util.setSortEvents();
+    isSignedIn();
+
+    const statusUpdateBtn = document.getElementById('status-update-submit-btn');
+    statusUpdateBtn.addEventListener('click', (event) => {
+      // ログインしていない場合はデフォルトのイベントが発生するので、
+      // グインページにリダイレクトする
+      if (isSignedIn()) {
+        event.preventDefault();
+
+        const form = statusUpdateBtn.parentNode;
+        const email = form.querySelector('input[type=email]').value
+        const password = form.querySelector('input[type=password]').value
+
+        // サーバー側にデータを渡す(NotificationChannel#display)
+        App.notification.display(email, password);
+      }
+    });
+  }
+
+  function isSignedIn() {
+    logoutBtn = document.getElementById('logout-btn')
+    console.log(logoutBtn !== null);
+    return logoutBtn !== null
   }
 })();

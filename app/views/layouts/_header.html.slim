@@ -15,7 +15,7 @@ nav.navbar.navbar-expand-sm.fixed-top.navbar-dark
           li.nav-item
             = link_to 'profile', users_profile_path, class: 'nav-link text-white'
           li.nav-item
-            = link_to 'logout', destroy_user_session_path, method: :delete, class: 'nav-link text-white'
+            = link_to 'logout', destroy_user_session_path, method: :delete, class: 'nav-link text-white', id: 'logout-btn'
         - else
           li.nav-item
             = link_to 'login', new_user_session_path, class: 'nav-link text-white'
