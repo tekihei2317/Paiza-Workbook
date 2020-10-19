@@ -9,9 +9,8 @@ class NotificationChannel < ApplicationCable::Channel
   end
 
   def display(data)
-    # ここで更新処理を書く(代わりにスリープさせておく)
-    sleep 5
-
-    ActionCable.server.broadcast 'hoge', email: data['email'], password: data['password']
+    # 更新処理
+    current_user.update_solved_problems(data['email'], data['password'])
+    ActionCable.server.broadcast 'hoge', status: 'success'
   end
 end
