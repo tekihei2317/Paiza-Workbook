@@ -9,6 +9,6 @@ class NotificationChannel < ApplicationCable::Channel
   end
 
   def display(data)
-    ActionCable.server.broadcast 'hoge', message: data['message']
+    ActionCable.server.broadcast 'hoge', email: data['email'], password: data['password']
   end
 end
