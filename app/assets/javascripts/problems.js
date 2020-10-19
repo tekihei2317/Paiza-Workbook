@@ -160,30 +160,8 @@ class ProblemsUtility {
       const email = form.querySelector('input[type=email]').value
       const password = form.querySelector('input[type=password]').value
 
-      // 通知を表示する
-      const notification = createNotification('更新中です...');
-      console.log(notification);
-      document.querySelector('body').appendChild(notification);
-
       // サーバー側にデータを渡す(NotificationChannel#display)
       App.notification.display(email, password);
     });
-
-    function createNotification(content) {
-      const notification = createElementFromHtml('<div class="toast p-3 shadow-sm toast-default"></div>');
-      const p = createElementFromHtml(`<p class="mb-0">${content}</p>`);
-      notification.appendChild(p);
-      return notification
-    }
-
-    /**
-     * 文字列のHTMLからHTMLElementを生成する
-     * @param {String} html 
-     */
-    function createElementFromHtml(html) {
-      const elem = document.createElement('div');
-      elem.innerHTML = html
-      return elem.firstChild;
-    }
   }
 })();
