@@ -3,7 +3,6 @@ module ApplicationCable
     identified_by :current_user
 
     def connect
-      puts 'connection established!'
       self.current_user = find_current_user
     end
 
