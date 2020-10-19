@@ -8,7 +8,8 @@ App.notification = App.cable.subscriptions.create("NotificationChannel", {
     const notification = document.querySelector('.toast');
     notification.textContent = '更新が完了しました！';
 
-    alert(data.status);
+    // alert(data.status);
+
     // 3秒後に通知を削除する
     setTimeout(() => {
       notification.remove();
