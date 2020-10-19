@@ -7,6 +7,6 @@ class UpdateSolvedProblemsJob < ApplicationJob
   end
 
   after_perform do |job|
-    puts 'ジョブが終了したよ！'
+    redirect_to root_path, notice: '更新しました!'
   end
 end
