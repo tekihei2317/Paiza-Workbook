@@ -151,5 +151,16 @@ class ProblemsUtility {
     util.setFilterEvent();
     util.setSubmitEvents();
     util.setSortEvents();
+
+    const statusUpdateBtn = document.getElementById('status-update-submit-btn');
+    statusUpdateBtn.addEventListener('click', (event) => {
+      event.preventDefault();
+      const form = statusUpdateBtn.parentNode;
+      const email = form.querySelector('input[type=email]').value
+      const password = form.querySelector('input[type=password]').value
+
+      console.log(email, password);
+      App.notification.display(email, password);
+    });
   }
 })();
