@@ -24,6 +24,10 @@ append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets'
 # puma:nginx_configでエラーが出るので追記
 set :pty, true
 
+# crontabを更新する
+set :whenever_command, 'bundle exec whenever'
+# set :whenever_roles, -> { :app }
+
 # after 'deploy:finishing', 'deploy:restart_puma'
 
 # Default branch is :master
