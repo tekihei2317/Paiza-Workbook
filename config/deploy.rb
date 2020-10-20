@@ -25,8 +25,8 @@ append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets'
 set :pty, true
 
 # crontabを更新する
-set :whenever_command, 'bundle exec whenever'
-# set :whenever_roles, -> { :app }
+# set :whenever_command, 'bundle exec whenever'
+set :whenever_roles, -> { :app }
 
 # after 'deploy:finishing', 'deploy:restart_puma'
 
