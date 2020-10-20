@@ -22,6 +22,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/environment')
 set :environment, ENV['RAILS_ENV'] || :development
 set :output, 'log/crontab.log'
+env :PATH, ENV['PATH']
 
 every 1.day do
   rake 'scraping:add_problems_to_database'
