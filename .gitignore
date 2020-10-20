@@ -27,4 +27,5 @@
 /config/master.key
 
 # gemをvendor/bundleにインストールしたので追記
+# gitの管理下から外さないとbundle installした後のpushが重くなるそうです
 /vendor/bundle
