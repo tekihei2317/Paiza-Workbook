@@ -1,5 +1,5 @@
 # README
-![run test](https://github.com/tekihei2317/paiza-workbook/workflows/run%20test/badge.svg)
+![CI](https://github.com/tekihei2317/paiza-workbook/workflows/CI/badge.svg)
 
 This README would normally document whatever steps are necessary to get the
 application up and running.
