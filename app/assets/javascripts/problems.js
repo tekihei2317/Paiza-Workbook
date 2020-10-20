@@ -156,7 +156,7 @@ class ProblemsUtility {
     const statusUpdateBtn = document.getElementById('status-update-submit-btn');
     statusUpdateBtn.addEventListener('click', (event) => {
       // ログインしていない場合はデフォルトのイベントが発生するので、
-      // グインページにリダイレクトする
+      // ログインページにリダイレクトする
       if (isSignedIn()) {
         event.preventDefault();
 
