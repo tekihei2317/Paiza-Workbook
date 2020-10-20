@@ -7,9 +7,10 @@ class UsersController < ApplicationController
 
   def progress
     @data = Problem.ranks.keys.map do |rank|
+      correct_count = current_user.solved_problems.where(rank: rank).count
       {
-        '正解' => current_user.solved_problems.where(rank: rank).count,
-        '未正解' => Problem.where(rank: rank).count,
+        '正解' => correct_count,
+        '未正解' => Problem.where(rank: rank).count - correct_count,
       }
     end
   end
