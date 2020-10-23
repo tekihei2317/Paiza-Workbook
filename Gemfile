@@ -85,22 +85,22 @@ gem 'html2slim'
 gem 'bootstrap', '~> 4.1.1'
 gem 'jquery-rails'
 
-# scraping
+# スクレイピング
 gem 'nokogiri'
 gem 'selenium-webdriver'
 gem 'webdrivers'
 
-# login feature
+# ログイン機能
 gem 'devise'
 gem 'devise-i18n'
 gem 'devise-i18n-views'
 gem 'omniauth-twitter'
 gem 'omniauth-google-oauth2'
 
-# do tasks regularly
+# タスクの定期実行
 gem 'whenever'
 
-# graphs
+# グラフ
 gem 'chartkick'
 
 # icons
@@ -108,3 +108,6 @@ gem 'font-awesome-sass'
 
 # Jobスケジューリング(非同期処理/定期実行)
 gem 'sidekiq'
+
+# 環境変数の管理
+gem 'dotenv-rails'
