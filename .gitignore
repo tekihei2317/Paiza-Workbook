@@ -29,3 +29,6 @@
 # gemをvendor/bundleにインストールしたので追記
 # gitの管理下から外さないとbundle installした後のpushが重くなるそうです
 /vendor/bundle
+
+# 環境変数
+.env
