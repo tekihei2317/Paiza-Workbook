@@ -1,3 +1,58 @@
-// Place all the styles related to the problems controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+// Problems
+
+.problem-index-wrapper{
+  padding-top: 24px;
+}
+
+// Problems filter form
+
+.problem-index-wrapper form{
+  border-radius: 8px;
+  padding: 16px;
+  user-select: none;
+
+  .hidden{
+    display: none;
+  }
+
+  select{
+    direction: rtl;
+    border: 1px solid lightgray !important;
+  }
+
+  option{
+    background-color: #FAFBFC !important;
+  }
+
+  .filter-title{
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+}
+
+// Problems Table
+
+.problem-index-wrapper .table-responsive{
+  border-radius: 8px;
+  th{
+    user-select: none;
+  }
+}
+
+.problem-index-wrapper tbody{
+  border: none !important;
+}
+
+.table .problem th, .table .problem td{
+  padding: 0.6rem;
+  border: none;
+}
+
+table .wide-link{
+  display: block;
+  padding: 0.6rem;
+}
+
+table th:hover{
+  cursor: pointer
+}

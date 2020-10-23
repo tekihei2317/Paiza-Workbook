@@ -6,6 +6,9 @@ set :application, 'paiza-workbook'
 set :repo_url, 'git@github.com:tekihei2317/paiza-workbook.git'
 set :deploy_to, '/var/www/app/paiza-workbook'
 
+# masterブランチ以外をデプロイする場合は、環境変数BRANCHで指定する
+set :branch, ENV['BRANCH'] || 'master'
+
 # rbenvの設定
 set :rbenv_type, :user
 set :rbenv_ruby, '2.7.1'
@@ -20,6 +23,10 @@ append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets'
 
 # puma:nginx_configでエラーが出るので追記
 set :pty, true
+
+# crontabを更新する
+# set :whenever_command, 'bundle exec whenever'
+set :whenever_roles, -> { :app }
 
 # after 'deploy:finishing', 'deploy:restart_puma'
 

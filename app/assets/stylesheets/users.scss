@@ -1,3 +1,113 @@
-// Place all the styles related to the users controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+// Account sign in
+
+.sign-in-wrapper{
+  padding-top: 24px;
+  padding-bottom: 120px;
+}
+
+.sign-in-wrapper{
+  .sign-in-form{
+    border-radius: 8px;
+  }
+
+  .fa-twitter{
+    font-size: 2rem;
+    color: white;
+    background-color: #55ACEE;
+    border-radius: 50%;
+
+    transition: 0.2s all;
+    &:hover{
+      transform: translateY(-4px);
+    }
+  }
+
+  .fa-google{
+    font-size: 2rem;
+    color: white;
+    background-color: #4285F4;
+    border-radius: 50%;
+
+    transition: 0.2s all;
+    &:hover{
+      transform: translateY(-4px);
+    }
+  }
+}
+
+// Account user profile
+
+.user-profile-wrapper{
+  padding-top: 24px;
+
+  .profile-title{
+    padding-top: 16px;
+    font-size: 14px;
+  }
+  
+  .profile-content{
+    border-bottom: 1px solid lightgray;
+    margin-bottom: 16px;
+  }
+
+  a{
+    font-size: 16px;
+  }
+}
+
+// Account user edit
+
+.user-edit-wrapper{
+  padding-top: 24px;
+
+  input[type=submit]{
+    font-size: 16px;
+  }
+}
+
+// Progress
+
+.progress-wrapper{
+  padding-top: 24px;
+}
+
+// Progress pie charts
+
+.pies-container{
+  border-radius: 8px;
+  padding: 16px;
+
+  #chart-1{
+    margin: 0 auto;
+  }
+  #chart-2{
+    margin: 0 auto;
+  }
+  #chart-3{
+    margin: 0 auto;
+  }
+  #chart-4{
+    margin: 0 auto;
+  }
+  #chart-5{
+    margin: 0 auto;
+  }
+}
+
+.pie-container{
+  .pie-title{
+    font-size: 20px;
+  }
+}
+
+// Progress table
+
+.progress-wrapper{
+  .table-responsive{
+    border-radius: 8px;
+  }
+
+  table th, table td{
+    padding: 0.6rem;
+  }
+}
