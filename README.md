@@ -1,6 +1,6 @@
 # Paiza Workbook
 
-![Paiza Workbookの画像](https://gyazo.com/e5f659ce7d929f3bf73d673b29e1f18a)
+![paiza-workbook](https://user-images.githubusercontent.com/53107316/97070267-1146b100-1612-11eb-97d0-f9831f8ec252.png)
 
 ## 概要
 
