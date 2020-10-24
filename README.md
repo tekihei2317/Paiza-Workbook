@@ -1,3 +1,7 @@
+# Paiza Workbook
+
+![Paiza Workbookの画像](https://gyazo.com/e5f659ce7d929f3bf73d673b29e1f18a)
+
 ## 概要
 
 [Paizaスキルチェック](https://paiza.jp/challenges)での勉強をサポートするアプリです。
