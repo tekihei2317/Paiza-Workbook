@@ -111,3 +111,6 @@ gem 'sidekiq'
 
 # 環境変数の管理
 gem 'dotenv-rails'
+
+# ページネーション
+gem 'kaminari'

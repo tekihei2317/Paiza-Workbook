@@ -36,3 +36,16 @@
               - b_nxt=boundaries[i + 1]
               td= current_user.solved_problems.where(difficulty: (b_crt+1)..b_nxt).count
             td= current_user.solved_problems.count
+
+    .row.mt-3
+      .table-responsive.shadow.bg-my-white.col-lg-10.offset-lg-1
+        table.table
+          tr
+            th 問題ID
+            th 問題名
+            th 日時
+          - current_user.solved_problems.each do |problem|
+            tr
+              td= format("%c%03d", problem.rank, problem.number)
+              td= problem.name
+              td= Date.today
