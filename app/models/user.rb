@@ -36,7 +36,7 @@ class User < ApplicationRecord
     driver = Selenium::WebDriver.for :chrome, options: options
 
     driver.get('https://paiza.jp/student/mypage/results')
-    puts "#{self.name}でログインを試みます..."
+    logger.debug "#{self.name}でログインを試みます..."
 
     # ログインページにリダイレクトされるので、ログインする
     login_to_paiza(driver, paiza_email, paiza_password)
@@ -48,10 +48,10 @@ class User < ApplicationRecord
         driver.find_element(class: 'basicBox').displayed?
       }
     rescue => exception
-      puts "#{self.name}でログインできませんでした"
+      logger.debug "#{self.name}でログインできませんでした"
       return
     else
-      puts "#{self.name}でログインしました"
+      logger.debug "#{self.name}でログインしました"
     end
 
     # 解答状況を取得して保存する
@@ -73,7 +73,7 @@ class User < ApplicationRecord
     end
 
     driver.quit
-    puts '更新が終了しました！'
+    logger.debug '更新が終了しました！'
   end
 
   private
