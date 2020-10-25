@@ -13,6 +13,9 @@ class UsersController < ApplicationController
         '未正解' => Problem.where(rank: rank).count - correct_count,
       }
     end
+    # @solved_problems = current_user.solved_problems.page(params[:page])
+    @solved_problems = Problem.where(rank: 'D').page(params[:page]).per(15)
+    # binding.pry
   end
 
   def update_solved_problems

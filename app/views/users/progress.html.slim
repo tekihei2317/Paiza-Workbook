@@ -44,8 +44,9 @@
             th 問題ID
             th 問題名
             th 日時
-          - current_user.solved_problems.each do |problem|
+          - @solved_problems.each do |problem|
             tr
               td= format("%c%03d", problem.rank, problem.number)
               td= problem.name
               td= Date.today
+        = paginate @solved_problems
