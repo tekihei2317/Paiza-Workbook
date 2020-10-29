@@ -157,8 +157,12 @@ class ProblemsUtility {
     statusUpdateBtn.addEventListener('click', (event) => {
       // ログインしていない場合はデフォルトのイベントが発生するので、
       // ログインページにリダイレクトする
+      console.log('clicked!');
       if (isSignedIn()) {
         event.preventDefault();
+
+        // 連打できないようにクリックを無効化する
+        statusUpdateBtn.setAttribute('disabled', true);
 
         const form = statusUpdateBtn.parentNode;
         const email = form.querySelector('input[type=email]').value
