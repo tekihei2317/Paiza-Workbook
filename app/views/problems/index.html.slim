@@ -46,7 +46,7 @@
               / th 受験者数
               th 正解率
               th 平均スコア
-              th あなたのスコア
+              th スコア
           - @problems.each do |problem|
             tbody 
               - solved= Solved.find_by(user_id: current_user.id, problem_id: problem.id) if user_signed_in?
@@ -58,5 +58,4 @@
                 / td= problem.num_of_people
                 td= problem.acceptance_rate
                 td= problem.average_score
-                / td= solved&.first_score
-                td= solved ? 100 : 0
+                td= solved&.first_score

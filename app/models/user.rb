@@ -62,14 +62,18 @@ class User < ApplicationRecord
       # 差分だけ更新する
       break if i >= must_update_count
 
-      # タイトルからランクと問題番号を抜き出すする
+      # タイトルからランクと問題番号を抜き出す
       title = problem.text.split(/\n/)[0] # C035:試験の合格判定のような形式
       rank = title[/([A-Z])(\d+).+/, 1]
       number = title[/([A-Z])(\d+).+/, 2].to_i
 
+      # スコアを取得する
+      regex_for_score = /スコア：[^\d]+(?<score>\d+)点/
+      score = problem.text.match(regex_for_score)[:score].to_i
+
       # ユーザーIDと問題IDのペアをデータベースに保存する
       problem = Problem.find_by(rank: rank, number: number)
-      Solved.create(user_id: self.id, problem_id: problem.id) if !problem.nil?
+      Solved.create(user_id: self.id, problem_id: problem.id, first_score: score) if !problem.nil?
     end
 
     driver.quit
