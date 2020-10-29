@@ -8,14 +8,14 @@ App.notification = App.cable.subscriptions.create("NotificationChannel", {
     const notification = document.querySelector('.toast');
     notification.textContent = '更新が完了しました！';
 
-    // alert(data.status);
+    // ボタンをクリックできるようにする
+    const statusUpdateBtn = document.getElementById('status-update-submit-btn');
+    statusUpdateBtn.removeAttribute('disabled');
 
     // 3秒後に通知を削除する
     setTimeout(() => {
       notification.remove();
     }, 3000)
-
-    // return alert(`${data['email']} ${data['password']}`);
   },
 
   // サーバーにデータを送る
