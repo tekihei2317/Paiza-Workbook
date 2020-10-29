@@ -31,20 +31,7 @@ class User < ApplicationRecord
   # ユーザーの解答状況を更新する
   def update_solved_problems(paiza_email, paiza_password)
     scraper = Scraper.new
-    scraper.visit('https://paiza.jp/student/mypage/results')
-    puts "#{self.name}でログインを試みます..."
-
-    # ログインページにリダイレクトされるので、ログインする
-    scraper.login(paiza_email, paiza_password)
-
-    # JavaScriptの描画が終わるまで待機する
-    scraper.wait_javascript_load
-
-    # 解答状況を取得して保存する
-    scraper.update_solved_problems(self)
-    scraper.driver.quit
-
-    puts '更新が終了しました！'
+    scraper.update_solved_problems(self, paiza_email, paiza_password)
   end
 
   private
@@ -62,11 +49,22 @@ class Scraper
     options.add_argument('--headless')
     options.add_argument('--disable-dev-shm-usage')
     @driver = Selenium::WebDriver.for :chrome, options: options
-    puts 'Scraper created.'
   end
 
-  def visit(url)
-    @driver.get(url)
+  def update_solved_problems(user, email, password)
+    @driver.get('https://paiza.jp/student/mypage/results')
+
+    # ログインページにリダイレクトされるので、ログインする
+    Rails.logger.debug "#{user.name}でログインを試みます..."
+    login(email, password)
+
+    # JavaScriptの描画が終了後、スクレイピングする
+    if wait_problems_load
+      scrape_solved_problems(user)
+    end
+
+    Rails.logger.debug '更新が終了しました！'
+    @driver.quit
   end
 
   def login(email, password)
@@ -79,36 +77,38 @@ class Scraper
     submit_btn.click
   end
 
-  def wait_javascript_load
+  def wait_problems_load
     wait = Selenium::WebDriver::Wait.new(timeout: 10)
+    problems_loaded = false
     begin
       wait.until {
         driver.find_element(class: 'basicBox').displayed?
       }
     rescue => exception
-      puts 'ログインできませんでした'
-      return
+      Rails.logger.debug 'ログインできませんでした'
     else
-      puts 'ログインに成功しました'
+      Rails.logger.debug 'ログインに成功しました'
+      problems_loaded = true
     end
+    problems_loaded
   end
 
-  def update_solved_problems(user)
-    solved_problems = @driver.find_element(id: 'tab-results').find_elements(class: 'basicBox')
-    must_update_count = solved_problems.count - user.solved_problems.count
+  def scrape_solved_problems(user)
+    solved_problem_elems = @driver.find_element(id: 'tab-results').find_elements(class: 'basicBox')
+    must_update_count = solved_problem_elems.count - user.solved_problems.count
 
-    solved_problems.map.with_index do |problem, i|
+    solved_problem_elems.each.with_index do |problem_elem, i|
       # 差分だけ更新する
       break if i >= must_update_count
 
       # タイトルからランクと問題番号を抜き出す
-      title = problem.text.split(/\n/)[0] # C035:試験の合格判定のような形式
+      title = problem_elem.text.split(/\n/)[0] # C035:試験の合格判定のような形式
       rank = title[/([A-Z])(\d+).+/, 1]
       number = title[/([A-Z])(\d+).+/, 2].to_i
 
       # スコアを取得する
       regex_for_score = /スコア：[^\d]+(?<score>\d+)点/
-      score = problem.text.match(regex_for_score)[:score].to_i
+      score = problem_elem.text.match(regex_for_score)[:score].to_i
 
       # ユーザーIDと問題IDのペアをデータベースに保存する
       problem = Problem.find_by(rank: rank, number: number)
