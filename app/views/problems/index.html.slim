@@ -46,9 +46,10 @@
               / th 受験者数
               th 正解率
               th 平均スコア
+              th あなたのスコア
           - @problems.each do |problem|
             tbody 
-              - solved = user_signed_in? && Solved.exists?(user_id: current_user.id, problem_id: problem.id)
+              - solved= Solved.find_by(user_id: current_user.id, problem_id: problem.id) if user_signed_in?
               tr.problem class="#{'table-success' if solved}"
                 td= problem.rank + format("%03d",problem.number)
                 td.reset-padding= link_to problem.name, problem.url, class: 'wide-link', target: :_blank
@@ -57,3 +58,5 @@
                 / td= problem.num_of_people
                 td= problem.acceptance_rate
                 td= problem.average_score
+                / td= solved&.first_score
+                td= solved ? 100 : 0
