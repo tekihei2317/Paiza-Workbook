@@ -30,22 +30,18 @@ class User < ApplicationRecord
 
   # ユーザーの解答状況を更新する
   def update_solved_problems(paiza_email, paiza_password)
-    options = Selenium::WebDriver::Chrome::Options.new
-    options.add_argument('--headless')
-    options.add_argument('--disable-dev-shm-usage')
-    driver = Selenium::WebDriver.for :chrome, options: options
-
-    driver.get('https://paiza.jp/student/mypage/results')
+    scraper = Scraper.new
+    scraper.visit('https://paiza.jp/student/mypage/results')
     puts "#{self.name}でログインを試みます..."
 
     # ログインページにリダイレクトされるので、ログインする
-    login_to_paiza(driver, paiza_email, paiza_password)
+    login_to_paiza(scraper.driver, paiza_email, paiza_password)
 
     # JavaScriptの描画が終わるまで待機する
-    wait_javascript_load(driver)
+    wait_javascript_load(scraper.driver)
 
     # 解答状況を取得して保存する
-    solved_problems = driver.find_element(id: 'tab-results').find_elements(class: 'basicBox')
+    solved_problems = scraper.driver.find_element(id: 'tab-results').find_elements(class: 'basicBox')
     must_update_count = solved_problems.count - self.solved_problems.count
 
     solved_problems.map.with_index do |problem, i|
@@ -66,7 +62,7 @@ class User < ApplicationRecord
       Solved.create(user_id: self.id, problem_id: problem.id, first_score: score) if !problem.nil?
     end
 
-    driver.quit
+    scraper.driver.quit
     puts '更新が終了しました！'
   end
 
@@ -87,6 +83,46 @@ class User < ApplicationRecord
   end
 
   def wait_javascript_load(driver)
+    wait = Selenium::WebDriver::Wait.new(timeout: 10)
+    begin
+      wait.until {
+        driver.find_element(class: 'basicBox').displayed?
+      }
+    rescue => exception
+      puts "#{self.name}でログインできませんでした"
+      return
+    else
+      puts "#{self.name}でログインしました"
+    end
+  end
+end
+
+class Scraper
+  attr_reader :driver
+
+  def initialize
+    options = Selenium::WebDriver::Chrome::Options.new
+    options.add_argument('--headless')
+    options.add_argument('--disable-dev-shm-usage')
+    @driver = Selenium::WebDriver.for :chrome, options: options
+    puts 'Scraper created.'
+  end
+
+  def visit(url)
+    @driver.get(url)
+  end
+
+  def login(email, password)
+    email_elem = driver.find_element(id: 'email')
+    password_elem = driver.find_element(id: 'password')
+    submit_btn = driver.find_element(css: 'input[type=submit]')
+
+    email_elem.send_keys(email)
+    password_elem.send_keys(password)
+    submit_btn.click
+  end
+
+  def wait_javascript_load()
     wait = Selenium::WebDriver::Wait.new(timeout: 10)
     begin
       wait.until {
