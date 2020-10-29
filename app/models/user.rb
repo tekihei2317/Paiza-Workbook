@@ -42,17 +42,7 @@ class User < ApplicationRecord
     login_to_paiza(driver, paiza_email, paiza_password)
 
     # JavaScriptの描画が終わるまで待機する
-    wait = Selenium::WebDriver::Wait.new(timeout: 10)
-    begin
-      wait.until {
-        driver.find_element(class: 'basicBox').displayed?
-      }
-    rescue => exception
-      puts "#{self.name}でログインできませんでした"
-      return
-    else
-      puts "#{self.name}でログインしました"
-    end
+    wait_javascript_load(driver)
 
     # 解答状況を取得して保存する
     solved_problems = driver.find_element(id: 'tab-results').find_elements(class: 'basicBox')
@@ -94,5 +84,19 @@ class User < ApplicationRecord
     email_elem.send_keys(paiza_email)
     password_elem.send_keys(paiza_password)
     submit_btn.click
+  end
+
+  def wait_javascript_load(driver)
+    wait = Selenium::WebDriver::Wait.new(timeout: 10)
+    begin
+      wait.until {
+        driver.find_element(class: 'basicBox').displayed?
+      }
+    rescue => exception
+      puts "#{self.name}でログインできませんでした"
+      return
+    else
+      puts "#{self.name}でログインしました"
+    end
   end
 end
