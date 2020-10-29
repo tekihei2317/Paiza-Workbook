@@ -9,8 +9,8 @@ class UsersController < ApplicationController
     @data = Problem.ranks.keys.map do |rank|
       correct_count = current_user.solved_problems.where(rank: rank).count
       {
-        '正解' => correct_count,
-        '未正解' => Problem.where(rank: rank).count - correct_count,
+        'correct' => correct_count,
+        'unsolved' => Problem.where(rank: rank).count - correct_count,
       }
     end
   end
