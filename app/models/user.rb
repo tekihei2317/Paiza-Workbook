@@ -41,28 +41,9 @@ class User < ApplicationRecord
     scraper.wait_javascript_load
 
     # 解答状況を取得して保存する
-    solved_problems = scraper.driver.find_element(id: 'tab-results').find_elements(class: 'basicBox')
-    must_update_count = solved_problems.count - self.solved_problems.count
-
-    solved_problems.map.with_index do |problem, i|
-      # 差分だけ更新する
-      break if i >= must_update_count
-
-      # タイトルからランクと問題番号を抜き出す
-      title = problem.text.split(/\n/)[0] # C035:試験の合格判定のような形式
-      rank = title[/([A-Z])(\d+).+/, 1]
-      number = title[/([A-Z])(\d+).+/, 2].to_i
-
-      # スコアを取得する
-      regex_for_score = /スコア：[^\d]+(?<score>\d+)点/
-      score = problem.text.match(regex_for_score)[:score].to_i
-
-      # ユーザーIDと問題IDのペアをデータベースに保存する
-      problem = Problem.find_by(rank: rank, number: number)
-      Solved.create(user_id: self.id, problem_id: problem.id, first_score: score) if !problem.nil?
-    end
-
+    scraper.update_solved_problems(self)
     scraper.driver.quit
+
     puts '更新が終了しました！'
   end
 
@@ -70,30 +51,6 @@ class User < ApplicationRecord
 
   def self.dummy_email(auth)
     "#{auth.uid}-#{auth.provider}@example.com"
-  end
-
-  def login_to_paiza(driver, paiza_email, paiza_password)
-    email_elem = driver.find_element(id: 'email')
-    password_elem = driver.find_element(id: 'password')
-    submit_btn = driver.find_element(css: 'input[type=submit]')
-
-    email_elem.send_keys(paiza_email)
-    password_elem.send_keys(paiza_password)
-    submit_btn.click
-  end
-
-  def wait_javascript_load(driver)
-    wait = Selenium::WebDriver::Wait.new(timeout: 10)
-    begin
-      wait.until {
-        driver.find_element(class: 'basicBox').displayed?
-      }
-    rescue => exception
-      puts "#{self.name}でログインできませんでした"
-      return
-    else
-      puts "#{self.name}でログインしました"
-    end
   end
 end
 
@@ -133,6 +90,29 @@ class Scraper
       return
     else
       puts 'ログインに成功しました'
+    end
+  end
+
+  def update_solved_problems(user)
+    solved_problems = @driver.find_element(id: 'tab-results').find_elements(class: 'basicBox')
+    must_update_count = solved_problems.count - user.solved_problems.count
+
+    solved_problems.map.with_index do |problem, i|
+      # 差分だけ更新する
+      break if i >= must_update_count
+
+      # タイトルからランクと問題番号を抜き出す
+      title = problem.text.split(/\n/)[0] # C035:試験の合格判定のような形式
+      rank = title[/([A-Z])(\d+).+/, 1]
+      number = title[/([A-Z])(\d+).+/, 2].to_i
+
+      # スコアを取得する
+      regex_for_score = /スコア：[^\d]+(?<score>\d+)点/
+      score = problem.text.match(regex_for_score)[:score].to_i
+
+      # ユーザーIDと問題IDのペアをデータベースに保存する
+      problem = Problem.find_by(rank: rank, number: number)
+      Solved.create(user_id: self.id, problem_id: problem.id, first_score: score) if !problem.nil?
     end
   end
 end
