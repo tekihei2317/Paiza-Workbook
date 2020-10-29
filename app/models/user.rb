@@ -35,10 +35,10 @@ class User < ApplicationRecord
     puts "#{self.name}でログインを試みます..."
 
     # ログインページにリダイレクトされるので、ログインする
-    login_to_paiza(scraper.driver, paiza_email, paiza_password)
+    scraper.login(paiza_email, paiza_password)
 
     # JavaScriptの描画が終わるまで待機する
-    wait_javascript_load(scraper.driver)
+    scraper.wait_javascript_load
 
     # 解答状況を取得して保存する
     solved_problems = scraper.driver.find_element(id: 'tab-results').find_elements(class: 'basicBox')
@@ -122,17 +122,17 @@ class Scraper
     submit_btn.click
   end
 
-  def wait_javascript_load()
+  def wait_javascript_load
     wait = Selenium::WebDriver::Wait.new(timeout: 10)
     begin
       wait.until {
         driver.find_element(class: 'basicBox').displayed?
       }
     rescue => exception
-      puts "#{self.name}でログインできませんでした"
+      puts 'ログインできませんでした'
       return
     else
-      puts "#{self.name}でログインしました"
+      puts 'ログインに成功しました'
     end
   end
 end
