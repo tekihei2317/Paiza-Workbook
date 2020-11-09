@@ -45,7 +45,7 @@ class Scraper
 
   def initialize
     options = Selenium::WebDriver::Chrome::Options.new
-    # options.add_argument('--headless')
+    options.add_argument('--headless')
     options.add_argument('--disable-dev-shm-usage')
     @driver = Selenium::WebDriver.for :chrome, options: options
   end
@@ -98,6 +98,7 @@ class Scraper
     first_result_elems = @driver.find_element(id: 'tab-results').find_elements(class: 'basicBox')
     must_update_count = first_result_elems.count - user.solved_problems.count
 
+    binding.pry
     first_result_elems.each.with_index do |result_elem, i|
       # 差分だけ更新する
       break if i >= must_update_count
@@ -113,6 +114,7 @@ class Scraper
   def scrape_retry_results(user)
     retry_result_elems = @driver.find_element(id: 'retry_results').find_elements(class: 'basicBox')
 
+    return
     retry_result_elems.each do |result_elem|
       rank, number, score = parse_result_text(result_elem.text)
 
@@ -123,15 +125,16 @@ class Scraper
   end
 
   def parse_result_text(text)
-    # タイトルからランクと問題番号を抜き出す
     title = text.split(/\n/)[0] # C035:試験の合格判定 など
     rank = title[/([A-Z])(\d+).+/, 1]
     number = title[/([A-Z])(\d+).+/, 2].to_i
 
-    # スコアを取得する
     regex_for_score = /スコア：[^\d]+(?<score>\d+)点/
     score = text.match(regex_for_score)[:score].to_i
 
-    [rank, number, score]
+    regex_for_solved_at = /提出日：(.+)/
+    solved_at = text.match(regex_for_solved_at)[1].in_time_zone
+
+    [rank, number, score, solved_at]
   end
 end
