@@ -58,7 +58,7 @@ class Scraper
     login(email, password)
 
     # JavaScriptの描画が終了後、スクレイピングする
-    scrape_results(user) if wait_problems_load
+    scrape_first_results(user) if wait_problems_load
 
     # 再チャレンジ結果をスクレイピングする
     @driver.get('https://paiza.jp/student/mypage/retry-results')
@@ -94,22 +94,15 @@ class Scraper
     problems_loaded
   end
 
-  def scrape_results(user)
-    solved_problem_elems = @driver.find_element(id: 'tab-results').find_elements(class: 'basicBox')
-    must_update_count = solved_problem_elems.count - user.solved_problems.count
+  def scrape_first_results(user)
+    first_result_elems = @driver.find_element(id: 'tab-results').find_elements(class: 'basicBox')
+    must_update_count = first_result_elems.count - user.solved_problems.count
 
-    solved_problem_elems.each.with_index do |problem_elem, i|
+    first_result_elems.each.with_index do |result_elem, i|
       # 差分だけ更新する
       break if i >= must_update_count
 
-      # タイトルからランクと問題番号を抜き出す
-      title = problem_elem.text.split(/\n/)[0] # C035:試験の合格判定のような形式
-      rank = title[/([A-Z])(\d+).+/, 1]
-      number = title[/([A-Z])(\d+).+/, 2].to_i
-
-      # スコアを取得する
-      regex_for_score = /スコア：[^\d]+(?<score>\d+)点/
-      score = problem_elem.text.match(regex_for_score)[:score].to_i
+      rank, number, score = parse_result_text(result_elem.text)
 
       # データベースに保存する
       problem = Problem.find_by(rank: rank, number: number)
@@ -119,19 +112,26 @@ class Scraper
 
   def scrape_retry_results(user)
     retry_result_elems = @driver.find_element(id: 'retry_results').find_elements(class: 'basicBox')
-    retry_result_elems.each do |result_elem|
-      # タイトルからランクと問題番号を抜き出す
-      title = result_elem.text.split(/\n/)[0] # C035:試験の合格判定のような形式
-      rank = title[/([A-Z])(\d+).+/, 1]
-      number = title[/([A-Z])(\d+).+/, 2].to_i
 
-      # スコアを取得する
-      regex_for_score = /スコア：[^\d]+(?<score>\d+)点/
-      score = result_elem.text.match(regex_for_score)[:score].to_i
+    retry_result_elems.each do |result_elem|
+      rank, number, score = parse_result_text(result_elem.text)
 
       # データベースに保存する
       problem = Problem.find_by(rank: rank, number: number)
       Solved.create(user_id: user.id, problem_id: problem.id, score: score, first_challenge: false) if !problem.nil?
     end
+  end
+
+  def parse_result_text(text)
+    # タイトルからランクと問題番号を抜き出す
+    title = text.split(/\n/)[0] # C035:試験の合格判定 など
+    rank = title[/([A-Z])(\d+).+/, 1]
+    number = title[/([A-Z])(\d+).+/, 2].to_i
+
+    # スコアを取得する
+    regex_for_score = /スコア：[^\d]+(?<score>\d+)点/
+    score = text.match(regex_for_score)[:score].to_i
+
+    [rank, number, score]
   end
 end
