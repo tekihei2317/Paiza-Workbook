@@ -30,7 +30,7 @@ class User < ApplicationRecord
   # ユーザーの解答状況を更新する
   def update_solved_problems(paiza_email, paiza_password)
     scraper = Scraper.new
-    scraper.update_solved_problems(self, paiza_email, paiza_password)
+    scraper.update_results(self, paiza_email, paiza_password)
   end
 
   private
@@ -45,12 +45,12 @@ class Scraper
 
   def initialize
     options = Selenium::WebDriver::Chrome::Options.new
-    options.add_argument('--headless')
+    # options.add_argument('--headless')
     options.add_argument('--disable-dev-shm-usage')
     @driver = Selenium::WebDriver.for :chrome, options: options
   end
 
-  def update_solved_problems(user, email, password)
+  def update_results(user, email, password)
     @driver.get('https://paiza.jp/student/mypage/results')
 
     # ログインページにリダイレクトされるので、ログインする
@@ -59,8 +59,12 @@ class Scraper
 
     # JavaScriptの描画が終了後、スクレイピングする
     if wait_problems_load
-      scrape_solved_problems(user)
+      scrape_results(user)
     end
+
+    # 再チャレンジ結果をスクレイピングする
+    @driver.get('https://paiza.jp/student/mypage/retry-results')
+    scrape_retry_results(user)
 
     Rails.logger.debug '更新が終了しました！'
     @driver.quit
@@ -92,7 +96,7 @@ class Scraper
     problems_loaded
   end
 
-  def scrape_solved_problems(user)
+  def scrape_results(user)
     solved_problem_elems = @driver.find_element(id: 'tab-results').find_elements(class: 'basicBox')
     must_update_count = solved_problem_elems.count - user.solved_problems.count
 
@@ -111,7 +115,11 @@ class Scraper
 
       # ユーザーIDと問題IDのペアをデータベースに保存する
       problem = Problem.find_by(rank: rank, number: number)
-      Solved.create(user_id: user.id, problem_id: problem.id, first_score: score) if !problem.nil?
+      Solved.create(user_id: user.id, problem_id: problem.id, score: score, first_challenge: true) if !problem.nil?
     end
+  end
+
+  def scrape_retry_results(user)
+    binding.pry
   end
 end

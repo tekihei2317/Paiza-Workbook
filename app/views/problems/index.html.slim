@@ -35,7 +35,7 @@
         .w100
         = f.submit '反映する', class: 'hidden btn btn-raised bg-primary text-white', id: 'filter-submit-btn'
     .row
-     .table-responsive.col-md-8.offset-md-2.bg-my-white.shadow.px-0
+      .table-responsive.col-md-8.offset-md-2.bg-my-white.shadow.px-0
         table.table.table-hover
           thead
             tr
@@ -58,4 +58,4 @@
                 / td= problem.num_of_people
                 td= problem.acceptance_rate
                 td= problem.average_score
-                td= solved&.first_score
+                td= solved&.score
