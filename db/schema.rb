@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_29_024520) do
+ActiveRecord::Schema.define(version: 2020_11_09_052934) do
 
   create_table "problems", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "rank"
@@ -32,8 +32,8 @@ ActiveRecord::Schema.define(version: 2020_10_29_024520) do
     t.bigint "problem_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "first_score"
-    t.integer "review_score"
+    t.integer "score"
+    t.boolean "first_challenge"
     t.index ["problem_id"], name: "index_solveds_on_problem_id"
     t.index ["user_id"], name: "index_solveds_on_user_id"
   end

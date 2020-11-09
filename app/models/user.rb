@@ -2,8 +2,7 @@ class User < ApplicationRecord
   has_many :solveds
   has_many :solved_problems, through: :solveds, source: :problem
 
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable, :omniauthable
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, :omniauthable
   attr_accessor :current_password
 
   validates :name, presence: true
@@ -112,7 +111,7 @@ class Scraper
 
       # ユーザーIDと問題IDのペアをデータベースに保存する
       problem = Problem.find_by(rank: rank, number: number)
-      Solved.create(user_id: self.id, problem_id: problem.id, first_score: score) if !problem.nil?
+      Solved.create(user_id: user.id, problem_id: problem.id, first_score: score) if !problem.nil?
     end
   end
 end
