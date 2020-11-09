@@ -58,13 +58,11 @@ class Scraper
     login(email, password)
 
     # JavaScriptの描画が終了後、スクレイピングする
-    if wait_problems_load
-      scrape_results(user)
-    end
+    scrape_results(user) if wait_problems_load
 
     # 再チャレンジ結果をスクレイピングする
     @driver.get('https://paiza.jp/student/mypage/retry-results')
-    scrape_retry_results(user)
+    scrape_retry_results(user) if wait_problems_load
 
     Rails.logger.debug '更新が終了しました！'
     @driver.quit
@@ -113,13 +111,27 @@ class Scraper
       regex_for_score = /スコア：[^\d]+(?<score>\d+)点/
       score = problem_elem.text.match(regex_for_score)[:score].to_i
 
-      # ユーザーIDと問題IDのペアをデータベースに保存する
+      # データベースに保存する
       problem = Problem.find_by(rank: rank, number: number)
       Solved.create(user_id: user.id, problem_id: problem.id, score: score, first_challenge: true) if !problem.nil?
     end
   end
 
   def scrape_retry_results(user)
-    binding.pry
+    retry_result_elems = @driver.find_element(id: 'retry_results').find_elements(class: 'basicBox')
+    retry_result_elems.each do |result_elem|
+      # タイトルからランクと問題番号を抜き出す
+      title = result_elem.text.split(/\n/)[0] # C035:試験の合格判定のような形式
+      rank = title[/([A-Z])(\d+).+/, 1]
+      number = title[/([A-Z])(\d+).+/, 2].to_i
+
+      # スコアを取得する
+      regex_for_score = /スコア：[^\d]+(?<score>\d+)点/
+      score = result_elem.text.match(regex_for_score)[:score].to_i
+
+      # データベースに保存する
+      problem = Problem.find_by(rank: rank, number: number)
+      Solved.create(user_id: user.id, problem_id: problem.id, score: score, first_challenge: false) if !problem.nil?
+    end
   end
 end
