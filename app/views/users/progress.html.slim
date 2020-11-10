@@ -46,10 +46,14 @@
           tr
             th 問題ID
             th 問題名
+            th スコア
             th 日時
-          - @solved_problems.each do |problem|
-            tr
-              td= format("%c%03d", problem.rank, problem.number)
-              td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis"= problem.name
-              td= Date.today
-        = paginate @solved_problems, class: 'mx-auto'
+          - @results.each do |result|
+            tr 
+              - problem = result.problem
+              td style="width: 40px;"= format("%c%03d", problem.rank, problem.number)
+              / td style="max-width: 240px; overflow: hidden; text-overflow: ellipsis"= problem.name
+              td= link_to problem.name, problem.url, class: 'd-block', style: "max-width: 240px; overflow: hidden; text-overflow: ellipsis"
+              td style="width: 40px;"= result.score
+              td= result.solved_at.to_s[0, 10]
+        = paginate @results

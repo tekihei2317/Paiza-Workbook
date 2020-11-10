@@ -21,9 +21,7 @@ class UsersController < ApplicationController
         unchallenged: Problem.where(rank: rank).count - challenged_count,
       }
     end
-    # @solved_problems = current_user.solved_problems.page(params[:page])
-    @solved_problems = Problem.where(rank: 'D').page(params[:page]).per(15)
-    # binding.pry
+    @results = Solved.where(user_id: current_user.id).page(params[:page]).per(12)
   end
 
   def update_solved_problems
