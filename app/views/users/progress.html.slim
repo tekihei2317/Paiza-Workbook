@@ -52,4 +52,4 @@
               td= format("%c%03d", problem.rank, problem.number)
               td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis"= problem.name
               td= Date.today
-        = paginate @solved_problems
+        = paginate @solved_problems, class: 'mx-auto'
