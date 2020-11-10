@@ -35,7 +35,7 @@
         .w100
         = f.submit '反映する', class: 'hidden btn btn-raised bg-primary text-white', id: 'filter-submit-btn'
     .row
-     .table-responsive.col-md-8.offset-md-2.bg-my-white.shadow.px-0
+      .table-responsive.col-md-8.offset-md-2.bg-my-white.shadow.px-0
         table.table.table-hover
           thead
             tr
@@ -46,10 +46,13 @@
               / th 受験者数
               th 正解率
               th 平均スコア
+              - if user_signed_in? 
+                th スコア 
           - @problems.each do |problem|
             tbody 
-              - solved = user_signed_in? && Solved.exists?(user_id: current_user.id, problem_id: problem.id)
-              tr.problem class="#{'table-success' if solved}"
+              - challenged = Solved.exists?(user_id: current_user.id, problem_id: problem.id) if user_signed_in?
+              - max_score = Solved.where(user_id: current_user.id, problem_id: problem.id).maximum(:score) if challenged
+              tr.problem class="#{'table-success' if challenged}"
                 td= problem.rank + format("%03d",problem.number)
                 td.reset-padding= link_to problem.name, problem.url, class: 'wide-link', target: :_blank
                 td= problem.difficulty
@@ -57,4 +60,4 @@
                 / td= problem.num_of_people
                 td= problem.acceptance_rate
                 td= problem.average_score
-    
+                td= max_score

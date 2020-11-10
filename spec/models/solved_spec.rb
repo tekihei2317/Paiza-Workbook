@@ -35,14 +35,6 @@ RSpec.describe Solved, type: :model do
       end
     end
 
-    it '同じユーザーは同じ問題を２回解くことが出来ない' do
-      FactoryBot.create(:solved, user: @user, problem: @problem)
-      solved = FactoryBot.build(:solved, user: @user, problem: @problem)
-      solved.valid?
-      expect(solved).to_not be_valid
-      expect(solved.errors[:user_id]).to include('はすでに存在します')
-    end
-
     it '同じユーザーは別の問題を解くことが出来る' do
       FactoryBot.create(:solved, user: @user, problem: @problem)
       solved = FactoryBot.create(:solved, user: @user, problem: @other_problem)
