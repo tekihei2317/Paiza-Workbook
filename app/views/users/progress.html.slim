@@ -6,9 +6,11 @@
           - Problem.ranks.each do |rank_str, rank_int|
             .pie-container.col-md-4.col-sm-6
               p.pie-title.text-center.mb-1= format("Rank %s", rank_str)
-              = pie_chart @data[rank_int], width: '200px', height: '200px', display: 'inline-block',\
-                legend: false, colors: ['#4285F4', '#E7E9F2'], class: 'mx-auto'
-              p.text-center.mb-5= format("%d correct | %d unsolved", @data[rank_int]['correct'], @data[rank_int]['unsolved'])
+              - data = @data[rank_int]
+              = pie_chart data, width: '200px', height: '200px', display: 'inline-block',\
+                legend: false, colors: ['#4285F4', '#bbdefb', '#E7E9F2'], class: 'mx-auto'
+              p.text-center.mb-5= format("%d問挑戦済み | 残り%d問", data[:perfect] + data[:'not perfect'], data[:unchallenged])
+              
     
             
     .row.mt-3
@@ -18,21 +20,22 @@
           tr
             th 難易度
             - boundaries.each.with_index do |b_crt, i|
-              - next if i == boundaries.size - 1
+              - break if i == boundaries.size - 1
               - b_nxt=boundaries[i + 1]
               th= "~#{b_nxt}"
             th 合計
           tr
-            th 問題数
+            td 問題数
             - boundaries.each.with_index do |b_crt, i|
-              - next if i == boundaries.size - 1
+              - break if i == boundaries.size - 1
               - b_nxt=boundaries[i + 1]
               td= Problem.where(difficulty: (b_crt+1)..b_nxt).count
             td= Problem.count
           tr
-            th 正解数
+            td 挑戦済み
+            - all_challenges = Solved.where(user_id: current_user.id).uniq { |solved| solved.problem.id }
             - boundaries.each.with_index do |b_crt, i|
-              - next if i == boundaries.size - 1
+              - break if i == boundaries.size - 1
               - b_nxt=boundaries[i + 1]
-              td= current_user.solved_problems.where(difficulty: (b_crt+1)..b_nxt).count
-            td= current_user.solved_problems.count
+              td= all_challenges.filter { |solved| (b_crt+1..b_nxt).include?(solved.problem.difficulty) }.count
+            td= all_challenges.count
