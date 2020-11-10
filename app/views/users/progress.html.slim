@@ -42,7 +42,7 @@
 
     .row.mt-3
       .table-responsive.shadow.bg-my-white.col-lg-10.offset-lg-1
-        table.table
+        table.table.text-nowrap
           tr
             th 問題ID
             th 問題名
@@ -50,6 +50,6 @@
           - @solved_problems.each do |problem|
             tr
               td= format("%c%03d", problem.rank, problem.number)
-              td= problem.name
+              td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis"= problem.name
               td= Date.today
         = paginate @solved_problems
