@@ -96,33 +96,45 @@ class Scraper
 
   def scrape_first_results(user)
     first_result_elems = @driver.find_element(id: 'tab-results').find_elements(class: 'basicBox')
-    must_update_count = first_result_elems.count - user.solved_problems.count
 
-    binding.pry
     first_result_elems.each.with_index do |result_elem, i|
-      # 差分だけ更新する
-      break if i >= must_update_count
+      rank, number, score, solved_at = parse_result_text(result_elem.text)
 
-      rank, number, score = parse_result_text(result_elem.text)
-
-      # データベースに保存する
       problem = Problem.find_by(rank: rank, number: number)
-      Solved.create(user_id: user.id, problem_id: problem.id, score: score, first_challenge: true) if !problem.nil?
+      next if problem.nil? # 存在しない(消去された)問題の場合nilになる
+
+      solved = Solved.new(
+        user_id: user.id,
+        problem_id: problem.id,
+        score: score,
+        solved_at: solved_at,
+        first_challenge: true,
+      )
+      break if !solved.save
     end
   end
 
   def scrape_retry_results(user)
     retry_result_elems = @driver.find_element(id: 'retry_results').find_elements(class: 'basicBox')
 
-    return
     retry_result_elems.each do |result_elem|
-      rank, number, score = parse_result_text(result_elem.text)
+      rank, number, score, solved_at = parse_result_text(result_elem.text)
 
-      # データベースに保存する
       problem = Problem.find_by(rank: rank, number: number)
-      Solved.create(user_id: user.id, problem_id: problem.id, score: score, first_challenge: false) if !problem.nil?
+      next if problem.nil? # 存在しない(消去された)問題の場合nilになる
+
+      solved = Solved.new(
+        user_id: user.id,
+        problem_id: problem.id,
+        score: score,
+        solved_at: solved_at,
+        first_challenge: false,
+      )
+      break if !solved.save
     end
   end
+
+  private
 
   def parse_result_text(text)
     title = text.split(/\n/)[0] # C035:試験の合格判定 など
