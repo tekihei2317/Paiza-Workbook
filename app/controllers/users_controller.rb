@@ -21,6 +21,27 @@ class UsersController < ApplicationController
         unchallenged: Problem.where(rank: rank).count - challenged_count,
       }
     end
+    @results = Solved
+      .where(user_id: current_user.id)
+      .order(solved_at: :desc)
+      .page(params[:page]).per(12)
+
+    # ajaxの場合
+    if request.xhr?
+      paginator = view_context.paginate(
+        @results,
+        remote: true,
+      )
+      results = render_to_string(
+        partial: 'layouts/results',
+        locals: { results: @results },
+      )
+
+      render json: {
+        paginator: paginator,
+        results: results,
+      }
+    end
   end
 
   def update_solved_problems

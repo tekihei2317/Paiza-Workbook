@@ -103,11 +103,16 @@
 // Progress table
 
 .progress-wrapper{
+  padding-bottom: 80px;
   .table-responsive{
     border-radius: 8px;
   }
 
   table th, table td{
     padding: 0.6rem;
+  }
+  
+  .pagination{
+    justify-content: center;
   }
 }
