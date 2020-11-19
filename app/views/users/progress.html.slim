@@ -43,17 +43,6 @@
     .row.mt-3
       .table-responsive.shadow.bg-my-white.col-lg-10.offset-lg-1
         table.table.text-nowrap
-          tr
-            th 問題ID
-            th 問題名
-            th スコア
-            th 日時
-          - @results.each do |result|
-            tr 
-              - problem = result.problem
-              td style="width: 40px;"= format("%c%03d", problem.rank, problem.number)
-              / td style="max-width: 240px; overflow: hidden; text-overflow: ellipsis"= problem.name
-              td= link_to problem.name, problem.url, class: 'd-block', style: "max-width: 240px; overflow: hidden; text-overflow: ellipsis"
-              td style="width: 40px;"= result.score
-              td= result.solved_at.to_s[0, 10]
-        = paginate @results
+          = render 'layouts/results'
+        #paginator
+          = render 'layouts/paginator'
