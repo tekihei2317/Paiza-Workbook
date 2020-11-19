@@ -37,7 +37,6 @@ class UsersController < ApplicationController
         locals: { results: @results },
       )
 
-      binding.pry
       render json: {
         paginator: paginator,
         results: results,
