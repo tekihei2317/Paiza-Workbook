@@ -112,7 +112,21 @@
     padding: 0.6rem;
   }
   
+  // pagination
+  
   .pagination{
     justify-content: center;
   }
+
+  .page-item .page-link{
+    &:focus{
+      box-shadow: none;
+    }
+  }
+  .page-item.active .page-link{
+    &:hover{
+      color: white;
+    }
+  }
 }
+
