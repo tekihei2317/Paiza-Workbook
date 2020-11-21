@@ -6,12 +6,14 @@
       const data = event.detail[0];
       // console.log(data.results);
       const resultsContainer = document.getElementById('results-table');
+      console.log(data.results);
 
       resultsContainer.innerHTML = data.results;
       paginatorContainer.innerHTML = data.paginator;
     });
   }
 
-  // #paginatorの描画待ち
-  setTimeout(setEvent, 1000);
+  document.addEventListener('turbolinks:load', () => {
+    setEvent();
+  });
 })();
