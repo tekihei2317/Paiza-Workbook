@@ -11,7 +11,7 @@
  * It is generally better to create a new file per style scope.
  *= require_tree
  */
-@import "bootstrap";
+// @import "bootstrap";
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
 @import 'font-awesome-sprockets';
 @import "font-awesome";
@@ -31,7 +31,8 @@ input:focus{
 body{
   padding-top: 3.5rem;
   font-family: 'Noto Sans JP', sans-serif !important;
-  background-color: #F3F4F8 !important;
+  // background-color: #F3F4F8 !important;
+  background-color: #eee !important;
 }
 
 .bg-my-white{
