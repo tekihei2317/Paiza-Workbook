@@ -17,19 +17,22 @@
       .table-responsive.shadow.bg-my-white.col-lg-10.offset-lg-1
         - boundaries=[0,1000,1200,1400,1600,1800,2000,2200,2400,3000]
         table.table.text-nowrap
+          - colors=["rgba(179,217,226,0.7)","rgba(114,184,201,0.7)","rgba(34,146,172,0.7)","rgba(201,173,100,0.7)","rgba(241,91,91,0.7)"]
           tr
             th 難易度
             - boundaries.each.with_index do |b_crt, i|
               - break if i == boundaries.size - 1
               - b_nxt=boundaries[i + 1]
-              th= "~#{b_nxt}"
+              th(style="background-color: #{colors[(i+1)/2]}")= "~#{b_nxt}"
             th 合計
           tr
-            td 問題数
+            td 問題数 
             - boundaries.each.with_index do |b_crt, i|
               - break if i == boundaries.size - 1
               - b_nxt=boundaries[i + 1]
-              td= Problem.where(difficulty: (b_crt+1)..b_nxt).count
+
+              - problem_count=Problem.where(difficulty: (b_crt+1)..b_nxt).count
+              td(style="background-color: #{colors[(i+1)/2]};")= problem_count
             td= Problem.count
           tr
             td 挑戦済み
@@ -37,7 +40,13 @@
             - boundaries.each.with_index do |b_crt, i|
               - break if i == boundaries.size - 1
               - b_nxt=boundaries[i + 1]
-              td= all_challenges.filter { |solved| (b_crt+1..b_nxt).include?(solved.problem.difficulty) }.count
+
+              - problem_count=Problem.where(difficulty: (b_crt+1)..b_nxt).count
+              - challenge_count=all_challenges.filter { |solved| (b_crt+1..b_nxt).include?(solved.problem.difficulty) }.count
+              - percentage=challenge_count.to_f/problem_count*100
+              
+              td(style="background: linear-gradient(to top, #{colors[(i+1)/2]} #{percentage}%, white #{percentage}%); background-repeat: no-repeat;")=\
+                challenge_count
             td= all_challenges.count
 
     .row.mt-3
