@@ -32,8 +32,9 @@ RSpec.feature 'Sorts', type: :feature do
 
   describe '難易度でのソート' do
     before do
-      @problem_with_smallest_difficulty = Problem.order(:difficulty).first
-      @problem_with_largest_difficulty = Problem.order(:difficulty).last
+      # フロントのソート結果が一意ではないので注意
+      @problem_with_smallest_difficulty = Problem.order(:difficulty, :number).first
+      @problem_with_largest_difficulty = Problem.order(:difficulty, :number).last
 
       visit root_path
       @button = find('th', text: '難易度')
