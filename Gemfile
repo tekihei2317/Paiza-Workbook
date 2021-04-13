@@ -91,7 +91,7 @@ gem 'selenium-webdriver'
 gem 'webdrivers'
 
 # ログイン機能
-gem 'devise'
+gem 'devise', git: 'https://github.com/heartcombo/devise'
 gem 'devise-i18n'
 gem 'devise-i18n-views'
 gem 'omniauth-twitter'
