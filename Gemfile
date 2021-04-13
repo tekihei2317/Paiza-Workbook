@@ -60,6 +60,9 @@ group :development do
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
   gem 'capistrano3-puma'
+
+  # デバッグ
+  gem 'ruby-debug-ide'
 end
 
 group :test do
